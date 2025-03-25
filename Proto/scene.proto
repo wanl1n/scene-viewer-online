@@ -8,7 +8,7 @@ service SceneViewer {
 
 // The request message asking for the scene ID.
 message SceneRequest {
-	int sceneId = 1;
+	int32 sceneId = 1;
 }
 
 // The response message containing the models.
@@ -39,4 +39,9 @@ message Model {
 	float scaleX = 9;
 	float scaleY = 10;
 	float scaleZ = 11;
+
+	// Texture Data
+	int32 texWidth = 12;
+	int32 texHeight = 13;
+	bytes texture = 14;
 }
