@@ -187,11 +187,11 @@ int main()
                         glm::vec3(0.f, 0.f, 0.f),           //pos
                         glm::vec3(100.f),                     //scale
                         glm::vec3(0.f, 0.f, 0.f));         //rotate
-    Model stone = Model("3D/Obstacles/Rocks/Stone.OBJ", "3D/Obstacles/Rocks/StoneTex.jpg", "",
-                        glm::vec3(0.f, -8.f, -200.f),       //pos
-                        glm::vec3(5.f),                     //scale
-                        glm::vec3(0.f, 0.f, 0.f));          //rotate
-    stone.loadSticker(); // This adds the Barabara sticker/drawing texture to the rock.
+    //Model stone = Model("3D/Obstacles/Rocks/Stone.OBJ", "3D/Obstacles/Rocks/StoneTex.jpg", "",
+    //                    glm::vec3(0.f, -8.f, -200.f),       //pos
+    //                    glm::vec3(5.f),                     //scale
+    //                    glm::vec3(0.f, 0.f, 0.f));          //rotate
+    //stone.loadSticker(); // This adds the Barabara sticker/drawing texture to the rock.
     Model ant = Model("3D/Obstacles/Ant/ant1.obj", "3D/Obstacles/Ant/ant_(1).png", "",
                         glm::vec3(-150.f, 0.f, -200.f),     //pos
                         glm::vec3(0.03f),                   //scale
@@ -219,7 +219,7 @@ int main()
     // Create a vector of objects around the Player and store all the surrounding objects with the ground at the top.
     std::vector<Model> environment;
     environment.push_back(ground);
-    environment.push_back(stone);
+    //environment.push_back(stone);
     environment.push_back(ant);
     environment.push_back(grass);
     environment.push_back(mouse);

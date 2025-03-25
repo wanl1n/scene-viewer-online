@@ -13,35 +13,5 @@ message SceneRequest {
 
 // The response message containing the models.
 message SceneResponse {
-	repeated Model models = 1;
-}
-
-// Represents a single model in the scene.
-message Model {
-	// Model Name
-	string modelName = 1; 
-
-	// .obj/.fbx Data
-	string modelData = 2; 
-
-	// Transformation Data
-	// Position
-	float posX = 3;
-	float posY = 4;
-	float posZ = 5;
-
-	// Rotation
-	float pitch = 6;  // Rotation around the X-axis
-	float yaw = 7;    // Rotation around the Y-axis
-	float roll = 8;   // Rotation around the Z-axis
-	
-	// Scale
-	float scaleX = 9;
-	float scaleY = 10;
-	float scaleZ = 11;
-
-	// Texture Data
-	int32 texWidth = 12;
-	int32 texHeight = 13;
-	bytes texture = 14;
+	repeated string modelNames = 1;
 }

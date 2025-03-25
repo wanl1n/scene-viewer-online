@@ -145,6 +145,12 @@
     <ClCompile Include="Model\Model.cpp" />
     <ClCompile Include="Model\Skybox.cpp" />
     <ClCompile Include="Player\Player.cpp" />
+    <ClCompile Include="Proto\model.grpc.pb.cc" />
+    <ClCompile Include="Proto\model.pb.cc" />
+    <ClCompile Include="Proto\scene.grpc.pb.cc" />
+    <ClCompile Include="Proto\scene.pb.cc" />
+    <ClCompile Include="Proto\transformtex.grpc.pb.cc" />
+    <ClCompile Include="Proto\transformtex.pb.cc" />
     <ClCompile Include="Shaders\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -158,13 +164,21 @@
     <ClInclude Include="Model\Model.hpp" />
     <ClInclude Include="Model\Skybox.hpp" />
     <ClInclude Include="Player\Player.hpp" />
+    <ClInclude Include="Proto\model.grpc.pb.h" />
+    <ClInclude Include="Proto\model.pb.h" />
+    <ClInclude Include="Proto\scene.grpc.pb.h" />
+    <ClInclude Include="Proto\scene.pb.h" />
+    <ClInclude Include="Proto\transformtex.grpc.pb.h" />
+    <ClInclude Include="Proto\transformtex.pb.h" />
     <ClInclude Include="Shaders\Shader.hpp" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="tiny_obj_loader.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Proto\model.proto" />
     <None Include="Proto\proto_compile.sh" />
     <None Include="Proto\scene.proto" />
+    <None Include="Proto\transformtex.proto" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

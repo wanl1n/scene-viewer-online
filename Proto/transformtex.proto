@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+// The service providing transformtex data.
+service TransformTexSync {
+  rpc GetModel (TransformTexRequest) returns (TransformTexResponse) {}
+}
+
+// The request message asking for the model data.
+message TransformTexRequest  {
+  string modelName = 1;
+}
+
+// The response message containing the model data.
+message TransformTexResponse  {
+	// Transformation Data
+	// Position
+	float posX = 1;
+	float posY = 2;
+	float posZ = 3;
+
+	// Rotation
+	float pitch = 4;  // Rotation around the X-axis
+	float yaw = 5;    // Rotation around the Y-axis
+	float roll = 6;   // Rotation around the Z-axis
+	
+	// Scale
+	float scaleX = 7;
+	float scaleY = 8;
+	float scaleZ = 9;
+
+	// Texture Data
+	int32 texWidth = 10;
+	int32 texHeight = 11;
+	bytes texture = 12;
+}

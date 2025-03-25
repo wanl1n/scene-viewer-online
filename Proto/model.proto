@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+// The service providing model data.
+service ModelLoader {
+  rpc GetModel (ModelRequest) returns (ModelResponse) {}
+}
+
+// The request message asking for the model name.
+message ModelRequest {
+  string modelName = 1;
+}
+
+// The response message containing the model data.
+message ModelResponse {
+  // Model data in .obj/.fbx format.
+  string modelData = 1;
+}
