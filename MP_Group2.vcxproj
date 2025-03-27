@@ -147,6 +147,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model\Model.cpp" />
     <ClCompile Include="Model\Skybox.cpp" />
+    <ClCompile Include="Networking\Client.cpp" />
+    <ClCompile Include="Networking\Server.cpp" />
     <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="Proto\model.grpc.pb.cc" />
     <ClCompile Include="Proto\model.pb.cc" />
@@ -155,6 +157,10 @@
     <ClCompile Include="Proto\transformtex.grpc.pb.cc" />
     <ClCompile Include="Proto\transformtex.pb.cc" />
     <ClCompile Include="Shaders\Shader.cpp" />
+    <ClCompile Include="Thread\IETSemaphore.cpp" />
+    <ClCompile Include="Thread\IETThread.cpp" />
+    <ClCompile Include="Thread\PoolWorkerThread.cpp" />
+    <ClCompile Include="Thread\ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\MyCamera.hpp" />
@@ -168,6 +174,8 @@
     <ClInclude Include="MainInclude.hpp" />
     <ClInclude Include="Model\Model.hpp" />
     <ClInclude Include="Model\Skybox.hpp" />
+    <ClInclude Include="Networking\Client.h" />
+    <ClInclude Include="Networking\Server.h" />
     <ClInclude Include="Player\Player.hpp" />
     <ClInclude Include="Proto\model.grpc.pb.h" />
     <ClInclude Include="Proto\model.pb.h" />
@@ -177,6 +185,13 @@
     <ClInclude Include="Proto\transformtex.pb.h" />
     <ClInclude Include="Shaders\Shader.hpp" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Thread\IETSemaphore.h" />
+    <ClInclude Include="Thread\IETThread.h" />
+    <ClInclude Include="Thread\IExecutionEvent.h" />
+    <ClInclude Include="Thread\IFinishedTask.h" />
+    <ClInclude Include="Thread\IWorkerAction.h" />
+    <ClInclude Include="Thread\PoolWorkerThread.h" />
+    <ClInclude Include="Thread\ThreadPool.h" />
     <ClInclude Include="tiny_obj_loader.h" />
   </ItemGroup>
   <ItemGroup>

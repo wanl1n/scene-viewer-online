@@ -27,6 +27,8 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "Networking/Client.h"
+#include "Networking/Server.h"
 
 // Namespaces of the other classes
 using namespace models;
@@ -277,6 +279,13 @@ int main()
     glEnable(GL_BLEND);
     //Choose a Blending Function
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    // Start Server
+    Server server;
+    server.start();
+
+    // Start Client
+    Client::runClient();
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
