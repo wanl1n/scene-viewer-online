@@ -23,6 +23,11 @@
 // Player
 #include "Player/Player.hpp"
 
+// ImGUI
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 // Namespaces of the other classes
 using namespace models;
 using namespace cameras;
@@ -31,8 +36,8 @@ using namespace shaders;
 using namespace players;
 
 // Global Variables
-float width = 720.f;
-float height = 720.f;
+float width = 1920.f;
+float height = 1080.f;
 float speed = 1.5f;
 
 // Player contains the states of the player tank.
@@ -153,7 +158,7 @@ int main()
     if (!glfwInit()) return -1;
 
     // Create a windowed mode window and its OpenGL context
-    window = glfwCreateWindow((int)width, (int)height, "gdgrappling at straws - que, valdecantos, young", NULL, NULL);
+    window = glfwCreateWindow((int)width, (int)height, "GDPARCM Scene Viewer - QUE YOUNG", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -169,6 +174,12 @@ int main()
 
     // Create Viewport
     glViewport(0, 0, (int)width, (int)height);
+
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 330"); 
 
     // Loading the objects
     // Main Tank Model
@@ -270,6 +281,12 @@ int main()
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        ImGui::ShowDemoWindow();
+
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the depth buffer as well
 
@@ -459,6 +476,9 @@ int main()
         // Reset lighting to render lightModel unaffected by light
         headlights.turnOff();
         moonlight.turnOff();
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
