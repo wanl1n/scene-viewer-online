@@ -8,7 +8,6 @@ class Server final : public SceneViewer::Service, public IETThread {
 public:
 	grpc::Status GetScene(grpc::ServerContext* context, const SceneRequest* request, SceneResponse* response) override;
 
-
 	static void RunServer(uint16_t port);
 
 	void run() override;

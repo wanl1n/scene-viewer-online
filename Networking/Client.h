@@ -9,13 +9,16 @@ using grpc::Status;
 class Client
 {
 public:
-	Client(std::shared_ptr<grpc::ChannelInterface> channel, const int& sceneID);
+	Client(const int& sceneID);
 	std::vector<std::string> GetSceneModel();
 
-	static void runClient();
+	void runClient();
+	void RenderUI();
 
 private:
-	std::unique_ptr<SceneViewer::Stub> stub_;
 	int sceneID;
+
+	std::shared_ptr<grpc::Channel> channel_;
+	std::unique_ptr<SceneViewer::Stub> stub_;
 };
 

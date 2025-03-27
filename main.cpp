@@ -285,7 +285,14 @@ int main()
     server.start();
 
     // Start Client
-    Client::runClient();
+    std::vector<Client> clients;
+    clients.emplace_back(1);
+    clients.emplace_back(2);
+
+    for (auto& client : clients)
+    {
+        client.runClient();
+    }
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -485,6 +492,11 @@ int main()
         // Reset lighting to render lightModel unaffected by light
         headlights.turnOff();
         moonlight.turnOff();
+
+        for (auto& client : clients) 
+        {
+            client.RenderUI();
+        }
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

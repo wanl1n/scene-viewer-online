@@ -1,9 +1,12 @@
 #include "Client.h"
+
+#include <imgui.h>
 #include <grpcpp/create_channel.h>
 
-Client::Client(std::shared_ptr<grpc::ChannelInterface> channel, const int& sceneID)
+Client::Client(const int& sceneID)
 {
-	this->stub_ = SceneViewer::NewStub(channel);
+    this->channel_ = grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()); 
+	this->stub_ = SceneViewer::NewStub(this->channel_);
     this->sceneID = sceneID;
 }
 
@@ -37,15 +40,32 @@ std::vector<std::string> Client::GetSceneModel()
 }
 
 
+
 void Client::runClient()
 {
-    Client sceneClient(grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()), 1);
+    std::vector<std::string> modelNames = this->GetSceneModel();
 
-    std::vector<std::string> modelNames = sceneClient.GetSceneModel();
-
-    std::cout << "Client 1 received: ";
+    std::cout << "Client " << this->sceneID << " received: ";
     for (const auto& name : modelNames) {
         std::cout << name << " ";
     }
     std::cout << std::endl;
+
+}
+
+void Client::RenderUI()
+{
+    ImGui::Begin(("Client " + std::to_string(sceneID)).c_str());  
+
+    ImGui::Text("Scene ID: %d", sceneID);
+
+    std::vector<std::string> modelNames = this->GetSceneModel();
+
+    ImGui::Text("Model Names:");
+    for (const auto& name : modelNames) 
+    {
+        ImGui::BulletText("%s", name.c_str());
+    }
+
+    ImGui::End();
 }
