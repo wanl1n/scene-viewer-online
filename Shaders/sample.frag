@@ -154,6 +154,7 @@ void main() {
     if (any(lessThan(color.xyz, vec3(1.f)))) {
         if (any(greaterThan(color.xyz, vec3(0.f)))) FragColor = color;
     }
+    return FragColor;
 
     // Lit Objects (with texture)
     if (tex_exists) {

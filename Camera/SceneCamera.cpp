@@ -1,11 +1,10 @@
-#include "PerspectiveCamera.hpp"
+#include "SceneCamera.hpp"
 
 using namespace cameras;
 
 // Initialize all attributes.
-PerspectiveCamera::PerspectiveCamera(float FOV, float window_height, float window_width, float near, float far,
+SceneCamera::SceneCamera(float FOV, float window_height, float window_width, float near, float far,
 	glm::vec3 pos, glm::vec3 worldUp, glm::vec3 center)
-	: MyCamera(pos, worldUp, center)
 {
 	this->FOV = FOV;
 	this->height = window_height;
@@ -22,10 +21,49 @@ PerspectiveCamera::PerspectiveCamera(float FOV, float window_height, float windo
 		near,
 		far
 	);
+
+	this->viewMatrix = glm::mat4(1.f);
+	this->projMatrix = glm::mat4(1.f);
+
+	// ----- SceneCamera Controls ----- //
+	movingForward = false;     // W
+	movingBackward = false;    // S
+	movingLeft = false;       // A
+	movingRight = false;      // D
 }
 
-void PerspectiveCamera::calcMouseRotate(float pitch, float yaw, glm::vec3 tankPos) {
-	
+void SceneCamera::update(GLuint* shaderProgram)
+{
+	this->updateShaderViewProj(shaderProgram);
+
+	glm::vec3 moveDirection = glm::vec3(cos(glm::radians(yrot)), 0, sin(glm::radians(yrot))) * 2.0f;
+
+	if (movingForward) 
+		this->move(glm::vec3(0.f, 0.f, -speed));
+	if (movingBackward)
+		this->move(glm::vec3(0.f, 0.f, speed));
+}
+
+// Passes the attributes to the shader program.
+void SceneCamera::updateShaderViewProj(GLuint* shaderProgram) {
+	this->viewMatrix = glm::lookAt(this->pos, this->center, this->worldUp);
+
+	unsigned int viewLoc = glGetUniformLocation(*shaderProgram, "view");
+	glUniformMatrix4fv(viewLoc,
+		1,
+		GL_FALSE,
+		glm::value_ptr(this->viewMatrix)
+	);
+
+	unsigned int projLoc = glGetUniformLocation(*shaderProgram, "projection");
+	glUniformMatrix4fv(projLoc,
+		1,
+		GL_FALSE,
+		glm::value_ptr(this->projMatrix)
+	);
+}
+
+void SceneCamera::calcMouseRotate(float pitch, float yaw, glm::vec3 tankPos) {
 	// Limit angles
 	if (pitch >= 89.9f) pitch = 89.9f;
 	if (pitch <= -89.9f) pitch = -89.9f;
@@ -58,7 +96,7 @@ void PerspectiveCamera::calcMouseRotate(float pitch, float yaw, glm::vec3 tankPo
 	this->viewMatrix = glm::lookAt(this->pos, this->center, this->worldUp);
 }
 
-void PerspectiveCamera::calcKeyRotate(glm::vec3 offset) {
+void SceneCamera::calcKeyRotate(glm::vec3 offset) {
 
 	// First add the offset to the total rotation (*2 for speed).
 	this->panRotate += offset * 2.f;
@@ -96,21 +134,13 @@ void PerspectiveCamera::calcKeyRotate(glm::vec3 offset) {
 	this->viewMatrix = glm::lookAt(this->pos, this->center, this->worldUp);
 }
 
-// Rotates on the x-axis (for turning)
-void PerspectiveCamera::rotateWithTank(float yrot) {
-	this->center = this->pos - glm::vec3(cos(glm::radians(yrot)), this->center.y, sin(glm::radians(yrot))) * 50.0f;
-	this->center.x -= 10.f;
-
-}
-
 // For setting the center of the camera.
-void PerspectiveCamera::setCenter(glm::vec3 offset) {
+void SceneCamera::setCenter(glm::vec3 offset) {
 	this->center = offset * 2.0f;
-
 }
 
 // Increase or decrease the FOV to zoom in and out.
-void PerspectiveCamera::zoom(float delta) {
+void SceneCamera::zoom(float delta) {
 	this->FOV += delta;
 
 	// Limit the FOV
@@ -124,4 +154,76 @@ void PerspectiveCamera::zoom(float delta) {
 		near,
 		far
 	);
+}
+
+glm::vec3 SceneCamera::getPos() {
+	return this->pos;
+}
+
+glm::mat4 SceneCamera::getViewMatrix() {
+	return this->viewMatrix;
+}
+
+glm::mat4 SceneCamera::getProjMatrix() {
+	return this->projMatrix;
+}
+
+glm::vec3 SceneCamera::getCameraCenter() {
+	return this->center;
+}
+
+void SceneCamera::setPos(glm::vec3 pos) {
+	this->pos = pos;
+	this->viewMatrix = glm::lookAt(this->pos, this->center, this->worldUp);
+}
+
+void SceneCamera::setCenterOffset(glm::vec3 offset) {
+	this->center.x += offset.x;
+	this->center.y += offset.y;
+	this->center.z += offset.z;
+
+	this->viewMatrix = glm::lookAt(this->pos, this->center, this->worldUp);
+}
+
+void SceneCamera::move(glm::vec3 offset) {
+	this->pos += offset;
+	if (this->pos.y <= 0) this->pos.y = 0;
+}
+
+void SceneCamera::rotateTo(glm::vec3 offset)
+{
+	this->center = this->pos - glm::vec3(cos(glm::radians(offset.y)), this->center.y, sin(glm::radians(offset.y))) * 50.0f;
+	this->center.x -= 10.f;
+}
+
+bool SceneCamera::isMovingForward() {
+	return movingForward;
+}
+
+bool SceneCamera::isMovingBackward() {
+	return movingBackward;
+}
+
+bool SceneCamera::isMovingLeft() {
+	return movingLeft;
+}
+
+bool SceneCamera::isMovingRight() {
+	return movingRight;
+}
+
+void SceneCamera::setMovingForward(bool x) {
+	this->movingForward = x;
+}
+
+void SceneCamera::setMovingBackward(bool x) {
+	this->movingBackward = x;
+}
+
+void SceneCamera::setMovingLeft(bool x) {
+	this->movingLeft = x;
+}
+
+void SceneCamera::setMovingRight(bool x) {
+	this->movingRight = x;
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -124,6 +124,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,49 +136,68 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Camera\MyCamera.cpp" />
-    <ClCompile Include="Camera\OrthoCamera.cpp" />
-    <ClCompile Include="Camera\PerspectiveCamera.cpp" />
+    <ClCompile Include="Camera\SceneCamera.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="Imgui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="Light\DirectionLight.cpp" />
-    <ClCompile Include="Light\Light.cpp" />
-    <ClCompile Include="Light\PointLight.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Model\FPSCounter.cpp" />
     <ClCompile Include="Model\Model.cpp" />
-    <ClCompile Include="Model\Skybox.cpp" />
-    <ClCompile Include="Player\Player.cpp" />
+    <ClCompile Include="Model\ModelManager.cpp" />
     <ClCompile Include="Proto\model.grpc.pb.cc" />
     <ClCompile Include="Proto\model.pb.cc" />
     <ClCompile Include="Proto\scene.grpc.pb.cc" />
     <ClCompile Include="Proto\scene.pb.cc" />
     <ClCompile Include="Proto\transformtex.grpc.pb.cc" />
     <ClCompile Include="Proto\transformtex.pb.cc" />
+    <ClCompile Include="Scene\Scene.cpp" />
+    <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
+    <ClCompile Include="Threading\BusyWaitSemaphore.cpp" />
+    <ClCompile Include="Threading\HelloWorldThread.cpp" />
+    <ClCompile Include="Threading\IETSemaphore.cpp" />
+    <ClCompile Include="Threading\IETThread.cpp" />
+    <ClCompile Include="Threading\IExecutionEvent.cpp" />
+    <ClCompile Include="Threading\PoolWorkerThread.cpp" />
+    <ClCompile Include="Threading\SceneLoader.cpp" />
+    <ClCompile Include="Threading\StreamAssetLoader.cpp" />
+    <ClCompile Include="Threading\ThreadPool.cpp" />
+    <ClCompile Include="Utils\MathUtils.cpp" />
+    <ClCompile Include="Utils\StringUtils.cpp" />
+    <ClCompile Include="Viewer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera\MyCamera.hpp" />
-    <ClInclude Include="Camera\OrthoCamera.hpp" />
-    <ClInclude Include="Camera\PerspectiveCamera.hpp" />
+    <ClInclude Include="Camera\SceneCamera.hpp" />
     <ClInclude Include="Imgui\imgui_impl_glfw.h" />
     <ClInclude Include="Imgui\imgui_impl_opengl3.h" />
-    <ClInclude Include="Light\DirectionLight.hpp" />
-    <ClInclude Include="Light\Light.hpp" />
-    <ClInclude Include="Light\PointLight.hpp" />
     <ClInclude Include="MainInclude.hpp" />
+    <ClInclude Include="Model\FPSCounter.h" />
     <ClInclude Include="Model\Model.hpp" />
-    <ClInclude Include="Model\Skybox.hpp" />
-    <ClInclude Include="Player\Player.hpp" />
+    <ClInclude Include="Model\ModelManager.h" />
     <ClInclude Include="Proto\model.grpc.pb.h" />
     <ClInclude Include="Proto\model.pb.h" />
     <ClInclude Include="Proto\scene.grpc.pb.h" />
     <ClInclude Include="Proto\scene.pb.h" />
     <ClInclude Include="Proto\transformtex.grpc.pb.h" />
     <ClInclude Include="Proto\transformtex.pb.h" />
+    <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Scene\SceneManager.h" />
     <ClInclude Include="Shaders\Shader.hpp" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Threading\BusyWaitSemaphore.h" />
+    <ClInclude Include="Threading\HelloWorldThread.h" />
+    <ClInclude Include="Threading\IETSemaphore.h" />
+    <ClInclude Include="Threading\IETThread.h" />
+    <ClInclude Include="Threading\IExecutionEvent.h" />
+    <ClInclude Include="Threading\IWorkerAction.h" />
+    <ClInclude Include="Threading\PoolWorkerThread.h" />
+    <ClInclude Include="Threading\SceneLoader.h" />
+    <ClInclude Include="Threading\StreamAssetLoader.h" />
+    <ClInclude Include="Threading\ThreadPool.h" />
     <ClInclude Include="tiny_obj_loader.h" />
+    <ClInclude Include="Utils\MathUtils.h" />
+    <ClInclude Include="Utils\StringUtils.h" />
+    <ClInclude Include="Viewer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Proto\model.proto" />
