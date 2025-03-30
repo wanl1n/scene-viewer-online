@@ -221,10 +221,10 @@ int main()
                         glm::vec3(0.f, 0.f, -300.f),        //pos
                         glm::vec3(250.f),                   //scale
                         glm::vec3(0.f, 60.f, 0.f));         //rotate
-    Model tractor = Model("3D/Obstacles/Car/Tractor.obj", "3D/Obstacles/Car/TractorTex.jpg", "",
-                        glm::vec3(-100.f, 0.f, 0.f),        //pos
-                        glm::vec3(3.f),                     //scale
-                        glm::vec3(0.f, 60.f, 0.f));         //rotate
+    //Model tractor = Model("3D/Obstacles/Car/Tractor.obj", "3D/Obstacles/Car/TractorTex.jpg", "",
+    //                    glm::vec3(-100.f, 0.f, 0.f),        //pos
+    //                    glm::vec3(3.f),                     //scale
+    //                    glm::vec3(0.f, 60.f, 0.f));         //rotate
 
     // Save the Tank model to the player.
     player.setModel(&tank);
@@ -237,7 +237,7 @@ int main()
     environment.push_back(grass);
     environment.push_back(mouse);
     environment.push_back(flower);
-    environment.push_back(tractor);
+    //environment.push_back(tractor);
 
     // Creating the shader for the objects
     Shader litShader = Shader("Shaders/sample.vert", "Shaders/sample.frag");
@@ -247,7 +247,7 @@ int main()
 
     // Light Sources
     // Direction Light: From the Moon 
-    DirectionLight moonlight = DirectionLight(lightModel.getPosition(), glm::vec3(0.f), lightModel.getColor(), 0.2f);
+    DirectionLight moonlight = DirectionLight(lightModel.getPosition(), glm::vec3(0.f), lightModel.getColor(), 1.0f);
     // Spot Light: Position is at front of tank (Class name is point light but it was extended to Spot Light as a bonus)
     PointLight headlights = PointLight(glm::vec3(tank.getPosition().x, tank.getPosition().y + 50.f, tank.getPosition().z - 57.f), glm::vec3(1.f), 200.f);
 
@@ -286,13 +286,17 @@ int main()
 
     // Start Client
     std::vector<Client> clients;
-    clients.emplace_back(1);
-    clients.emplace_back(2);
+    clients.emplace_back(1); 
 
     for (auto& client : clients)
     {
         client.runClient();
     }
+
+	for (auto& client : clients) 
+	{
+	    client.RenderUI();
+	}
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -300,8 +304,6 @@ int main()
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-
-        ImGui::ShowDemoWindow();
 
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the depth buffer as well
@@ -489,14 +491,21 @@ int main()
             model.draw(litShader.getShaderProgram(), true);
         }
 
+        for (auto& client : clients) 
+        {
+            for (Model model : client.models) {
+                model.draw(litShader.getShaderProgram(), true);
+            }
+        }
+
         // Reset lighting to render lightModel unaffected by light
         headlights.turnOff();
         moonlight.turnOff();
 
-        for (auto& client : clients) 
-        {
-            client.RenderUI();
-        }
+        //for (auto& client : clients) 
+        //{
+        //    client.RenderUI();
+        //}
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

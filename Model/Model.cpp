@@ -21,6 +21,126 @@ Model::Model(std::string strObjPath, const char* pathTex, const char* pathNorm,
 	glEnable(GL_DEPTH_TEST);
 }
 
+// Constructor that accepts a string buffer
+Model::Model(std::string&& objData, const char* pathTex, const char* pathNorm, bool fromObjData)
+{
+	// Load model from string
+	std::string objDataStr = std::string(objData);
+	this->loadModelDataFromString(objDataStr);
+
+	if (pathTex != "") this->texture = loadTexture(pathTex, GL_TEXTURE0);
+	if (pathNorm != "") this->norm_tex = loadTexture(pathNorm, GL_TEXTURE1);
+
+	this->sticker_tex = 0;
+	glEnable(GL_DEPTH_TEST);
+}
+
+void Model::loadModelDataFromString(const std::string& objData)
+{
+	std::vector<tinyobj::shape_t> shape;
+	std::vector<tinyobj::material_t> material;
+	std::string warning, error;
+	tinyobj::attrib_t attributes;
+
+	std::istringstream objStream(objData);  
+	bool success = tinyobj::LoadObj(
+		&attributes,
+		&shape,
+		&material,
+		&warning,
+		&error,
+		&objStream  
+	);
+
+	if (!success)
+	{
+		std::cerr << "Error loading model: " << error << std::endl;
+		return;
+	}
+
+	std::vector<glm::vec3> tangents;
+	std::vector<glm::vec3> bitangents;
+
+	for (int i = 0; i < shape[0].mesh.indices.size(); i += 3)
+	{
+		tinyobj::index_t vData1 = shape[0].mesh.indices[i];
+		tinyobj::index_t vData2 = shape[0].mesh.indices[i + 1];
+		tinyobj::index_t vData3 = shape[0].mesh.indices[i + 2];
+
+		glm::vec3 v1 = glm::vec3(attributes.vertices[vData1.vertex_index * 3],
+			attributes.vertices[vData1.vertex_index * 3 + 1],
+			attributes.vertices[vData1.vertex_index * 3 + 2]);
+
+		glm::vec3 v2 = glm::vec3(attributes.vertices[vData2.vertex_index * 3],
+			attributes.vertices[vData2.vertex_index * 3 + 1],
+			attributes.vertices[vData2.vertex_index * 3 + 2]);
+
+		glm::vec3 v3 = glm::vec3(attributes.vertices[vData3.vertex_index * 3],
+			attributes.vertices[vData3.vertex_index * 3 + 1],
+			attributes.vertices[vData3.vertex_index * 3 + 2]);
+
+		glm::vec2 uv1 = glm::vec2(attributes.texcoords[vData1.texcoord_index * 2],
+			attributes.texcoords[vData1.texcoord_index * 2 + 1]);
+
+		glm::vec2 uv2 = glm::vec2(attributes.texcoords[vData2.texcoord_index * 2],
+			attributes.texcoords[vData2.texcoord_index * 2 + 1]);
+
+		glm::vec2 uv3 = glm::vec2(attributes.texcoords[vData3.texcoord_index * 2],
+			attributes.texcoords[vData3.texcoord_index * 2 + 1]);
+
+		glm::vec3 deltaPos1 = v2 - v1;
+		glm::vec3 deltaPos2 = v3 - v1;
+
+		glm::vec2 deltaUV1 = uv2 - uv1;
+		glm::vec2 deltaUV2 = uv3 - uv1;
+
+		float r = 1.0f / ((deltaUV1.x * deltaUV2.y) - (deltaUV1.y * deltaUV2.x));
+
+		glm::vec3 tangent = (deltaPos1 * deltaUV2.y - deltaPos2 * deltaUV1.y) * r;
+		glm::vec3 bitangent = (deltaPos2 * deltaUV1.x - deltaPos1 * deltaUV2.x) * r;
+
+		tangents.push_back(tangent);
+		tangents.push_back(tangent);
+		tangents.push_back(tangent);
+
+		bitangents.push_back(bitangent);
+		bitangents.push_back(bitangent);
+		bitangents.push_back(bitangent);
+	}
+
+	for (int i = 0; i < shape[0].mesh.indices.size(); i++)
+	{
+		tinyobj::index_t vData = shape[0].mesh.indices[i];
+
+		fullVertexData.push_back(attributes.vertices[vData.vertex_index * 3]);
+		fullVertexData.push_back(attributes.vertices[vData.vertex_index * 3 + 1]);
+		fullVertexData.push_back(attributes.vertices[vData.vertex_index * 3 + 2]);
+
+		fullVertexData.push_back(attributes.normals[vData.normal_index * 3]);
+		fullVertexData.push_back(attributes.normals[vData.normal_index * 3 + 1]);
+		fullVertexData.push_back(attributes.normals[vData.normal_index * 3 + 2]);
+
+		fullVertexData.push_back(attributes.texcoords[vData.texcoord_index * 2]);
+		fullVertexData.push_back(attributes.texcoords[vData.texcoord_index * 2 + 1]);
+
+		fullVertexData.push_back(tangents[i].x);
+		fullVertexData.push_back(tangents[i].y);
+		fullVertexData.push_back(tangents[i].z);
+
+		fullVertexData.push_back(bitangents[i].x);
+		fullVertexData.push_back(bitangents[i].y);
+		fullVertexData.push_back(bitangents[i].z);
+	}
+
+	attribSize = 5;
+	if (!attributes.normals.empty())
+	{
+		attribSize += 3;
+	}
+
+	generateBuffers();
+}
+
 
 // Loads the model data through the accepted path.
 void Model::loadModelData(std::string path) {
@@ -306,6 +426,11 @@ void Model::setPosition(glm::vec3 pos) {
 
 void Model::setColor(glm::vec4 color) {
 	this->color = color;
+}
+
+void Model::setScale(glm::vec3 scale)
+{
+	this->scale = scale;
 }
 
 void Model::setRotation(glm::vec3 rotate) {

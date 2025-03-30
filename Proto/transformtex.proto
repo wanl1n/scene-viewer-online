@@ -2,7 +2,7 @@ syntax = "proto3";
 
 // The service providing transformtex data.
 service TransformTexSync {
-  rpc GetModel (TransformTexRequest) returns (TransformTexResponse) {}
+  rpc GetTransformTex (TransformTexRequest) returns (TransformTexResponse) {}
 }
 
 // The request message asking for the model data.

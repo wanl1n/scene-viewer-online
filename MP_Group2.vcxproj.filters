@@ -25,6 +25,9 @@
     <Filter Include="Thread">
       <UniqueIdentifier>{e66d3cd2-f2c8-4d00-9687-4452cbb977b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{e807653a-75e3-4db8-9c0f-0253f4a8ef9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -63,24 +66,6 @@
     <ClCompile Include="Player\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Proto\model.grpc.pb.cc">
-      <Filter>Proto</Filter>
-    </ClCompile>
-    <ClCompile Include="Proto\model.pb.cc">
-      <Filter>Proto</Filter>
-    </ClCompile>
-    <ClCompile Include="Proto\transformtex.grpc.pb.cc">
-      <Filter>Proto</Filter>
-    </ClCompile>
-    <ClCompile Include="Proto\transformtex.pb.cc">
-      <Filter>Proto</Filter>
-    </ClCompile>
-    <ClCompile Include="Proto\scene.grpc.pb.cc">
-      <Filter>Proto</Filter>
-    </ClCompile>
-    <ClCompile Include="Proto\scene.pb.cc">
-      <Filter>Proto</Filter>
-    </ClCompile>
     <ClCompile Include="Imgui\imgui_impl_glfw.cpp">
       <Filter>Resource Files\imgui</Filter>
     </ClCompile>
@@ -104,6 +89,24 @@
     </ClCompile>
     <ClCompile Include="Networking\Client.cpp">
       <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Proto\model.grpc.pb.cc">
+      <Filter>Proto</Filter>
+    </ClCompile>
+    <ClCompile Include="Proto\model.pb.cc">
+      <Filter>Proto</Filter>
+    </ClCompile>
+    <ClCompile Include="Proto\scene.grpc.pb.cc">
+      <Filter>Proto</Filter>
+    </ClCompile>
+    <ClCompile Include="Proto\scene.pb.cc">
+      <Filter>Proto</Filter>
+    </ClCompile>
+    <ClCompile Include="Proto\transformtex.grpc.pb.cc">
+      <Filter>Proto</Filter>
+    </ClCompile>
+    <ClCompile Include="Proto\transformtex.pb.cc">
+      <Filter>Proto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -146,24 +149,6 @@
     <ClInclude Include="Player\Player.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Proto\model.grpc.pb.h">
-      <Filter>Proto</Filter>
-    </ClInclude>
-    <ClInclude Include="Proto\model.pb.h">
-      <Filter>Proto</Filter>
-    </ClInclude>
-    <ClInclude Include="Proto\transformtex.grpc.pb.h">
-      <Filter>Proto</Filter>
-    </ClInclude>
-    <ClInclude Include="Proto\transformtex.pb.h">
-      <Filter>Proto</Filter>
-    </ClInclude>
-    <ClInclude Include="Proto\scene.grpc.pb.h">
-      <Filter>Proto</Filter>
-    </ClInclude>
-    <ClInclude Include="Proto\scene.pb.h">
-      <Filter>Proto</Filter>
-    </ClInclude>
     <ClInclude Include="Imgui\imgui_impl_glfw.h">
       <Filter>Resource Files\imgui</Filter>
     </ClInclude>
@@ -197,6 +182,24 @@
     <ClInclude Include="Networking\Client.h">
       <Filter>Networking</Filter>
     </ClInclude>
+    <ClInclude Include="Proto\model.grpc.pb.h">
+      <Filter>Proto</Filter>
+    </ClInclude>
+    <ClInclude Include="Proto\model.pb.h">
+      <Filter>Proto</Filter>
+    </ClInclude>
+    <ClInclude Include="Proto\scene.grpc.pb.h">
+      <Filter>Proto</Filter>
+    </ClInclude>
+    <ClInclude Include="Proto\scene.pb.h">
+      <Filter>Proto</Filter>
+    </ClInclude>
+    <ClInclude Include="Proto\transformtex.grpc.pb.h">
+      <Filter>Proto</Filter>
+    </ClInclude>
+    <ClInclude Include="Proto\transformtex.pb.h">
+      <Filter>Proto</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Proto\proto_compile.sh">
@@ -210,6 +213,18 @@
     </None>
     <None Include="Proto\transformtex.proto">
       <Filter>Proto</Filter>
+    </None>
+    <None Include="Shaders\sample.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\sample.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\skybox.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\skybox.vert">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
