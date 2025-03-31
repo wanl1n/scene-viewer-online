@@ -144,15 +144,16 @@ const char descriptor_table_protodef_transformtex_2eproto[] ABSL_ATTRIBUTE_SECTI
     "osZ\030\003 \001(\002\022\r\n\005pitch\030\004 \001(\002\022\013\n\003yaw\030\005 \001(\002\022\014\n"
     "\004roll\030\006 \001(\002\022\016\n\006scaleX\030\007 \001(\002\022\016\n\006scaleY\030\010 "
     "\001(\002\022\016\n\006scaleZ\030\t \001(\002\022\020\n\010texWidth\030\n \001(\005\022\021\n"
-    "\ttexHeight\030\013 \001(\005\022\017\n\007texture\030\014 \001(\0142M\n\020Tra"
-    "nsformTexSync\0229\n\010GetModel\022\024.TransformTex"
-    "Request\032\025.TransformTexResponse\"\000b\006proto3"
+    "\ttexHeight\030\013 \001(\005\022\017\n\007texture\030\014 \001(\0142T\n\020Tra"
+    "nsformTexSync\022@\n\017GetTransformTex\022\024.Trans"
+    "formTexRequest\032\025.TransformTexResponse\"\000b"
+    "\006proto3"
 };
 static ::absl::once_flag descriptor_table_transformtex_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_transformtex_2eproto = {
     false,
     false,
-    360,
+    367,
     descriptor_table_protodef_transformtex_2eproto,
     "transformtex.proto",
     &descriptor_table_transformtex_2eproto_once,

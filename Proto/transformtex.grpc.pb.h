@@ -35,41 +35,41 @@ class TransformTexSync final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    virtual ::grpc::Status GetModel(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::TransformTexResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>> AsyncGetModel(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>>(AsyncGetModelRaw(context, request, cq));
+    virtual ::grpc::Status GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::TransformTexResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>> AsyncGetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>>(AsyncGetTransformTexRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>> PrepareAsyncGetModel(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>>(PrepareAsyncGetModelRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>> PrepareAsyncGetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>>(PrepareAsyncGetTransformTexRaw(context, request, cq));
     }
     class async_interface {
      public:
       virtual ~async_interface() {}
-      virtual void GetModel(::grpc::ClientContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetModel(::grpc::ClientContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
    private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>* AsyncGetModelRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>* PrepareAsyncGetModelRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>* AsyncGetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>* PrepareAsyncGetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
-    ::grpc::Status GetModel(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::TransformTexResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>> AsyncGetModel(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>>(AsyncGetModelRaw(context, request, cq));
+    ::grpc::Status GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::TransformTexResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>> AsyncGetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>>(AsyncGetTransformTexRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>> PrepareAsyncGetModel(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>>(PrepareAsyncGetModelRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>> PrepareAsyncGetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>>(PrepareAsyncGetTransformTexRaw(context, request, cq));
     }
     class async final :
       public StubInterface::async_interface {
      public:
-      void GetModel(::grpc::ClientContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response, std::function<void(::grpc::Status)>) override;
-      void GetModel(::grpc::ClientContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response, std::function<void(::grpc::Status)>) override;
+      void GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -81,9 +81,9 @@ class TransformTexSync final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class async async_stub_{this};
-    ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>* AsyncGetModelRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>* PrepareAsyncGetModelRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) override;
-    const ::grpc::internal::RpcMethod rpcmethod_GetModel_;
+    ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>* AsyncGetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>* PrepareAsyncGetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) override;
+    const ::grpc::internal::RpcMethod rpcmethod_GetTransformTex_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -91,147 +91,147 @@ class TransformTexSync final {
    public:
     Service();
     virtual ~Service();
-    virtual ::grpc::Status GetModel(::grpc::ServerContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response);
+    virtual ::grpc::Status GetTransformTex(::grpc::ServerContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response);
   };
   template <class BaseClass>
-  class WithAsyncMethod_GetModel : public BaseClass {
+  class WithAsyncMethod_GetTransformTex : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_GetModel() {
+    WithAsyncMethod_GetTransformTex() {
       ::grpc::Service::MarkMethodAsync(0);
     }
-    ~WithAsyncMethod_GetModel() override {
+    ~WithAsyncMethod_GetTransformTex() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
+    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetModel(::grpc::ServerContext* context, ::TransformTexRequest* request, ::grpc::ServerAsyncResponseWriter< ::TransformTexResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestGetTransformTex(::grpc::ServerContext* context, ::TransformTexRequest* request, ::grpc::ServerAsyncResponseWriter< ::TransformTexResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_GetModel<Service > AsyncService;
+  typedef WithAsyncMethod_GetTransformTex<Service > AsyncService;
   template <class BaseClass>
-  class WithCallbackMethod_GetModel : public BaseClass {
+  class WithCallbackMethod_GetTransformTex : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_GetModel() {
+    WithCallbackMethod_GetTransformTex() {
       ::grpc::Service::MarkMethodCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::TransformTexRequest, ::TransformTexResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response) { return this->GetModel(context, request, response); }));}
-    void SetMessageAllocatorFor_GetModel(
+                   ::grpc::CallbackServerContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response) { return this->GetTransformTex(context, request, response); }));}
+    void SetMessageAllocatorFor_GetTransformTex(
         ::grpc::MessageAllocator< ::TransformTexRequest, ::TransformTexResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::TransformTexRequest, ::TransformTexResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_GetModel() override {
+    ~WithCallbackMethod_GetTransformTex() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
+    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* GetModel(
+    virtual ::grpc::ServerUnaryReactor* GetTransformTex(
       ::grpc::CallbackServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_GetModel<Service > CallbackService;
+  typedef WithCallbackMethod_GetTransformTex<Service > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
-  class WithGenericMethod_GetModel : public BaseClass {
+  class WithGenericMethod_GetTransformTex : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_GetModel() {
+    WithGenericMethod_GetTransformTex() {
       ::grpc::Service::MarkMethodGeneric(0);
     }
-    ~WithGenericMethod_GetModel() override {
+    ~WithGenericMethod_GetTransformTex() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
+    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithRawMethod_GetModel : public BaseClass {
+  class WithRawMethod_GetTransformTex : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_GetModel() {
+    WithRawMethod_GetTransformTex() {
       ::grpc::Service::MarkMethodRaw(0);
     }
-    ~WithRawMethod_GetModel() override {
+    ~WithRawMethod_GetTransformTex() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
+    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetModel(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestGetTransformTex(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_GetModel : public BaseClass {
+  class WithRawCallbackMethod_GetTransformTex : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_GetModel() {
+    WithRawCallbackMethod_GetTransformTex() {
       ::grpc::Service::MarkMethodRawCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetModel(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetTransformTex(context, request, response); }));
     }
-    ~WithRawCallbackMethod_GetModel() override {
+    ~WithRawCallbackMethod_GetTransformTex() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
+    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* GetModel(
+    virtual ::grpc::ServerUnaryReactor* GetTransformTex(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_GetModel : public BaseClass {
+  class WithStreamedUnaryMethod_GetTransformTex : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_GetModel() {
+    WithStreamedUnaryMethod_GetTransformTex() {
       ::grpc::Service::MarkMethodStreamed(0,
         new ::grpc::internal::StreamedUnaryHandler<
           ::TransformTexRequest, ::TransformTexResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
                      ::TransformTexRequest, ::TransformTexResponse>* streamer) {
-                       return this->StreamedGetModel(context,
+                       return this->StreamedGetTransformTex(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_GetModel() override {
+    ~WithStreamedUnaryMethod_GetTransformTex() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
+    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedGetModel(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::TransformTexRequest,::TransformTexResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedGetTransformTex(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::TransformTexRequest,::TransformTexResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetModel<Service > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_GetTransformTex<Service > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetModel<Service > StreamedService;
+  typedef WithStreamedUnaryMethod_GetTransformTex<Service > StreamedService;
 };
 
 

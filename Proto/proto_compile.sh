@@ -6,8 +6,8 @@ PROTOC_DIR="C:/Users/asus/Coding/vcpkg/installed/x64-windows/tools/protobuf"
 GRPC_CPP_EXE="C:/Users/asus/Coding/vcpkg/installed/x64-windows/tools/grpc/grpc_cpp_plugin.exe"
 
 #where your .proto files are
-SRC_DIR="C:/Users/asus/Coding/GDPARCM/QUE-GDPARCM/scene-viewer-online/Proto/"
-DST_DIR="C:/Users/asus/Coding/GDPARCM/QUE-GDPARCM/scene-viewer-online/Proto/"
+SRC_DIR="C:/Users/asus/Coding/GDPARCM/scene-viewer-online/Proto/"
+DST_DIR="C:/Users/asus/Coding/GDPARCM/scene-viewer-online/Proto/"
 
 echo "Src Directory: $SRC_DIR"
 echo "Dst Directory: $DST_DIR"
