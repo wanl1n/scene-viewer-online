@@ -146,7 +146,9 @@
     <ClCompile Include="Light\Light.cpp" />
     <ClCompile Include="Light\PointLight.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Model\FPSCounter.cpp" />
     <ClCompile Include="Model\Model.cpp" />
+    <ClCompile Include="Model\ModelManager.cpp" />
     <ClCompile Include="Model\Skybox.cpp" />
     <ClCompile Include="Networking\Client.cpp" />
     <ClCompile Include="Networking\Server.cpp" />
@@ -157,6 +159,8 @@
     <ClCompile Include="Proto\scene.pb.cc" />
     <ClCompile Include="Proto\transformtex.grpc.pb.cc" />
     <ClCompile Include="Proto\transformtex.pb.cc" />
+    <ClCompile Include="Scene\Scene.cpp" />
+    <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
     <ClCompile Include="Thread\IETSemaphore.cpp" />
     <ClCompile Include="Thread\IETThread.cpp" />
@@ -173,7 +177,9 @@
     <ClInclude Include="Light\Light.hpp" />
     <ClInclude Include="Light\PointLight.hpp" />
     <ClInclude Include="MainInclude.hpp" />
+    <ClInclude Include="Model\FPSCounter.h" />
     <ClInclude Include="Model\Model.hpp" />
+    <ClInclude Include="Model\ModelManager.h" />
     <ClInclude Include="Model\Skybox.hpp" />
     <ClInclude Include="Networking\Client.h" />
     <ClInclude Include="Networking\Server.h" />
@@ -184,6 +190,8 @@
     <ClInclude Include="Proto\scene.pb.h" />
     <ClInclude Include="Proto\transformtex.grpc.pb.h" />
     <ClInclude Include="Proto\transformtex.pb.h" />
+    <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Scene\SceneManager.h" />
     <ClInclude Include="Shaders\Shader.hpp" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Thread\IETSemaphore.h" />

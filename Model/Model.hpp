@@ -26,9 +26,12 @@ namespace models {
 
 			GLuint sticker_tex;
 
+			bool active = false;
+			std::string name;
+
 		// Constructors
 		public:
-			Model(std::string strObjPath, const char* pathTex, const char* pathNorm,
+			Model(std::string strObjPath, const char* pathTex, const char* pathNorm, std::string name,
 				glm::vec3 pos = glm::vec3(0.f), 
 				glm::vec3 scale = glm::vec3(1.f), 
 				glm::vec3 rotate = glm::vec3(0.f), 
@@ -50,6 +53,8 @@ namespace models {
 			glm::vec3 getColor();
 			glm::vec3 getRotation();
 
+			std::string getName() { return this->name; }
+
 			void setPosition(glm::vec3 pos);
 			void move(glm::vec3 offset);
 			void setColor(glm::vec4 color);
@@ -57,6 +62,10 @@ namespace models {
 			void setRotation(glm::vec3 rotate);
 			void rotateBy(glm::vec3 offset);
 
+			bool isActive() { return this->active; }
+			void setActive(bool active) { this->active = active; }
+
+			void update(float deltaTime);
 			void draw(GLuint* shaderProgram, bool texExists);
 
 	};

@@ -1,0 +1,65 @@
+#include "SceneManager.h"
+
+#include <iostream>
+
+#include "../Threading/SceneLoader.h"
+
+//a singleton class
+SceneManager* SceneManager::sharedInstance = nullptr;
+
+SceneManager* SceneManager::getInstance() {
+	if (sharedInstance == nullptr) {
+		//initialize
+		sharedInstance = new SceneManager();
+	}
+
+	return sharedInstance;
+}
+
+void SceneManager::initialize()
+{
+	this->threadPool = new ThreadPool("Scene Manager Thread Pool", 1);
+	this->threadPool->startScheduler();
+
+	for (int i = 0; i < 1; i++) {
+		Scene* scene = new Scene(i);
+		scene->initializeDisplay();
+		this->addScene(scene);
+	}
+	this->currentScene = scenes[0];
+	this->loadScene(0);
+
+	std::cout << "Scene Manager Initialized." << std::endl;
+}
+
+void SceneManager::addScene(Scene* scene)
+{
+	this->scenes.push_back(scene);
+}
+
+void SceneManager::loadScene(int sceneID)
+{
+	this->currentScene->unloadScene();
+	this->currentScene = this->scenes[sceneID];
+	this->currentScene->loadScene();
+}
+
+void SceneManager::processInput()
+{
+	this->currentScene->processInput();
+}
+
+void SceneManager::update(float deltaTime)
+{
+	this->currentScene->update(deltaTime);
+}
+
+bool SceneManager::loadingProgress()
+{
+	//std::cout << "Scene Manager loading progress " << this->SceneMap[Scene::game]->loadingProgress() << std::endl;
+	return 0;
+}
+
+SceneManager::SceneManager()
+{
+}

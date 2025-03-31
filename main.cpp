@@ -125,18 +125,18 @@ int main()
 
     // Loading the objects
     // Main Tank Model
-    Model tank = Model("3D/Tank/M1A1.obj", "3D/Tank/TankTex.png", "3D/Tank/TankNorm.png",
+    Model tank = Model("3D/Tank/M1A1.obj", "3D/Tank/TankTex.png", "3D/Tank/TankNorm.png", "Tank",
                         glm::vec3(0.f, 0.f, 0.f),           // pos
                         glm::vec3(0.25f),                   // scale
                         glm::vec3(0.f, 180.f, 0.f));          // rotate
     // Moon / Direction Light model
-    Model lightModel = Model("3D/Moon.obj", "", "",
+    Model lightModel = Model("3D/Moon.obj", "", "", "Moon",
                             glm::vec3(-100.f, 1000.f, -30.f), // pos
                             glm::vec3(10.f),                // scale
                             glm::vec3(0.f),                 // rotate
                             glm::vec4(238.f / 255.f, 228.f / 255.f, 170.f / 255.f, 1.f)); // color
     // Environment
-    Model ground = Model("3D/Ground/Ground.obj", "3D/Ground/AddWater_basecolor.png", "3D/Ground/AddWater_normal.png",
+	Model ground = Model("3D/Ground/Ground.obj", "3D/Ground/AddWater_basecolor.png", "3D/Ground/AddWater_normal.png", "Ground",
                         glm::vec3(0.f, 0.f, 0.f),           //pos
                         glm::vec3(100.f),                     //scale
                         glm::vec3(0.f, 0.f, 0.f));         //rotate
@@ -145,15 +145,15 @@ int main()
     //                    glm::vec3(-150.f, 0.f, -200.f),     //pos
     //                    glm::vec3(0.03f),                   //scale
     //                    glm::vec3(0.f, 60.f, 0.f));         //rotate
-    Model grass = Model("3D/Obstacles/Grass/Grass.obj", "3D/Obstacles/Grass/GrassTex.png", "",
+	Model grass = Model("3D/Obstacles/Grass/Grass.obj", "3D/Obstacles/Grass/GrassTex.png", "", "Grass",
                         glm::vec3(-250.f, 0.f, -400.f),      //pos
                         glm::vec3(0.2f),                    //scale
                         glm::vec3(0.f, 60.f, 0.f));         //rotate
-    Model mouse = Model("3D/Obstacles/Mouse/Mouse.obj", "3D/Obstacles/Mouse/MouseTex.png", "",
+	Model mouse = Model("3D/Obstacles/Mouse/Mouse.obj", "3D/Obstacles/Mouse/MouseTex.png", "", "Mouse",
                         glm::vec3(0.f, 0.f, -550.f),        //pos
                         glm::vec3(10000.f),                 //scale
                         glm::vec3(0.f, 60.f, 0.f));         //rotate
-    Model flower = Model("3D/Obstacles/Flowers/Flower.obj", "3D/Obstacles/Flowers/FlowerTexA.png", "",
+	Model flower = Model("3D/Obstacles/Flowers/Flower.obj", "3D/Obstacles/Flowers/FlowerTexA.png", "", "Flower",
                         glm::vec3(0.f, 0.f, -300.f),        //pos
                         glm::vec3(250.f),                   //scale
                         glm::vec3(0.f, 60.f, 0.f));         //rotate

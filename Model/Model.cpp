@@ -3,7 +3,7 @@
 using namespace models;
 
 // Initialize all the attributes of model
-Model::Model(std::string strObjPath, const char* pathTex, const char* pathNorm,
+Model::Model(std::string strObjPath, const char* pathTex, const char* pathNorm, std::string name,
 	glm::vec3 pos, glm::vec3 scale, glm::vec3 rotate, glm::vec4 color)
 	: pos(pos), scale(scale), rotate(rotate), color(color)
 {
@@ -475,6 +475,10 @@ void Model::setRotation(glm::vec3 rotate) {
 
 void Model::rotateBy(glm::vec3 offset) {
 	this->rotate += offset;
+}
+
+void Model::update(float deltaTime)
+{
 }
 
 // The draw function sets the uniforms and draws the object.
