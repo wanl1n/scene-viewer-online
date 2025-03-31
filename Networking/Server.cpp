@@ -8,6 +8,8 @@
 
 #include <filesystem>
 #include <fstream>
+#include "../tiny_obj_loader.h"
+#include "../stb_image.h"
 
 grpc::Status Server::GetScene(grpc::ServerContext* context, const SceneRequest* request, SceneResponse* response)
 {
@@ -79,20 +81,25 @@ grpc::Status Server::GetTransformTex(grpc::ServerContext* context, const Transfo
 
 	if (modelName == "S1M1")
 	{
-		response->set_posx(0);
-		response->set_posy(0);
-		response->set_posz(0);
+		response->set_posx(-100.0f);
+		response->set_posy(0.0f);
+		response->set_posz(0.0f);
 
-		response->set_pitch(0);
-		response->set_yaw(0);
-		response->set_roll(0);
+		response->set_pitch(0.0f);
+		response->set_yaw(60.0f);
+		response->set_roll(0.0f);
 
-		response->set_scalex(1);
-		response->set_scaley(1);
-		response->set_scalez(1);
+		response->set_scalex(3.0f);
+		response->set_scaley(3.0f);
+		response->set_scalez(3.0f);
 
-		response->set_texwidth(100);
-		response->set_texheight(100);
+		std::string texturePath = "./3D/Obstacles/Car/TractorTex.jpg";
+		int texWidth, texHeight;
+		std::vector<uint8_t> textureData = readTextureFromFile(texturePath, texWidth, texHeight);
+
+		response->set_texwidth(texWidth);
+		response->set_texheight(texHeight);
+		response->set_texture(reinterpret_cast<const char*>(textureData.data()), textureData.size());
 	}
 	else
 	{
@@ -111,6 +118,8 @@ void Server::RunServer(uint16_t port)
 	grpc::reflection::InitProtoReflectionServerBuilderPlugin();
 	grpc::ServerBuilder builder;
 
+	builder.SetMaxReceiveMessageSize(64 * 1024 * 1024);
+
 	// Listen on the given address without any authentication mechanism.
 	builder.AddListeningPort(serverAddress, grpc::InsecureServerCredentials());
 
@@ -118,6 +127,7 @@ void Server::RunServer(uint16_t port)
 	// clients. In this case it corresponds to an *synchronous* service.
 	builder.RegisterService(static_cast<SceneViewer::Service*>(&service));
 	builder.RegisterService(static_cast<ModelLoader::Service*>(&service));
+	builder.RegisterService(static_cast<TransformTexSync::Service*>(&service));
 
 	// Finally assemble the server.
 	std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
@@ -128,8 +138,30 @@ void Server::RunServer(uint16_t port)
 	server->Wait();
 }
 
+
 void Server::run()
 {
 	RunServer(50051);
+}
+
+std::vector<uint8_t> Server::readTextureFromFile(const std::string& path, int& width, int& height)
+{
+	int channels;
+
+	unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+
+	if (!data)
+	{
+		std::cerr << "Failed to load texture: " << path << std::endl;
+		return {};
+	}
+
+	size_t dataSize = width * height * channels;
+
+	std::vector<uint8_t> textureData(data, data + dataSize);
+
+	stbi_image_free(data);
+
+	return textureData;
 }
 

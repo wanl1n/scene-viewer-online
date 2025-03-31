@@ -28,4 +28,7 @@ public:
 
 	void run() override;
 
+private:
+	std::vector<uint8_t> readTextureFromFile(const std::string& path, int& width, int& height);
+
 };

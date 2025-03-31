@@ -293,11 +293,6 @@ int main()
         client.runClient();
     }
 
-	for (auto& client : clients) 
-	{
-	    client.RenderUI();
-	}
-
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -493,7 +488,8 @@ int main()
 
         for (auto& client : clients) 
         {
-            for (Model model : client.models) {
+            for (Model model : client.getModels()) 
+            {
                 model.draw(litShader.getShaderProgram(), true);
             }
         }
@@ -502,10 +498,10 @@ int main()
         headlights.turnOff();
         moonlight.turnOff();
 
-        //for (auto& client : clients) 
-        //{
-        //    client.RenderUI();
-        //}
+        for (auto& client : clients) 
+        {
+            client.RenderUI();
+        }
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

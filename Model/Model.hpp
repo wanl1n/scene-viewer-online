@@ -33,11 +33,14 @@ namespace models {
 				glm::vec3 scale = glm::vec3(1.f), 
 				glm::vec3 rotate = glm::vec3(0.f), 
 				glm::vec4 color = glm::vec4(0.f));
-			Model(std::string&& objData, const char* pathTex, const char* pathNorm, bool fromObjData);
+			Model(std::string&& objData, const std::vector<uint8_t>& texData, int texWidth, int texHeight);
 
 			void loadModelData(std::string path);
 			void loadModelDataFromString(const std::string& objData);
+
 			GLuint loadTexture(const char* path, GLuint texture_ind);
+			GLuint loadTextureFromData(const std::vector<uint8_t>& data, int width, int height, GLenum textureUnit);
+
 			void loadSticker();
 			void generateBuffers();
 

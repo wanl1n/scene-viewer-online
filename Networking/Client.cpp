@@ -8,16 +8,20 @@
 
 Client::Client(const int& sceneID)
 {
-    this->channel_ = grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials());
+    grpc::ChannelArguments channel_args;
+    channel_args.SetMaxReceiveMessageSize(64 * 1024 * 1024);  
+
+    this->channel_ = grpc::CreateCustomChannel("localhost:50051", grpc::InsecureChannelCredentials(), channel_args);
 
     this->stub_ = SceneViewer::NewStub(this->channel_);
     this->modelStub_ = ModelLoader::NewStub(this->channel_);
-
+    this->transformStub_ = TransformTexSync::NewStub(this->channel_);
 
     this->sceneID = sceneID;
 }
 
-std::unordered_map<std::string, std::string> Client::GetSceneModels()
+
+std::unordered_map<std::string, ModelData> Client::GetSceneModels()
 {
     SceneRequest request;
     request.set_sceneid(sceneID);
@@ -32,7 +36,7 @@ std::unordered_map<std::string, std::string> Client::GetSceneModels()
 
     if (status.ok())
     {
-        std::unordered_map<std::string, std::string> modelDataMap;
+        std::unordered_map<std::string, ModelData> modelDataMap;
         for (int i = 0; i < reply.modelnames_size(); ++i)
         {
             std::string modelName = reply.modelnames(i);
@@ -44,55 +48,90 @@ std::unordered_map<std::string, std::string> Client::GetSceneModels()
 
             grpc::Status modelStatus = modelStub_->GetModel(&modelContext, modelRequest, &modelReply);
 
-        	if (modelStatus.ok())
+            if (modelStatus.ok())
             {
+                ModelData modelData;
+                modelData.modelData = modelReply.modeldata();
 
-                modelDataMap[modelName] = modelReply.modeldata();
+                TransformTexRequest transformRequest;
+                transformRequest.set_modelname(modelName);
+                TransformTexResponse transformReply;
+                grpc::ClientContext transformContext;
+
+                grpc::Status transformStatus = transformStub_->GetTransformTex(&transformContext, transformRequest, &transformReply);
+
+                if (transformStatus.ok())
+                {
+                    modelData.position = glm::vec3(transformReply.posx(), transformReply.posy(), transformReply.posz());
+                    modelData.rotation = glm::vec3(transformReply.pitch(), transformReply.yaw(), transformReply.roll());
+                    modelData.scale = glm::vec3(transformReply.scalex(), transformReply.scaley(), transformReply.scalez());
+
+                    std::string textureStr = transformReply.texture();  
+                    modelData.texSize = glm::vec2(transformReply.texwidth(), transformReply.texheight());
+                    modelData.textureData = std::vector<uint8_t>(textureStr.begin(), textureStr.end());
+                }
+                else
+                {
+                    std::cout << transformStatus.error_code() << ": " << transformStatus.error_message() << std::endl;
+                }
+
+                modelDataMap[modelName] = modelData;
             }
-
-        	else
+            else
             {
                 std::cout << modelStatus.error_code() << ": " << modelStatus.error_message() << std::endl;
             }
         }
         return modelDataMap;
     }
-
     else
     {
         std::cout << status.error_code() << ": " << status.error_message() << std::endl;
         return {};
     }
-
 }
+
 
 void Client::runClient()
 {
-    std::unordered_map<std::string, std::string> modelDataMap = this->GetSceneModels();
+    this->modelDataMap_ = this->GetSceneModels();
 
-    std::cout << "Client " << this->sceneID << " received: ";
-    for (const auto& [name, data] : modelDataMap) 
+    if (!this->modelDataMap_.empty())
     {
-        std::cout << name << " ";
+        for (const auto& [name, data] : this->modelDataMap_)
+        {
+            models::Model model(std::move(std::string(data.modelData)), data.textureData, data.texSize.x, data.texSize.y);
+
+            model.setPosition(data.position);
+            model.setRotation(data.rotation);
+            model.setScale(data.scale);
+
+            this->models_.push_back(model);
+        }
     }
-    std::cout << std::endl;
 }
 
 void Client::RenderUI()
 {
-    std::unordered_map<std::string, std::string> modelDataMap = this->GetSceneModels();
+    ImGui::Begin(("Client " + std::to_string(sceneID)).c_str());
 
-    if (!modelDataMap.empty())
+    ImGui::Text("Scene ID: %d", sceneID);
+
+    ImGui::Text("Model Names:");
+    for (const auto& [name, modelData] : this->modelDataMap_)
     {
-        auto it = modelDataMap.begin();  
-        const std::string& name = it->first;
-        const std::string& data = it->second;
-
-        models::Model tractor(std::move(std::string(data)), "", "", true);
-        tractor.setPosition(glm::vec3(-100.f, 0.f, 0.f));
-        tractor.setScale(glm::vec3(3.0f));
-        tractor.setRotation(glm::vec3(0.f, 60.f, 0.f));
-
-        models.push_back(tractor);
+        ImGui::BulletText("%s", name.c_str());
     }
+
+    ImGui::End();
+}
+
+std::vector<models::Model> Client::getModels()
+{
+    return this->models_;
+}
+
+std::unordered_map<std::string, ModelData> Client::getModelDataMap()
+{
+    return this->modelDataMap_;
 }
