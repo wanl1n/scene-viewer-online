@@ -18,6 +18,8 @@ namespace cameras {
 			glm::vec3 panRotate;
 			glm::vec3 panCenter;
 
+			float speed = 0.01f;
+
 		// Constructors
 		public:
 			PerspectiveCamera(float FOV, float window_height, float window_width, float near, float far,
@@ -26,10 +28,13 @@ namespace cameras {
 			// Behavior
 		public:
 			void calcMouseRotate(float pitch, float yaw, glm::vec3 tankPos);
-			void calcKeyRotate(glm::vec3 offset);
-			void rotateWithTank(float yrot);
 			void setCenter(glm::vec3 offset);
 			void zoom(float delta);
+
+			void moveLeft();
+			void moveRight();
+			void moveForward();
+			void moveBackward();
 	};
 }
 

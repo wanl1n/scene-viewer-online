@@ -38,8 +38,8 @@ using namespace shaders;
 using namespace players;
 
 // Global Variables
-float width = 1920.f;
-float height = 1080.f;
+float width = 600.f;
+float height = 600.f;
 float speed = 1.5f;
 
 // Player contains the states of the player tank.
@@ -57,98 +57,38 @@ double prev_ypos = height / 2;
 
 // Keyboard Input Function -- Updates the Player object states.
 void Key_Callback(GLFWwindow* window, int key, int scancode, int action, int mod) {
-
-    // Switching Camera Controls
-    if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
-        // If player was driving tank, switch to Binoculars view.
-        if (player.isDrivingTank()) {
-            player.setDrivingTank(false); 
-            player.setUsingBinoculars(true);
-            player.setResettingView(true);
-            std::cout << "Switched to Binoculars view." << std::endl; 
-        }
-        // If player was using binoculars or birds eye view, switch to driving tank view.
-        else if (player.isUsingBinoculars() || player.isUsingDrone()) { 
-            player.setDrivingTank(true);
-            player.setUsingBinoculars(false);
-            player.setUsingDrone(false);
-            std::cout << "Switched to third person view." << std::endl; 
-        }
-    }
-    if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
-        // Switch to Birds-eye View / Orthographic Top View.
-        player.setUsingDrone(true);
-        player.setDrivingTank(false);
-        player.setUsingBinoculars(false);
-        std::cout << "Switched to Bird's eye view." << std::endl; 
-    }
-
     // Movement Controls
     if (key == GLFW_KEY_W && action == GLFW_PRESS) {
         // Depending on what view is being used, set true forward/up.
         if (player.isDrivingTank()) player.setMovingForward(true);
-        else if (player.isUsingBinoculars()) player.setLookingUp(true);
-        else if (player.isUsingDrone()) player.setDroningForward(true);
     }
     if (key == GLFW_KEY_S && action == GLFW_PRESS) {
         // Depending on what view is being used, set true backward/down.
         if (player.isDrivingTank()) player.setMovingBackward(true);
-        else if (player.isUsingBinoculars()) player.setLookingDown(true);
-        else if (player.isUsingDrone()) player.setDroningBackward(true);
     }
     if (key == GLFW_KEY_A && action == GLFW_PRESS) {
         // Depending on what view is being used, set true left.
         if (player.isDrivingTank()) player.setTurningLeft(true);
-        else if (player.isUsingBinoculars()) player.setLookingLeft(true);
-        else if (player.isUsingDrone()) player.setDroningLeft(true);
     }
     if (key == GLFW_KEY_D && action == GLFW_PRESS) {
         // Depending on what view is being used, set true right.
         if (player.isDrivingTank()) player.setTurningRight(true);
-        else if (player.isUsingBinoculars()) player.setLookingRight(true);
-        else if (player.isUsingDrone()) player.setDroningRight(true);
     }
     if (key == GLFW_KEY_W && action == GLFW_RELEASE) {
         // Reset the flags.
         player.setMovingForward(false);
-        player.setLookingUp(false);
-        player.setDroningForward(false);
     }
     if (key == GLFW_KEY_S && action == GLFW_RELEASE) {
         // Reset the flags.
         player.setMovingBackward(false);
-        player.setLookingDown(false);
-        player.setDroningBackward(false);
     }
     if (key == GLFW_KEY_A && action == GLFW_RELEASE) {
         // Reset the flags.
         player.setTurningLeft(false);
-        player.setLookingLeft(false);
-        player.setDroningLeft(false);
     }
     if (key == GLFW_KEY_D && action == GLFW_RELEASE) {
         // Reset the flags.
         player.setTurningRight(false);
-        player.setLookingRight(false);
-        player.setDroningRight(false);
-    }
-    
-    // Zooming in and out.
-    if (key == GLFW_KEY_Q && action == GLFW_PRESS) { if (player.isUsingBinoculars()) player.setZoomingIn(true); std::cout << "Binoculars Zooming In." << std::endl; }
-    if (key == GLFW_KEY_E && action == GLFW_PRESS) { if (player.isUsingBinoculars()) player.setZoomingOut(true); std::cout << "Binoculars Zooming Out." << std::endl; }
-    if (key == GLFW_KEY_Q && action == GLFW_RELEASE) player.setZoomingIn(false);
-    if (key == GLFW_KEY_E && action == GLFW_RELEASE) player.setZoomingOut(false);
-
-    // Point Light Intensity Controls
-    if (key == GLFW_KEY_F && action == GLFW_PRESS) player.setAdjustingHeadlights(true);
-    
-    // Jumping
-    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) { 
-        // Reset the timer so that the jump can use delta time.
-        if (!player.isJumping()) glfwSetTime(0);
-
-        // Set jumping to true.
-        player.setJumping(true);
     }
 }
 
@@ -200,10 +140,6 @@ int main()
                         glm::vec3(0.f, 0.f, 0.f),           //pos
                         glm::vec3(100.f),                     //scale
                         glm::vec3(0.f, 0.f, 0.f));         //rotate
-    //Model stone = Model("3D/Obstacles/Rocks/Stone.OBJ", "3D/Obstacles/Rocks/StoneTex.jpg", "",
-    //                    glm::vec3(0.f, -8.f, -200.f),       //pos
-    //                    glm::vec3(5.f),                     //scale
-    //                    glm::vec3(0.f, 0.f, 0.f));          //rotate
     //stone.loadSticker(); // This adds the Barabara sticker/drawing texture to the rock.
     Model ant = Model("3D/Obstacles/Ant/ant1.obj", "3D/Obstacles/Ant/ant_(1).png", "",
                         glm::vec3(-150.f, 0.f, -200.f),     //pos
@@ -252,28 +188,12 @@ int main()
     PointLight headlights = PointLight(glm::vec3(tank.getPosition().x, tank.getPosition().y + 50.f, tank.getPosition().z - 57.f), glm::vec3(1.f), 200.f);
 
     // Cameras
-    PerspectiveCamera thirdPersonPerspectiveCamera = PerspectiveCamera(60.f, height, width, 0.1f, 300.f,
-                                                                        glm::vec3(0.f, 0.f, -10.f), 
+    PerspectiveCamera camera = PerspectiveCamera(60.f, height, width, 0.1f, 300.f,
+                                                                        glm::vec3(0.f, 10.f, -10.f), 
                                                                         glm::vec3(0.f, 1.f, 0.f), 
                                                                         glm::vec3(0.f, 0.f, -5.f));
-    PerspectiveCamera firstPersonPerspectiveCamera = PerspectiveCamera(60.f, height, width, 0.1f, 500.f,
-                                                                        glm::vec3(tank.getPosition().x, tank.getPosition().y + 30.f, tank.getPosition().z - 20.f),
-                                                                        glm::vec3(0.f, 1.f, 0.f), 
-                                                                        glm::vec3(0.f, 0.f, 5.f));
-    OrthoCamera orthoCamera = OrthoCamera(-100.f, 100.f, -100.f, 100.f, -500.f, 1000.f,
-                                            glm::vec3(0.f, 0.f, 0.f), 
-                                            glm::vec3(0.f, 0.f, -1.f), 
-                                            glm::vec3(0.f, -10.f, 0.f));
     // Set the initial camera to the third person perspective camera
-    MyCamera* mainCamera = &thirdPersonPerspectiveCamera;
-
-    // Set initial values.
-    firstPersonPerspectiveCamera.setPos(tank.getPosition());    // First put it back in tank.
-    firstPersonPerspectiveCamera.rotateWithTank(yrot);          // Rotate it to the default rotation
-    // Offset the position back to its original spot in the tank.
-    firstPersonPerspectiveCamera.setPos(glm::vec3(tank.getPosition().x, tank.getPosition().y + 30.f, tank.getPosition().z - 10.f)); 
-    // Put the headlights at the first person camera center so that it's infront by default.
-    headlights.setPos(firstPersonPerspectiveCamera.getCameraCenter());
+    MyCamera* mainCamera = &camera;
 
     // Enable Blending
     glEnable(GL_BLEND);
@@ -309,167 +229,49 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the depth buffer as well
 
         // ----------------------- UPDATING VALUES -------------------------- //        
-        // Camera Switching Controls
-        // 1. Bird's eye view / Top View Orthographic Camera
-        if (player.isUsingDrone()) {
-            // Set the current camera to the orthographic camera.
-            mainCamera = &orthoCamera;
+        // Set the current camera to the third person perspective camera to drive the tank.
+        mainCamera = &camera;
 
-            // Set the lights' color to white because no night vision.
-            headlights.setColor(glm::vec3(1, 1, 1));
-            moonlight.setColor(glm::vec3(1, 1, 1));
-        }
-        // 2. Third person view / Third person perspective camera
-        if (player.isDrivingTank()) {
-            // Set the current camera to the third person perspective camera to drive the tank.
-            mainCamera = &thirdPersonPerspectiveCamera;
+        // First get the mouse position
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
 
-            // First get the mouse position
-            double xpos, ypos;
-            glfwGetCursorPos(window, &xpos, &ypos);
+        // Calculate how much the mouse moved in x direction
+        double x_mod = xpos - prev_xpos;
+        // Calculate how much the mouse moved in y direction
+        double y_mod = prev_ypos - ypos; 
 
-            // Calculate how much the mouse moved in x direction
-            double x_mod = xpos - prev_xpos;
-            // Calculate how much the mouse moved in y direction
-            double y_mod = prev_ypos - ypos; 
+        // Save the current mouse position as the previous for the next frame.
+        prev_xpos = xpos;
+        prev_ypos = ypos;
 
-            // Save the current mouse position as the previous for the next frame.
-            prev_xpos = xpos;
-            prev_ypos = ypos;
+        yaw = glm::radians((xpos / (width / 2)) * -90);
+        pitch = glm::radians((ypos / (height / 2)) * -90);
+        // Calculate the rotation of the camera based on the mouse position.
+        camera.calcMouseRotate(pitch, yaw, tank.getPosition());
 
-            // Compute new pitch and yaw angles
-            pitch += (float)y_mod * 0.1f;
-            yaw += (float)x_mod * 0.1f;
-
-            // Calculate the rotation of the camera based on the mouse position.
-            thirdPersonPerspectiveCamera.calcMouseRotate(pitch, yaw, tank.getPosition());
-
-            // Set the color of the lights to white since its not in night vision mode.
-            headlights.setColor(glm::vec3(1, 1, 1));
-            moonlight.setColor(glm::vec3(1, 1, 1));
-        }
-        // 3. Binoculars View / First person perspective camera view
-        if (player.isUsingBinoculars()) {
-            
-            // Reset the camera position just in case it's out of place.
-            if (player.isResettingView()) {
-                player.setResettingView(false);
-                firstPersonPerspectiveCamera.setPos(glm::vec3(tank.getPosition().x, tank.getPosition().y + 30.f, tank.getPosition().z - 10.f));
-                firstPersonPerspectiveCamera.setCenterOffset(glm::vec3(0, 0, -40.f));
-            }
-            
-            // Set the camera to the first person perspective camera.
-            mainCamera = &firstPersonPerspectiveCamera;
-
-            // Turn on night vision -- set the lights to green.
-            headlights.setColor(glm::vec3(0, 1, 0));
-            moonlight.setColor(glm::vec3(0, 1, 0));
-        }
+        // Set the color of the lights to white since its not in night vision mode.
+        headlights.setColor(glm::vec3(1, 1, 1));
+        moonlight.setColor(glm::vec3(1, 1, 1));
 
         // If Main Camera exists, update the projection and view matrix
         if (mainCamera != NULL) mainCamera->updateShaderViewProj(litShader.getShaderProgram());
-        
-        // Update Tank Headlights Intensity
-        if (player.getHeadlightsIntensity() == 1)       headlights.setMultiplier(player.getLowIntensity());
-        else if (player.getHeadlightsIntensity() == 2)  headlights.setMultiplier(player.getMedIntensity());
-        else                                            headlights.setMultiplier(player.getHighIntensity());
 
         // Update the Tank Movements
-        // 1. Driving Tank / Third person perspective view
-        if (player.isDrivingTank()) {
-
-            // Moving forward and back -- using polar to cartesian to get the forward vector of the tank.
-            glm::vec3 moveDirection = glm::vec3(cos(glm::radians(yrot)), 0, sin(glm::radians(yrot))) * 2.0f;
-
-            // Move the tank and update the position and center of the first person camera so it follows the tank.
-            if (player.isMovingForward()) { 
-                tank.move(-moveDirection); 
-                firstPersonPerspectiveCamera.setPos(glm::vec3(tank.getPosition().x, tank.getPosition().y + 30.f, tank.getPosition().z - 10.f));
-                firstPersonPerspectiveCamera.setCenterOffset(-moveDirection);
-            }
-            if (player.isMovingBackward()) { 
-                tank.move(moveDirection); 
-                firstPersonPerspectiveCamera.setPos(glm::vec3(tank.getPosition().x, tank.getPosition().y + 30.f, tank.getPosition().z - 10.f));
-                firstPersonPerspectiveCamera.setCenterOffset(moveDirection);
-            }
-
-            // Turning the tank in the shader and rotating the camera with the tank to keep its original position relative to the tank.
-            if (player.isTurningRight()) { 
-                tank.rotateBy(glm::vec3(0, -speed, 0));
-                yrot += speed; // Stores the total rotation of the tank.
-                // Make sure the binoculars rotate with the tank.
-                firstPersonPerspectiveCamera.setPos(tank.getPosition());
-                firstPersonPerspectiveCamera.rotateWithTank(yrot);
-                firstPersonPerspectiveCamera.setPos(glm::vec3(tank.getPosition().x, tank.getPosition().y + 30.f, tank.getPosition().z - 10.f));
-            }
-            if (player.isTurningLeft()) { 
-                tank.rotateBy(glm::vec3(0, speed, 0)); 
-                yrot -= speed; // Stores the total rotation of the tank.
-                // Make sure the binoculars rotate with the tank.
-                firstPersonPerspectiveCamera.setPos(tank.getPosition());
-                firstPersonPerspectiveCamera.rotateWithTank(yrot);
-                firstPersonPerspectiveCamera.setPos(glm::vec3(tank.getPosition().x, tank.getPosition().y + 30.f, tank.getPosition().z - 10.f));
-            }
-
-            // BONUS -- Direction of the spot light (head lights)
-            GLuint spotDirAddress = glGetUniformLocation(*litShader.getShaderProgram(), "sl_dir");
-            glUniform3fv(spotDirAddress, 1, glm::value_ptr(moveDirection));
-
-            // Also update the light from the tank.
-            glm::vec3 newHeadlightsPos = firstPersonPerspectiveCamera.getPos() - moveDirection * 10.0f;
-            newHeadlightsPos.x -= 10.f; // Center it because the first person camera isn't at the center front.
-            newHeadlightsPos.y = 15.f; // Raise it a bit because it's on the ground
-            headlights.setPos(newHeadlightsPos);
-
-            // BONUS - jumping
-            if (player.isJumping()) {
-                std::cout << "Jumping." << std::endl;
-
-                // Stop jumping when 1 second has passed
-                if (glfwGetTime() > 1.f) player.setJumping(false);
-                // Drop when half a second has passed.
-                else if (glfwGetTime() > 0.5f) tank.move(glm::vec3(0, -speed * 9.81f * glfwGetTime(), 0));
-                // Jump up for half a second.
-                else if (glfwGetTime() > 0.f) tank.move(glm::vec3(0, speed * 9.81f * glfwGetTime(), 0));
-            }
+        if (player.isMovingForward()) { 
+            camera.moveForward();
         }
-        // 2. Using Binoculars / First Person perspective view
-        else if (player.isUsingBinoculars()) {
-
-            // Rotate the camera using polar to cartesian formulas to get the right direction vector.
-            if (player.isLookingUp()) firstPersonPerspectiveCamera.calcKeyRotate(glm::vec3(0, speed, 0));
-            if (player.isLookingDown()) firstPersonPerspectiveCamera.calcKeyRotate(glm::vec3(0, -speed, 0));
-            if (player.isLookingRight()) firstPersonPerspectiveCamera.calcKeyRotate(glm::vec3(speed, 0, 0));
-            if (player.isLookingLeft()) firstPersonPerspectiveCamera.calcKeyRotate(glm::vec3(-speed, 0, 0));
-            // Zoom in and out by adjusting the FOV.
-            if (player.isZoomingIn()) firstPersonPerspectiveCamera.zoom(-speed);
-            if (player.isZoomingOut()) firstPersonPerspectiveCamera.zoom(speed);
-
-            // To check if the input is correct.
-            if (player.isLookingUp()) std::cout << "Binoculars View: Looking Up." << std::endl;
-            if (player.isLookingDown()) std::cout << "Binoculars View: Looking Down." << std::endl;
-            if (player.isLookingRight()) std::cout << "Binoculars View: Looking Right." << std::endl;
-            if (player.isLookingLeft()) std::cout << "Binoculars View: Looking Left." << std::endl;
-            if (player.isZoomingIn()) std::cout << "Binoculars View: Zooming In." << std::endl;
-            if (player.isZoomingOut()) std::cout << "Binoculars View: Zooming Out." << std::endl;
+        if (player.isMovingBackward()) { 
+			camera.moveBackward();
         }
-        // 3. Using Overhead drone view / Orthographic Top View
-        else if (player.isUsingDrone()) {
-
-            // Move the camera on either the X or Z axis to move the orthographic camera.
-            if (player.isDroningForward()) orthoCamera.move(glm::vec3(0, 0, -speed));
-            if (player.isDroningBackward()) orthoCamera.move(glm::vec3(0, 0, speed));
-            if (player.isDroningLeft()) orthoCamera.move(glm::vec3(-speed, 0, 0));
-            if (player.isDroningRight()) orthoCamera.move(glm::vec3(speed, 0, 0));
-
-            // To check if the input is correct
-            if (player.isDroningForward()) std::cout << "Drone View: Forward." << std::endl;
-            if (player.isDroningBackward()) std::cout << "Drone View: Backward." << std::endl;
-            if (player.isDroningLeft()) std::cout << "Drone View: Left." << std::endl;
-            if (player.isDroningRight()) std::cout << "Drone View: Right." << std::endl;
+        if (player.isTurningRight()) { 
+            camera.moveRight();
+        }
+        if (player.isTurningLeft()) { 
+			camera.moveLeft();
         }
 
-        // ---------------------- RENDERING OBJECTS ------------------------- //
+    	// ---------------------- RENDERING OBJECTS ------------------------- //
         // First draw the skybox
         skybox.draw(mainCamera->getViewMatrix(), mainCamera->getProjMatrix(), player.isUsingBinoculars());
 
