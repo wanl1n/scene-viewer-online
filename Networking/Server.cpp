@@ -60,6 +60,10 @@ grpc::Status Server::GetModel(grpc::ServerContext* context, const ModelRequest* 
     {
         filePath = "./3D/Obstacles/Car/Tractor.obj";
     }
+    else if (modelName == "S2M1")
+    {
+        filePath = "./3D/Obstacles/Ant/ant1.obj";
+    }
 
     std::ifstream file(filePath, std::ios::binary);
     if (!file)
@@ -123,6 +127,46 @@ grpc::Status Server::GetTransformTex(grpc::ServerContext* context, const Transfo
             writer->Write(response);  
         }
     }
+
+    else if (modelName == "S2M1")
+    {
+
+        std::string texturePath = "./3D/Obstacles/Ant/ant_(1).png";
+
+        int texWidth, texHeight;
+        std::vector<uint8_t> textureData = readTextureFromFile(texturePath, texWidth, texHeight);
+
+        const size_t chunkSize = 1024 * 1024;
+        size_t totalSize = textureData.size();
+
+        for (size_t offset = 0; offset < totalSize; offset += chunkSize)
+        {
+            size_t chunkEnd = std::min(offset + chunkSize, totalSize);
+            size_t chunkSizeActual = chunkEnd - offset;
+
+            TransformTexResponse response;
+
+            response.set_posx(-200.0f);
+            response.set_posy(0.0f);
+            response.set_posz(0.0f);
+
+            response.set_pitch(0.0f);
+            response.set_yaw(60.0f);
+            response.set_roll(0.0f);
+
+            response.set_scalex(0.05f);
+            response.set_scaley(0.05f);
+            response.set_scalez(0.05f);
+
+            response.set_texwidth(texWidth);
+            response.set_texheight(texHeight);
+
+            response.set_texture(reinterpret_cast<const char*>(&textureData[offset]), chunkSizeActual);
+
+            writer->Write(response);
+        }
+    }
+
     else
     {
         return grpc::Status(grpc::StatusCode::NOT_FOUND, "Model not found.");

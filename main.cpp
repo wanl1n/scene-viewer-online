@@ -205,10 +205,10 @@ int main()
     //                    glm::vec3(5.f),                     //scale
     //                    glm::vec3(0.f, 0.f, 0.f));          //rotate
     //stone.loadSticker(); // This adds the Barabara sticker/drawing texture to the rock.
-    Model ant = Model("3D/Obstacles/Ant/ant1.obj", "3D/Obstacles/Ant/ant_(1).png", "",
-                        glm::vec3(-150.f, 0.f, -200.f),     //pos
-                        glm::vec3(0.03f),                   //scale
-                        glm::vec3(0.f, 60.f, 0.f));         //rotate
+    //Model ant = Model("3D/Obstacles/Ant/ant1.obj", "3D/Obstacles/Ant/ant_(1).png", "",
+    //                    glm::vec3(-150.f, 0.f, -200.f),     //pos
+    //                    glm::vec3(0.03f),                   //scale
+    //                    glm::vec3(0.f, 60.f, 0.f));         //rotate
     Model grass = Model("3D/Obstacles/Grass/Grass.obj", "3D/Obstacles/Grass/GrassTex.png", "",
                         glm::vec3(-250.f, 0.f, -400.f),      //pos
                         glm::vec3(0.2f),                    //scale
@@ -233,7 +233,7 @@ int main()
     std::vector<Model> environment;
     environment.push_back(ground);
     //environment.push_back(stone);
-    environment.push_back(ant);
+    //environment.push_back(ant);
     environment.push_back(grass);
     environment.push_back(mouse);
     environment.push_back(flower);
@@ -286,7 +286,8 @@ int main()
 
     // Start Client
     std::vector<Client> clients;
-    clients.emplace_back(1); 
+    clients.emplace_back(1);
+    clients.emplace_back(2);
 
     // Run all Clients
     for (auto& client : clients)
@@ -313,8 +314,6 @@ int main()
                 client.createModels();
 	        }
         }
-
-
 
         // ----------------------- UPDATING VALUES -------------------------- //        
         // Camera Switching Controls

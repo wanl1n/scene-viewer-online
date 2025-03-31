@@ -7,39 +7,51 @@ Client::Client(const int& sceneID)
 {
     grpc::ChannelArguments channel_args;
     this->channel_ = grpc::CreateCustomChannel("localhost:50051", grpc::InsecureChannelCredentials(), channel_args);
+
+    // Create stub for each proto
     this->stub_ = SceneViewer::NewStub(this->channel_);
     this->modelStub_ = ModelLoader::NewStub(this->channel_);
     this->transformStub_ = TransformTexSync::NewStub(this->channel_);
+
+    // Scene to be loaded
     this->sceneID = sceneID;
 }
 
 std::unordered_map<std::string, ModelData> Client::getSceneModels()
 {
     SceneRequest request;
-    request.set_sceneid(sceneID);
     SceneResponse reply;
     grpc::ClientContext context;
+
+	request.set_sceneid(sceneID);
 
     std::chrono::time_point deadline = std::chrono::system_clock::now() + std::chrono::milliseconds(2000);
     context.set_deadline(deadline);
 
     grpc::Status status = stub_->GetScene(&context, request, &reply);
+
+    // Scene proto returned ModelNames of the Scene
     if (status.ok())
     {
         std::unordered_map<std::string, ModelData> modelDataMap;
-        for (int i = 0; i < reply.modelnames_size(); ++i)
+
+        // For each model name get model data (obj buffer) + transform + texture data
+    	for (int i = 0; i < reply.modelnames_size(); ++i)
         {
             std::string modelName = reply.modelnames(i);
             ModelRequest modelRequest;
-            modelRequest.set_modelname(modelName);
             grpc::ClientContext modelContext;
+
+            modelRequest.set_modelname(modelName);
 
             std::unique_ptr<grpc::ClientReader<ModelResponse>> reader(modelStub_->GetModel(&modelContext, modelRequest));
 
             ModelData modelData;
             ModelResponse modelReply;
             std::string fullModelData;
-            while (reader->Read(&modelReply))
+
+            // If model is too big, read it by chunk
+    		while (reader->Read(&modelReply))
             {
                 fullModelData += modelReply.modeldata();
             }
@@ -53,6 +65,8 @@ std::unordered_map<std::string, ModelData> Client::getSceneModels()
 
             TransformTexResponse transformReply;
             std::vector<uint8_t> accumulatedTextureData;
+
+            // Stream texture if its too big
             while (texReader->Read(&transformReply))
             {
                 modelData.position = glm::vec3(transformReply.posx(), transformReply.posy(), transformReply.posz());
