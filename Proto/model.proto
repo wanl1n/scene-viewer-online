@@ -2,7 +2,7 @@ syntax = "proto3";
 
 // The service providing model data.
 service ModelLoader {
-  rpc GetModel (ModelRequest) returns (ModelResponse) {}
+  rpc GetModel (ModelRequest) returns (stream ModelResponse) {}
 }
 
 // The request message asking for the model name.

@@ -31,52 +31,45 @@ std::unique_ptr< ModelLoader::Stub> ModelLoader::NewStub(const std::shared_ptr< 
 }
 
 ModelLoader::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
-  : channel_(channel), rpcmethod_GetModel_(ModelLoader_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  : channel_(channel), rpcmethod_GetModel_(ModelLoader_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   {}
 
-::grpc::Status ModelLoader::Stub::GetModel(::grpc::ClientContext* context, const ::ModelRequest& request, ::ModelResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::ModelRequest, ::ModelResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetModel_, context, request, response);
+::grpc::ClientReader< ::ModelResponse>* ModelLoader::Stub::GetModelRaw(::grpc::ClientContext* context, const ::ModelRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::ModelResponse>::Create(channel_.get(), rpcmethod_GetModel_, context, request);
 }
 
-void ModelLoader::Stub::async::GetModel(::grpc::ClientContext* context, const ::ModelRequest* request, ::ModelResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::ModelRequest, ::ModelResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetModel_, context, request, response, std::move(f));
+void ModelLoader::Stub::async::GetModel(::grpc::ClientContext* context, const ::ModelRequest* request, ::grpc::ClientReadReactor< ::ModelResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::ModelResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_GetModel_, context, request, reactor);
 }
 
-void ModelLoader::Stub::async::GetModel(::grpc::ClientContext* context, const ::ModelRequest* request, ::ModelResponse* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetModel_, context, request, response, reactor);
+::grpc::ClientAsyncReader< ::ModelResponse>* ModelLoader::Stub::AsyncGetModelRaw(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::ModelResponse>::Create(channel_.get(), cq, rpcmethod_GetModel_, context, request, true, tag);
 }
 
-::grpc::ClientAsyncResponseReader< ::ModelResponse>* ModelLoader::Stub::PrepareAsyncGetModelRaw(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::ModelResponse, ::ModelRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetModel_, context, request);
-}
-
-::grpc::ClientAsyncResponseReader< ::ModelResponse>* ModelLoader::Stub::AsyncGetModelRaw(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq) {
-  auto* result =
-    this->PrepareAsyncGetModelRaw(context, request, cq);
-  result->StartCall();
-  return result;
+::grpc::ClientAsyncReader< ::ModelResponse>* ModelLoader::Stub::PrepareAsyncGetModelRaw(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::ModelResponse>::Create(channel_.get(), cq, rpcmethod_GetModel_, context, request, false, nullptr);
 }
 
 ModelLoader::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ModelLoader_method_names[0],
-      ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< ModelLoader::Service, ::ModelRequest, ::ModelResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< ModelLoader::Service, ::ModelRequest, ::ModelResponse>(
           [](ModelLoader::Service* service,
              ::grpc::ServerContext* ctx,
              const ::ModelRequest* req,
-             ::ModelResponse* resp) {
-               return service->GetModel(ctx, req, resp);
+             ::grpc::ServerWriter<::ModelResponse>* writer) {
+               return service->GetModel(ctx, req, writer);
              }, this)));
 }
 
 ModelLoader::Service::~Service() {
 }
 
-::grpc::Status ModelLoader::Service::GetModel(::grpc::ServerContext* context, const ::ModelRequest* request, ::ModelResponse* response) {
+::grpc::Status ModelLoader::Service::GetModel(::grpc::ServerContext* context, const ::ModelRequest* request, ::grpc::ServerWriter< ::ModelResponse>* writer) {
   (void) context;
   (void) request;
-  (void) response;
+  (void) writer;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 

@@ -21,19 +21,18 @@ Model::Model(std::string strObjPath, const char* pathTex, const char* pathNorm,
 	glEnable(GL_DEPTH_TEST);
 }
 
-// Constructor that accepts a string buffer
-Model::Model(std::string&& objData, const char* pathTex, const char* pathNorm, bool fromObjData)
+Model::Model(std::string&& objData, const std::vector<uint8_t>& texData, int texWidth, int texHeight)
 {
-	// Load model from string
 	std::string objDataStr = std::string(objData);
 	this->loadModelDataFromString(objDataStr);
 
-	if (pathTex != "") this->texture = loadTexture(pathTex, GL_TEXTURE0);
-	if (pathNorm != "") this->norm_tex = loadTexture(pathNorm, GL_TEXTURE1);
+	if (!texData.empty())
+		this->texture = loadTextureFromData(texData, texWidth, texHeight, GL_TEXTURE0);
 
 	this->sticker_tex = 0;
 	glEnable(GL_DEPTH_TEST);
 }
+
 
 void Model::loadModelDataFromString(const std::string& objData)
 {
@@ -344,6 +343,43 @@ GLuint Model::loadTexture(const char* path, GLuint texture_ind) {
 
 	// Free up the loaded bytes.
 	stbi_image_free(text_bytes);
+
+	return texture;
+}
+
+GLuint Model::loadTextureFromData(const std::vector<uint8_t>& data, int width, int height, GLenum textureUnit)
+{
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glActiveTexture(textureUnit);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glTexParameteri(GL_TEXTURE_2D,
+		GL_TEXTURE_WRAP_S, 
+		GL_CLAMP_TO_EDGE 
+	);
+	glTexParameteri(GL_TEXTURE_2D,
+		GL_TEXTURE_WRAP_T, 
+		GL_REPEAT 
+	);
+
+	GLenum format = (data.size() == width * height * 4) ? GL_RGBA : GL_RGB;
+
+	//Assign the loaded texture to the OpenGL reference.
+	glTexImage2D(
+		GL_TEXTURE_2D,
+		0, 
+		format, 
+		width, 
+		height, 
+		0,
+		format,
+		GL_UNSIGNED_BYTE,
+		data.data() 
+	);
+
+	// Generate the mipmaps to the current texture
+	glGenerateMipmap(GL_TEXTURE_2D);
 
 	return texture;
 }
