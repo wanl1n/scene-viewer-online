@@ -26,13 +26,20 @@ class Client
 {
 public:
 	Client(const int& sceneID);
-	std::unordered_map<std::string, ModelData> GetSceneModels();
+
+	void createModels();
 
 	void runClient();
 	void RenderUI();
 
 	std::vector<models::Model> getModels();
 	std::unordered_map<std::string, ModelData> getModelDataMap();
+
+	bool isSceneLoaded();
+
+private:
+	std::unordered_map<std::string, ModelData> getSceneModels();
+
 
 private:
 	int sceneID;
@@ -44,5 +51,7 @@ private:
 
 	std::vector<models::Model> models_;
 	std::unordered_map<std::string, ModelData> modelDataMap_;
+
+	bool sceneLoaded_ = false;
 };
 

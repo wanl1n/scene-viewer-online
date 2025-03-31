@@ -50,118 +50,133 @@ grpc::Status Server::GetScene(grpc::ServerContext* context, const SceneRequest* 
 }
 
 
-grpc::Status Server::GetModel(grpc::ServerContext* context, const ModelRequest* request, ModelResponse* response)
+grpc::Status Server::GetModel(grpc::ServerContext* context, const ModelRequest* request,
+    grpc::ServerWriter<ModelResponse>* writer)
 {
-	std::string modelName = request->modelname();
+    std::string modelName = request->modelname();
+    std::string filePath = "";
 
-	std::string filePath = "";
+    if (modelName == "S1M1")
+    {
+        filePath = "./3D/Obstacles/Car/Tractor.obj";
+    }
 
-	if (modelName == "S1M1")
-	{
-		filePath = "./3D/Obstacles/Car/Tractor.obj";
-	}
+    std::ifstream file(filePath, std::ios::binary);
+    if (!file)
+    {
+        return grpc::Status(grpc::StatusCode::NOT_FOUND, "Model not found.");
+    }
 
-	std::ifstream file(filePath);
-	if (!file)
-	{
-		return grpc::Status(grpc::StatusCode::NOT_FOUND, "Model not found.");
-	}
-	std::ostringstream buffer;
-	buffer << file.rdbuf();  
-	file.close();
+    const size_t chunkSize = 1024 * 1024;  
+    std::vector<char> buffer(chunkSize);
 
-	response->set_modeldata(buffer.str());
+    while (file.read(buffer.data(), chunkSize) || file.gcount() > 0)
+    {
+        ModelResponse response;
+        response.set_modeldata(buffer.data(), file.gcount());  
+        writer->Write(response); 
+    }
 
-	return grpc::Status::OK;
+    file.close();
+    return grpc::Status::OK;
 }
 
-grpc::Status Server::GetTransformTex(grpc::ServerContext* context, const TransformTexRequest* request, TransformTexResponse* response)
+grpc::Status Server::GetTransformTex(grpc::ServerContext* context, const TransformTexRequest* request, grpc::ServerWriter<TransformTexResponse>* writer)
 {
-	std::string modelName = request->modelname();
+    std::string modelName = request->modelname();
 
-	if (modelName == "S1M1")
-	{
-		response->set_posx(-100.0f);
-		response->set_posy(0.0f);
-		response->set_posz(0.0f);
+    if (modelName == "S1M1")
+    {
 
-		response->set_pitch(0.0f);
-		response->set_yaw(60.0f);
-		response->set_roll(0.0f);
+        std::string texturePath = "./3D/Obstacles/Car/TractorTex.jpg";
 
-		response->set_scalex(3.0f);
-		response->set_scaley(3.0f);
-		response->set_scalez(3.0f);
+        int texWidth, texHeight;
+        std::vector<uint8_t> textureData = readTextureFromFile(texturePath, texWidth, texHeight);
 
-		std::string texturePath = "./3D/Obstacles/Car/TractorTex.jpg";
-		int texWidth, texHeight;
-		std::vector<uint8_t> textureData = readTextureFromFile(texturePath, texWidth, texHeight);
+        const size_t chunkSize = 1024 * 1024;  
+        size_t totalSize = textureData.size();
 
-		response->set_texwidth(texWidth);
-		response->set_texheight(texHeight);
-		response->set_texture(reinterpret_cast<const char*>(textureData.data()), textureData.size());
-	}
-	else
-	{
-		return grpc::Status(grpc::StatusCode::NOT_FOUND, "Model not found.");
-	}
+        for (size_t offset = 0; offset < totalSize; offset += chunkSize)
+        {
+            size_t chunkEnd = std::min(offset + chunkSize, totalSize);
+            size_t chunkSizeActual = chunkEnd - offset;
 
-	return grpc::Status::OK;
+            TransformTexResponse response;
+
+            response.set_posx(-100.0f);
+            response.set_posy(0.0f);
+            response.set_posz(0.0f);
+
+            response.set_pitch(0.0f);
+            response.set_yaw(60.0f);
+            response.set_roll(0.0f);
+
+            response.set_scalex(3.0f);
+            response.set_scaley(3.0f);
+            response.set_scalez(3.0f);
+
+            response.set_texwidth(texWidth);
+            response.set_texheight(texHeight);
+
+            response.set_texture(reinterpret_cast<const char*>(&textureData[offset]), chunkSizeActual);
+
+            writer->Write(response);  
+        }
+    }
+    else
+    {
+        return grpc::Status(grpc::StatusCode::NOT_FOUND, "Model not found.");
+    }
+
+    return grpc::Status::OK;
 }
 
 void Server::RunServer(uint16_t port)
 {
-	std::string serverAddress = absl::StrFormat("localhost:%d", port);
-	Server service;
+    std::string serverAddress = absl::StrFormat("localhost:%d", port);
+    Server service;
 
-	grpc::EnableDefaultHealthCheckService(true);
-	grpc::reflection::InitProtoReflectionServerBuilderPlugin();
-	grpc::ServerBuilder builder;
+    grpc::EnableDefaultHealthCheckService(true);
+    grpc::reflection::InitProtoReflectionServerBuilderPlugin();
+    grpc::ServerBuilder builder;
 
-	builder.SetMaxReceiveMessageSize(64 * 1024 * 1024);
+    // Listen on the given address without any authentication mechanism.
+    builder.AddListeningPort(serverAddress, grpc::InsecureServerCredentials());
 
-	// Listen on the given address without any authentication mechanism.
-	builder.AddListeningPort(serverAddress, grpc::InsecureServerCredentials());
+    // Register "service" as the instance through which we'll communicate with
+    // clients. In this case it corresponds to an *synchronous* service.
+    builder.RegisterService(static_cast<SceneViewer::Service*>(&service));
+    builder.RegisterService(static_cast<ModelLoader::Service*>(&service));
+    builder.RegisterService(static_cast<TransformTexSync::Service*>(&service));
 
-	// Register "service" as the instance through which we'll communicate with
-	// clients. In this case it corresponds to an *synchronous* service.
-	builder.RegisterService(static_cast<SceneViewer::Service*>(&service));
-	builder.RegisterService(static_cast<ModelLoader::Service*>(&service));
-	builder.RegisterService(static_cast<TransformTexSync::Service*>(&service));
+    // Finally assemble the server.
+    std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
+    std::cout << "Server listening on " << serverAddress << std::endl;
 
-	// Finally assemble the server.
-	std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
-	std::cout << "Server listening on " << serverAddress << std::endl;
-
-	// Wait for the server to shutdown. Note that some other thread must be
-	// responsible for shutting down the server for this call to ever return.
-	server->Wait();
+    // Wait for the server to shutdown. Note that some other thread must be
+    // responsible for shutting down the server for this call to ever return.
+    server->Wait();
 }
-
 
 void Server::run()
 {
-	RunServer(50051);
+    RunServer(50051);
 }
 
 std::vector<uint8_t> Server::readTextureFromFile(const std::string& path, int& width, int& height)
 {
-	int channels;
+    int channels;
+    unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 
-	unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+    if (!data)
+    {
+        std::cerr << "Failed to load texture: " << path << std::endl;
+        return {};
+    }
 
-	if (!data)
-	{
-		std::cerr << "Failed to load texture: " << path << std::endl;
-		return {};
-	}
+    size_t dataSize = width * height * channels;
+    std::vector<uint8_t> textureData(data, data + dataSize);
+    stbi_image_free(data);
 
-	size_t dataSize = width * height * channels;
-
-	std::vector<uint8_t> textureData(data, data + dataSize);
-
-	stbi_image_free(data);
-
-	return textureData;
+    return textureData;
 }
-

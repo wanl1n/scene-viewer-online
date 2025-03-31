@@ -118,14 +118,14 @@ const char descriptor_table_protodef_model_2eproto[] ABSL_ATTRIBUTE_SECTION_VARI
     protodesc_cold) = {
     "\n\013model.proto\"!\n\014ModelRequest\022\021\n\tmodelNa"
     "me\030\001 \001(\t\"\"\n\rModelResponse\022\021\n\tmodelData\030\001"
-    " \001(\t2:\n\013ModelLoader\022+\n\010GetModel\022\r.ModelR"
-    "equest\032\016.ModelResponse\"\000b\006proto3"
+    " \001(\t2<\n\013ModelLoader\022-\n\010GetModel\022\r.ModelR"
+    "equest\032\016.ModelResponse\"\0000\001b\006proto3"
 };
 static ::absl::once_flag descriptor_table_model_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_model_2eproto = {
     false,
     false,
-    152,
+    154,
     descriptor_table_protodef_model_2eproto,
     "model.proto",
     &descriptor_table_model_2eproto_once,

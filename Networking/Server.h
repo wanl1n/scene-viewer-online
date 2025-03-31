@@ -19,10 +19,12 @@ public:
 	grpc::Status GetScene(grpc::ServerContext* context, const SceneRequest* request, SceneResponse* response) override;
 
 	// Model
-	grpc::Status GetModel(grpc::ServerContext* context, const ModelRequest* request, ModelResponse* response) override;
+	//grpc::Status GetModel(grpc::ServerContext* context, const ModelRequest* request, ModelResponse* response) override;
+	grpc::Status GetModel(grpc::ServerContext* context, const ModelRequest* request, grpc::ServerWriter<ModelResponse>* writer) override;
 
 	// Transform Tex
-	grpc::Status GetTransformTex(grpc::ServerContext* context, const TransformTexRequest* request, TransformTexResponse* response) override;
+	//grpc::Status GetTransformTex(grpc::ServerContext* context, const TransformTexRequest* request, TransformTexResponse* response) override;
+	grpc::Status GetTransformTex(grpc::ServerContext* context, const TransformTexRequest* request, grpc::ServerWriter<TransformTexResponse>* writer) override;
 
 	static void RunServer(uint16_t port);
 

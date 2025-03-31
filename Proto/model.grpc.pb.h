@@ -35,41 +35,44 @@ class ModelLoader final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    virtual ::grpc::Status GetModel(::grpc::ClientContext* context, const ::ModelRequest& request, ::ModelResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ModelResponse>> AsyncGetModel(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ModelResponse>>(AsyncGetModelRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::ModelResponse>> GetModel(::grpc::ClientContext* context, const ::ModelRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::ModelResponse>>(GetModelRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ModelResponse>> PrepareAsyncGetModel(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ModelResponse>>(PrepareAsyncGetModelRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::ModelResponse>> AsyncGetModel(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::ModelResponse>>(AsyncGetModelRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::ModelResponse>> PrepareAsyncGetModel(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::ModelResponse>>(PrepareAsyncGetModelRaw(context, request, cq));
     }
     class async_interface {
      public:
       virtual ~async_interface() {}
-      virtual void GetModel(::grpc::ClientContext* context, const ::ModelRequest* request, ::ModelResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetModel(::grpc::ClientContext* context, const ::ModelRequest* request, ::ModelResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void GetModel(::grpc::ClientContext* context, const ::ModelRequest* request, ::grpc::ClientReadReactor< ::ModelResponse>* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
    private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::ModelResponse>* AsyncGetModelRaw(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::ModelResponse>* PrepareAsyncGetModelRaw(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::ModelResponse>* GetModelRaw(::grpc::ClientContext* context, const ::ModelRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::ModelResponse>* AsyncGetModelRaw(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::ModelResponse>* PrepareAsyncGetModelRaw(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
-    ::grpc::Status GetModel(::grpc::ClientContext* context, const ::ModelRequest& request, ::ModelResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::ModelResponse>> AsyncGetModel(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::ModelResponse>>(AsyncGetModelRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientReader< ::ModelResponse>> GetModel(::grpc::ClientContext* context, const ::ModelRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::ModelResponse>>(GetModelRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::ModelResponse>> PrepareAsyncGetModel(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::ModelResponse>>(PrepareAsyncGetModelRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::ModelResponse>> AsyncGetModel(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::ModelResponse>>(AsyncGetModelRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::ModelResponse>> PrepareAsyncGetModel(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::ModelResponse>>(PrepareAsyncGetModelRaw(context, request, cq));
     }
     class async final :
       public StubInterface::async_interface {
      public:
-      void GetModel(::grpc::ClientContext* context, const ::ModelRequest* request, ::ModelResponse* response, std::function<void(::grpc::Status)>) override;
-      void GetModel(::grpc::ClientContext* context, const ::ModelRequest* request, ::ModelResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void GetModel(::grpc::ClientContext* context, const ::ModelRequest* request, ::grpc::ClientReadReactor< ::ModelResponse>* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -81,8 +84,9 @@ class ModelLoader final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class async async_stub_{this};
-    ::grpc::ClientAsyncResponseReader< ::ModelResponse>* AsyncGetModelRaw(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::ModelResponse>* PrepareAsyncGetModelRaw(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::ModelResponse>* GetModelRaw(::grpc::ClientContext* context, const ::ModelRequest& request) override;
+    ::grpc::ClientAsyncReader< ::ModelResponse>* AsyncGetModelRaw(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::ModelResponse>* PrepareAsyncGetModelRaw(::grpc::ClientContext* context, const ::ModelRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_GetModel_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
@@ -91,7 +95,7 @@ class ModelLoader final {
    public:
     Service();
     virtual ~Service();
-    virtual ::grpc::Status GetModel(::grpc::ServerContext* context, const ::ModelRequest* request, ::ModelResponse* response);
+    virtual ::grpc::Status GetModel(::grpc::ServerContext* context, const ::ModelRequest* request, ::grpc::ServerWriter< ::ModelResponse>* writer);
   };
   template <class BaseClass>
   class WithAsyncMethod_GetModel : public BaseClass {
@@ -105,12 +109,12 @@ class ModelLoader final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::ModelRequest* /*request*/, ::ModelResponse* /*response*/) override {
+    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::ModelRequest* /*request*/, ::grpc::ServerWriter< ::ModelResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetModel(::grpc::ServerContext* context, ::ModelRequest* request, ::grpc::ServerAsyncResponseWriter< ::ModelResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    void RequestGetModel(::grpc::ServerContext* context, ::ModelRequest* request, ::grpc::ServerAsyncWriter< ::ModelResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(0, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   typedef WithAsyncMethod_GetModel<Service > AsyncService;
@@ -121,25 +125,20 @@ class ModelLoader final {
    public:
     WithCallbackMethod_GetModel() {
       ::grpc::Service::MarkMethodCallback(0,
-          new ::grpc::internal::CallbackUnaryHandler< ::ModelRequest, ::ModelResponse>(
+          new ::grpc::internal::CallbackServerStreamingHandler< ::ModelRequest, ::ModelResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::ModelRequest* request, ::ModelResponse* response) { return this->GetModel(context, request, response); }));}
-    void SetMessageAllocatorFor_GetModel(
-        ::grpc::MessageAllocator< ::ModelRequest, ::ModelResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::ModelRequest, ::ModelResponse>*>(handler)
-              ->SetMessageAllocator(allocator);
+                   ::grpc::CallbackServerContext* context, const ::ModelRequest* request) { return this->GetModel(context, request); }));
     }
     ~WithCallbackMethod_GetModel() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::ModelRequest* /*request*/, ::ModelResponse* /*response*/) override {
+    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::ModelRequest* /*request*/, ::grpc::ServerWriter< ::ModelResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* GetModel(
-      ::grpc::CallbackServerContext* /*context*/, const ::ModelRequest* /*request*/, ::ModelResponse* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerWriteReactor< ::ModelResponse>* GetModel(
+      ::grpc::CallbackServerContext* /*context*/, const ::ModelRequest* /*request*/)  { return nullptr; }
   };
   typedef WithCallbackMethod_GetModel<Service > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
@@ -155,7 +154,7 @@ class ModelLoader final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::ModelRequest* /*request*/, ::ModelResponse* /*response*/) override {
+    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::ModelRequest* /*request*/, ::grpc::ServerWriter< ::ModelResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -172,12 +171,12 @@ class ModelLoader final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::ModelRequest* /*request*/, ::ModelResponse* /*response*/) override {
+    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::ModelRequest* /*request*/, ::grpc::ServerWriter< ::ModelResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetModel(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    void RequestGetModel(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(0, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -187,51 +186,51 @@ class ModelLoader final {
    public:
     WithRawCallbackMethod_GetModel() {
       ::grpc::Service::MarkMethodRawCallback(0,
-          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetModel(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->GetModel(context, request); }));
     }
     ~WithRawCallbackMethod_GetModel() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::ModelRequest* /*request*/, ::ModelResponse* /*response*/) override {
+    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::ModelRequest* /*request*/, ::grpc::ServerWriter< ::ModelResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* GetModel(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* GetModel(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
+  typedef Service StreamedUnaryService;
   template <class BaseClass>
-  class WithStreamedUnaryMethod_GetModel : public BaseClass {
+  class WithSplitStreamingMethod_GetModel : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_GetModel() {
+    WithSplitStreamingMethod_GetModel() {
       ::grpc::Service::MarkMethodStreamed(0,
-        new ::grpc::internal::StreamedUnaryHandler<
+        new ::grpc::internal::SplitServerStreamingHandler<
           ::ModelRequest, ::ModelResponse>(
             [this](::grpc::ServerContext* context,
-                   ::grpc::ServerUnaryStreamer<
+                   ::grpc::ServerSplitStreamer<
                      ::ModelRequest, ::ModelResponse>* streamer) {
                        return this->StreamedGetModel(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_GetModel() override {
+    ~WithSplitStreamingMethod_GetModel() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::ModelRequest* /*request*/, ::ModelResponse* /*response*/) override {
+    ::grpc::Status GetModel(::grpc::ServerContext* /*context*/, const ::ModelRequest* /*request*/, ::grpc::ServerWriter< ::ModelResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedGetModel(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::ModelRequest,::ModelResponse>* server_unary_streamer) = 0;
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedGetModel(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::ModelRequest,::ModelResponse>* server_split_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetModel<Service > StreamedUnaryService;
-  typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetModel<Service > StreamedService;
+  typedef WithSplitStreamingMethod_GetModel<Service > SplitStreamedService;
+  typedef WithSplitStreamingMethod_GetModel<Service > StreamedService;
 };
 
 

@@ -35,41 +35,44 @@ class TransformTexSync final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    virtual ::grpc::Status GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::TransformTexResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>> AsyncGetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>>(AsyncGetTransformTexRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::TransformTexResponse>> GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::TransformTexResponse>>(GetTransformTexRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>> PrepareAsyncGetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>>(PrepareAsyncGetTransformTexRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::TransformTexResponse>> AsyncGetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::TransformTexResponse>>(AsyncGetTransformTexRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::TransformTexResponse>> PrepareAsyncGetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::TransformTexResponse>>(PrepareAsyncGetTransformTexRaw(context, request, cq));
     }
     class async_interface {
      public:
       virtual ~async_interface() {}
-      virtual void GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest* request, ::grpc::ClientReadReactor< ::TransformTexResponse>* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
    private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>* AsyncGetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::TransformTexResponse>* PrepareAsyncGetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::TransformTexResponse>* GetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::TransformTexResponse>* AsyncGetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::TransformTexResponse>* PrepareAsyncGetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
-    ::grpc::Status GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::TransformTexResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>> AsyncGetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>>(AsyncGetTransformTexRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientReader< ::TransformTexResponse>> GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::TransformTexResponse>>(GetTransformTexRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>> PrepareAsyncGetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>>(PrepareAsyncGetTransformTexRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::TransformTexResponse>> AsyncGetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::TransformTexResponse>>(AsyncGetTransformTexRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::TransformTexResponse>> PrepareAsyncGetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::TransformTexResponse>>(PrepareAsyncGetTransformTexRaw(context, request, cq));
     }
     class async final :
       public StubInterface::async_interface {
      public:
-      void GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response, std::function<void(::grpc::Status)>) override;
-      void GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest* request, ::grpc::ClientReadReactor< ::TransformTexResponse>* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -81,8 +84,9 @@ class TransformTexSync final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class async async_stub_{this};
-    ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>* AsyncGetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::TransformTexResponse>* PrepareAsyncGetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::TransformTexResponse>* GetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request) override;
+    ::grpc::ClientAsyncReader< ::TransformTexResponse>* AsyncGetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::TransformTexResponse>* PrepareAsyncGetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_GetTransformTex_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
@@ -91,7 +95,7 @@ class TransformTexSync final {
    public:
     Service();
     virtual ~Service();
-    virtual ::grpc::Status GetTransformTex(::grpc::ServerContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response);
+    virtual ::grpc::Status GetTransformTex(::grpc::ServerContext* context, const ::TransformTexRequest* request, ::grpc::ServerWriter< ::TransformTexResponse>* writer);
   };
   template <class BaseClass>
   class WithAsyncMethod_GetTransformTex : public BaseClass {
@@ -105,12 +109,12 @@ class TransformTexSync final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
+    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::grpc::ServerWriter< ::TransformTexResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetTransformTex(::grpc::ServerContext* context, ::TransformTexRequest* request, ::grpc::ServerAsyncResponseWriter< ::TransformTexResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    void RequestGetTransformTex(::grpc::ServerContext* context, ::TransformTexRequest* request, ::grpc::ServerAsyncWriter< ::TransformTexResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(0, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   typedef WithAsyncMethod_GetTransformTex<Service > AsyncService;
@@ -121,25 +125,20 @@ class TransformTexSync final {
    public:
     WithCallbackMethod_GetTransformTex() {
       ::grpc::Service::MarkMethodCallback(0,
-          new ::grpc::internal::CallbackUnaryHandler< ::TransformTexRequest, ::TransformTexResponse>(
+          new ::grpc::internal::CallbackServerStreamingHandler< ::TransformTexRequest, ::TransformTexResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response) { return this->GetTransformTex(context, request, response); }));}
-    void SetMessageAllocatorFor_GetTransformTex(
-        ::grpc::MessageAllocator< ::TransformTexRequest, ::TransformTexResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::TransformTexRequest, ::TransformTexResponse>*>(handler)
-              ->SetMessageAllocator(allocator);
+                   ::grpc::CallbackServerContext* context, const ::TransformTexRequest* request) { return this->GetTransformTex(context, request); }));
     }
     ~WithCallbackMethod_GetTransformTex() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
+    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::grpc::ServerWriter< ::TransformTexResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* GetTransformTex(
-      ::grpc::CallbackServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerWriteReactor< ::TransformTexResponse>* GetTransformTex(
+      ::grpc::CallbackServerContext* /*context*/, const ::TransformTexRequest* /*request*/)  { return nullptr; }
   };
   typedef WithCallbackMethod_GetTransformTex<Service > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
@@ -155,7 +154,7 @@ class TransformTexSync final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
+    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::grpc::ServerWriter< ::TransformTexResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -172,12 +171,12 @@ class TransformTexSync final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
+    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::grpc::ServerWriter< ::TransformTexResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetTransformTex(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    void RequestGetTransformTex(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(0, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -187,51 +186,51 @@ class TransformTexSync final {
    public:
     WithRawCallbackMethod_GetTransformTex() {
       ::grpc::Service::MarkMethodRawCallback(0,
-          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetTransformTex(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->GetTransformTex(context, request); }));
     }
     ~WithRawCallbackMethod_GetTransformTex() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
+    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::grpc::ServerWriter< ::TransformTexResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* GetTransformTex(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* GetTransformTex(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
+  typedef Service StreamedUnaryService;
   template <class BaseClass>
-  class WithStreamedUnaryMethod_GetTransformTex : public BaseClass {
+  class WithSplitStreamingMethod_GetTransformTex : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_GetTransformTex() {
+    WithSplitStreamingMethod_GetTransformTex() {
       ::grpc::Service::MarkMethodStreamed(0,
-        new ::grpc::internal::StreamedUnaryHandler<
+        new ::grpc::internal::SplitServerStreamingHandler<
           ::TransformTexRequest, ::TransformTexResponse>(
             [this](::grpc::ServerContext* context,
-                   ::grpc::ServerUnaryStreamer<
+                   ::grpc::ServerSplitStreamer<
                      ::TransformTexRequest, ::TransformTexResponse>* streamer) {
                        return this->StreamedGetTransformTex(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_GetTransformTex() override {
+    ~WithSplitStreamingMethod_GetTransformTex() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::TransformTexResponse* /*response*/) override {
+    ::grpc::Status GetTransformTex(::grpc::ServerContext* /*context*/, const ::TransformTexRequest* /*request*/, ::grpc::ServerWriter< ::TransformTexResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedGetTransformTex(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::TransformTexRequest,::TransformTexResponse>* server_unary_streamer) = 0;
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedGetTransformTex(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::TransformTexRequest,::TransformTexResponse>* server_split_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetTransformTex<Service > StreamedUnaryService;
-  typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetTransformTex<Service > StreamedService;
+  typedef WithSplitStreamingMethod_GetTransformTex<Service > SplitStreamedService;
+  typedef WithSplitStreamingMethod_GetTransformTex<Service > StreamedService;
 };
 
 

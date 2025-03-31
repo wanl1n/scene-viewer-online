@@ -31,52 +31,45 @@ std::unique_ptr< TransformTexSync::Stub> TransformTexSync::NewStub(const std::sh
 }
 
 TransformTexSync::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
-  : channel_(channel), rpcmethod_GetTransformTex_(TransformTexSync_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  : channel_(channel), rpcmethod_GetTransformTex_(TransformTexSync_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   {}
 
-::grpc::Status TransformTexSync::Stub::GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::TransformTexResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::TransformTexRequest, ::TransformTexResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetTransformTex_, context, request, response);
+::grpc::ClientReader< ::TransformTexResponse>* TransformTexSync::Stub::GetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::TransformTexResponse>::Create(channel_.get(), rpcmethod_GetTransformTex_, context, request);
 }
 
-void TransformTexSync::Stub::async::GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::TransformTexRequest, ::TransformTexResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetTransformTex_, context, request, response, std::move(f));
+void TransformTexSync::Stub::async::GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest* request, ::grpc::ClientReadReactor< ::TransformTexResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::TransformTexResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_GetTransformTex_, context, request, reactor);
 }
 
-void TransformTexSync::Stub::async::GetTransformTex(::grpc::ClientContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetTransformTex_, context, request, response, reactor);
+::grpc::ClientAsyncReader< ::TransformTexResponse>* TransformTexSync::Stub::AsyncGetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::TransformTexResponse>::Create(channel_.get(), cq, rpcmethod_GetTransformTex_, context, request, true, tag);
 }
 
-::grpc::ClientAsyncResponseReader< ::TransformTexResponse>* TransformTexSync::Stub::PrepareAsyncGetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::TransformTexResponse, ::TransformTexRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetTransformTex_, context, request);
-}
-
-::grpc::ClientAsyncResponseReader< ::TransformTexResponse>* TransformTexSync::Stub::AsyncGetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) {
-  auto* result =
-    this->PrepareAsyncGetTransformTexRaw(context, request, cq);
-  result->StartCall();
-  return result;
+::grpc::ClientAsyncReader< ::TransformTexResponse>* TransformTexSync::Stub::PrepareAsyncGetTransformTexRaw(::grpc::ClientContext* context, const ::TransformTexRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::TransformTexResponse>::Create(channel_.get(), cq, rpcmethod_GetTransformTex_, context, request, false, nullptr);
 }
 
 TransformTexSync::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       TransformTexSync_method_names[0],
-      ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< TransformTexSync::Service, ::TransformTexRequest, ::TransformTexResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< TransformTexSync::Service, ::TransformTexRequest, ::TransformTexResponse>(
           [](TransformTexSync::Service* service,
              ::grpc::ServerContext* ctx,
              const ::TransformTexRequest* req,
-             ::TransformTexResponse* resp) {
-               return service->GetTransformTex(ctx, req, resp);
+             ::grpc::ServerWriter<::TransformTexResponse>* writer) {
+               return service->GetTransformTex(ctx, req, writer);
              }, this)));
 }
 
 TransformTexSync::Service::~Service() {
 }
 
-::grpc::Status TransformTexSync::Service::GetTransformTex(::grpc::ServerContext* context, const ::TransformTexRequest* request, ::TransformTexResponse* response) {
+::grpc::Status TransformTexSync::Service::GetTransformTex(::grpc::ServerContext* context, const ::TransformTexRequest* request, ::grpc::ServerWriter< ::TransformTexResponse>* writer) {
   (void) context;
   (void) request;
-  (void) response;
+  (void) writer;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 

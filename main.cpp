@@ -288,6 +288,7 @@ int main()
     std::vector<Client> clients;
     clients.emplace_back(1); 
 
+    // Run all Clients
     for (auto& client : clients)
     {
         client.runClient();
@@ -302,6 +303,18 @@ int main()
 
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the depth buffer as well
+
+
+        // Check if clients have loaded their scenes
+        for (auto& client : clients)
+        {
+	        if (client.isSceneLoaded())
+	        {
+                client.createModels();
+	        }
+        }
+
+
 
         // ----------------------- UPDATING VALUES -------------------------- //        
         // Camera Switching Controls
