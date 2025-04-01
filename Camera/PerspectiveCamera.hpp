@@ -17,11 +17,6 @@ namespace cameras {
 
 			glm::vec3 panRotate;
 			glm::vec3 panCenter;
-			glm::vec3 rotation;
-
-			glm::mat4 prevCamMat;
-			float forward = 0;
-			float right = 0;
 
 			float speed = 1.f;
 
@@ -32,20 +27,13 @@ namespace cameras {
 		
 		// Behavior
 			void calcMouseRotate(float pitch, float yaw);
-			void pan();
 			void setCenter(glm::vec3 offset);
 			void zoom(float delta);
-			static glm::vec3 getZDirection(const glm::mat4& matrix);
-			static glm::vec3 getXDirection(const glm::mat4& matrix);
-			static glm::vec3 getTranslation(const glm::mat4& matrix);
-			glm::mat4 setTranslation(glm::mat4 mat, const glm::vec3& translation);
 
 			void moveLeft();
 			void moveRight();
 			void moveForward();
 			void moveBackward();
-			void idle();
-			void rotate(glm::vec3 rotation);
 	};
 }
 

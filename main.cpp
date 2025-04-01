@@ -226,7 +226,7 @@ int main()
         prev_ypos = ypos;
 
         // Sensitivity factor (adjustable)
-        float sensitivity = 0.1f;
+        float sensitivity = 0.2f;
 
         // Accumulate yaw & pitch based on movement
         yaw += glm::radians(x_mod * sensitivity);
@@ -256,10 +256,6 @@ int main()
         }
         if (player.isTurningLeft()) { 
 			camera.moveLeft();
-        }
-        if (player.isIdle())
-        {
-            camera.idle();
         }
 		SceneManager::getInstance()->processInput();
 
