@@ -20,64 +20,72 @@ void ModelManager::initialize()
 		glm::vec3(-300.f, 0.f, 0.f),           // pos
 		glm::vec3(0.25f),                   // scale
 		glm::vec3(0.f, 180.f, 0.f));          // rotate
-	this->addObject(tank);
 
 	Model* moon = new Model("3D/Moon.obj", "", "", "Moon",
 		glm::vec3(-200.f, 0, 0.f), // pos
 		glm::vec3(10.f),                // scale
 		glm::vec3(0.f),                 // rotate
 		glm::vec4(238.f / 255.f, 228.f / 255.f, 170.f / 255.f, 1.f)); // color
-	this->addObject(moon);
 
 	Model* ground = new Model("3D/Ground/Ground.obj", "3D/Ground/AddWater_basecolor.png", "3D/Ground/AddWater_normal.png", "Ground",
 		glm::vec3(-100.f, 0.f, 0.f),           //pos
 		glm::vec3(100.f),                     //scale
 		glm::vec3(0.f, 0.f, 0.f));         //rotate
-	this->addObject(ground);
 
-	//Model* ant = new Model("3D/Obstacles/Ant/ant1.obj", "3D/Obstacles/Ant/ant_(1).png", "", "Ant",
-	//	glm::vec3(-150.f, 0.f, -200.f),     //pos
-	//	glm::vec3(0.03f),                   //scale
-	//	glm::vec3(0.f, 60.f, 0.f));         //rotate
-	//this->addObject(ant);
+	Model* ant = new Model("3D/Obstacles/Ant/ant1.obj", "3D/Obstacles/Ant/ant_(1).png", "", "Ant",
+		glm::vec3(-150.f, 0.f, -200.f),     //pos
+		glm::vec3(0.03f),                   //scale
+		glm::vec3(0.f, 60.f, 0.f));         //rotate
 
 	Model* grass = new Model("3D/Obstacles/Grass/Grass.obj", "3D/Obstacles/Grass/GrassTex.png", "", "Grass",
 		glm::vec3(0.f, 0.f, 0.f),      //pos
 		glm::vec3(0.2f),                    //scale
 		glm::vec3(0.f, 60.f, 0.f));         //rotate
-	this->addObject(grass);
 
 	Model* mouse = new Model("3D/Obstacles/Mouse/Mouse.obj", "3D/Obstacles/Mouse/MouseTex.png", "", "Mouse",
 		glm::vec3(100.f, 0.f, 0.f),        //pos
 		glm::vec3(10000.f),                 //scale
 		glm::vec3(0.f, 60.f, 0.f));         //rotate
-	this->addObject(mouse);
 
 	Model* flower = new Model("3D/Obstacles/Flowers/Flower.obj", "3D/Obstacles/Flowers/FlowerTexA.png", "", "Flower",
 		glm::vec3(0.f, 0.f, 0.f),        //pos
 		glm::vec3(250.f),                   //scale
 		glm::vec3(0.f, 60.f, 0.f));         //rotate
+
+	Model* tractor = new Model("3D/Obstacles/Car/Tractor.obj", "3D/Obstacles/Car/TractorTex.jpg", "", "Tractor",
+		glm::vec3(-100.f, 0.f, 0.f),        //pos
+		glm::vec3(3.f),                     //scale
+		glm::vec3(0.f, 60.f, 0.f));         //rotate
+
+	// Scene 1
+	this->addObject(tank);
+	this->addObject(moon);
+	this->addObject(ground);
+	this->addObject(grass);
+	this->addObject(mouse);
+
+	// Scene 2
+	this->addObject(ant);
+	this->addObject(tractor);
+	this->addObject(flower);
+	this->addObject(flower);
 	this->addObject(flower);
 
-	//Model* tractor = new Model("3D/Obstacles/Car/Tractor.obj", "3D/Obstacles/Car/TractorTex.jpg", "", "Tractor",
-	//	glm::vec3(-100.f, 0.f, 0.f),        //pos
-	//	glm::vec3(3.f),                     //scale
-	//	glm::vec3(0.f, 60.f, 0.f));         //rotate
-	//this->addObject(tractor);
-	this->addObject(flower);
-	this->addObject(flower);
-	this->addObject(flower);
-	this->addObject(flower);
+	// Scene 3
 	this->addObject(mouse);
 	this->addObject(mouse);
 	this->addObject(mouse);
 	this->addObject(mouse);
 	this->addObject(mouse);
+
+	// Scene 4
 	this->addObject(grass);
 	this->addObject(grass);
 	this->addObject(grass);
 	this->addObject(grass);
 	this->addObject(grass);
+
+	// Scene 5
 	this->addObject(moon);
 	this->addObject(moon);
 	this->addObject(moon);

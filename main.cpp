@@ -10,7 +10,6 @@
 // Cameras
 #include "Camera/MyCamera.hpp"
 #include "Camera/PerspectiveCamera.hpp"
-#include "Camera/OrthoCamera.hpp"
 
 // Lights
 #include "Light/Light.hpp"
@@ -40,18 +39,15 @@ using namespace shaders;
 using namespace players;
 
 // Global Variables
-float width = 600.f;
-float height = 600.f;
-float speed = 1.5f;
+float width = 1280.f;
+float height = 720.f;
 
 // Player contains the states of the player tank.
 Player player = Player(NULL);
 
 // Camera global variables
-float radius = 50.f;
 float pitch = 0.f; // initial pitch is 0 degrees (positive x axis)
 float yaw = 270.f; // initial yaw is 270 degrees (-90 degrees of positive x axis; negative z axis)
-float yrot = 90.f;
 
 // Mouse variables
 double prev_xpos = width / 2;
@@ -165,10 +161,10 @@ int main()
 
     // Cameras
     PerspectiveCamera camera = PerspectiveCamera(60.f, height, width, 0.1f, 1000.f,
-                                                                        glm::vec3(0.f, 100.f, -10.f), 
-                                                                        glm::vec3(0.f, 1.f, 0.f), 
-                                                                        glm::vec3(0.f, 0.f, -5.f));
-    // Set the initial camera to the third person perspective camera
+                                                glm::vec3(0.f, 100.f, -10.f), 
+                                                glm::vec3(0.f, 1.f, 0.f), 
+                                                glm::vec3(0.f, 0.f, -5.f));
+	// Set the initial camera to the third person perspective camera
     MyCamera* mainCamera = &camera;
 
     // Enable Blending
@@ -191,6 +187,11 @@ int main()
         client.runClient();
     }
 
+    double xpos, ypos;
+    glfwGetCursorPos(window, &xpos, &ypos);
+	prev_xpos = xpos;
+	prev_ypos = ypos;
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -212,11 +213,7 @@ int main()
         }
 
         // ----------------------- UPDATING VALUES -------------------------- //        
-        // Set the current camera to the third person perspective camera to drive the tank.
-        mainCamera = &camera;
-
         // First get the mouse position
-        double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
 
         // Calculate how much the mouse moved in x direction
@@ -228,10 +225,17 @@ int main()
         prev_xpos = xpos;
         prev_ypos = ypos;
 
-        yaw = glm::radians((xpos / (width / 2)) * -90);
-        pitch = glm::radians((ypos / (height / 2)) * -90);
+        // Sensitivity factor (adjustable)
+        float sensitivity = 0.1f;
+
+        // Accumulate yaw & pitch based on movement
+        yaw += glm::radians(x_mod * sensitivity);
+        pitch += glm::radians(y_mod * sensitivity);
+
+        /*yaw = glm::radians((xpos / (width / 2)) * -90);
+        pitch = glm::radians((ypos / (height / 2)) * -90);*/
         // Calculate the rotation of the camera based on the mouse position.
-        camera.calcMouseRotate(pitch, yaw);
+        camera.calcMouseRotate(pitch, -yaw);
 
         // Set the color of the lights to white since its not in night vision mode.
         headlights.setColor(glm::vec3(1, 1, 1));
@@ -252,6 +256,10 @@ int main()
         }
         if (player.isTurningLeft()) { 
 			camera.moveLeft();
+        }
+        if (player.isIdle())
+        {
+            camera.idle();
         }
 		SceneManager::getInstance()->processInput();
 

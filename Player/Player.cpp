@@ -121,6 +121,11 @@ bool Player::isAdjustingHeadlights() {
     return adjustheadlightsIntensity;
 }
 
+bool Player::isIdle()
+{
+	return !movingForward && !movingBackward && !turningLeft && !turningRight;
+}
+
 int Player::getHeadlightsIntensity() {
     return headlightsIntensity;
 }

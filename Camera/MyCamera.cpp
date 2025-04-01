@@ -11,7 +11,7 @@ MyCamera::MyCamera(glm::vec3 pos, glm::vec3 worldUp, glm::vec3 center)
 
 // Passes the attributes to the shader program.
 void MyCamera::updateShaderViewProj(GLuint* shaderProgram) {
-	this->viewMatrix = glm::lookAt(this->pos, this->center, this->worldUp);
+	//this->viewMatrix = glm::lookAt(this->pos, this->center, this->worldUp);
 
 	/* VIEW MATRIX */
 	unsigned int viewLoc = glGetUniformLocation(*shaderProgram, "view");

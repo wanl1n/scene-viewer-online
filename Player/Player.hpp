@@ -74,6 +74,7 @@ namespace players {
 			bool isDroningRight();
 			bool isDroningLeft();
 			bool isAdjustingHeadlights();
+			bool isIdle();
 
 			int getHeadlightsIntensity();
 			float getLowIntensity();
