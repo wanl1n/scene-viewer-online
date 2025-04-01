@@ -27,7 +27,7 @@ namespace cameras {
 		
 			// Behavior
 		public:
-			void calcMouseRotate(float pitch, float yaw, glm::vec3 tankPos);
+			void calcMouseRotate(float pitch, float yaw);
 			void setCenter(glm::vec3 offset);
 			void zoom(float delta);
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "Scene.h"
-#include "../Threading/ThreadPool.h"
+#include "../Thread/ThreadPool.h"
 
 class SceneManager
 {

@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "../Threading/SceneLoader.h"
+#include "../Thread/SceneLoader.h"
 
 //a singleton class
 SceneManager* SceneManager::sharedInstance = nullptr;
@@ -21,7 +21,7 @@ void SceneManager::initialize()
 	this->threadPool = new ThreadPool("Scene Manager Thread Pool", 1);
 	this->threadPool->startScheduler();
 
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 5; i++) {
 		Scene* scene = new Scene(i);
 		scene->initializeDisplay();
 		this->addScene(scene);

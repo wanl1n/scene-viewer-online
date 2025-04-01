@@ -27,8 +27,10 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "Model/ModelManager.h"
 #include "Networking/Client.h"
 #include "Networking/Server.h"
+#include "Scene/SceneManager.h"
 
 // Namespaces of the other classes
 using namespace models;
@@ -123,57 +125,15 @@ int main()
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330"); 
 
-    // Loading the objects
-    // Main Tank Model
-    Model tank = Model("3D/Tank/M1A1.obj", "3D/Tank/TankTex.png", "3D/Tank/TankNorm.png", "Tank",
-                        glm::vec3(0.f, 0.f, 0.f),           // pos
-                        glm::vec3(0.25f),                   // scale
-                        glm::vec3(0.f, 180.f, 0.f));          // rotate
     // Moon / Direction Light model
     Model lightModel = Model("3D/Moon.obj", "", "", "Moon",
                             glm::vec3(-100.f, 1000.f, -30.f), // pos
                             glm::vec3(10.f),                // scale
                             glm::vec3(0.f),                 // rotate
                             glm::vec4(238.f / 255.f, 228.f / 255.f, 170.f / 255.f, 1.f)); // color
-    // Environment
-	Model ground = Model("3D/Ground/Ground.obj", "3D/Ground/AddWater_basecolor.png", "3D/Ground/AddWater_normal.png", "Ground",
-                        glm::vec3(0.f, 0.f, 0.f),           //pos
-                        glm::vec3(100.f),                     //scale
-                        glm::vec3(0.f, 0.f, 0.f));         //rotate
-    //stone.loadSticker(); // This adds the Barabara sticker/drawing texture to the rock.
-    //Model ant = Model("3D/Obstacles/Ant/ant1.obj", "3D/Obstacles/Ant/ant_(1).png", "",
-    //                    glm::vec3(-150.f, 0.f, -200.f),     //pos
-    //                    glm::vec3(0.03f),                   //scale
-    //                    glm::vec3(0.f, 60.f, 0.f));         //rotate
-	Model grass = Model("3D/Obstacles/Grass/Grass.obj", "3D/Obstacles/Grass/GrassTex.png", "", "Grass",
-                        glm::vec3(-250.f, 0.f, -400.f),      //pos
-                        glm::vec3(0.2f),                    //scale
-                        glm::vec3(0.f, 60.f, 0.f));         //rotate
-	Model mouse = Model("3D/Obstacles/Mouse/Mouse.obj", "3D/Obstacles/Mouse/MouseTex.png", "", "Mouse",
-                        glm::vec3(0.f, 0.f, -550.f),        //pos
-                        glm::vec3(10000.f),                 //scale
-                        glm::vec3(0.f, 60.f, 0.f));         //rotate
-	Model flower = Model("3D/Obstacles/Flowers/Flower.obj", "3D/Obstacles/Flowers/FlowerTexA.png", "", "Flower",
-                        glm::vec3(0.f, 0.f, -300.f),        //pos
-                        glm::vec3(250.f),                   //scale
-                        glm::vec3(0.f, 60.f, 0.f));         //rotate
-    //Model tractor = Model("3D/Obstacles/Car/Tractor.obj", "3D/Obstacles/Car/TractorTex.jpg", "",
-    //                    glm::vec3(-100.f, 0.f, 0.f),        //pos
-    //                    glm::vec3(3.f),                     //scale
-    //                    glm::vec3(0.f, 60.f, 0.f));         //rotate
-
-    // Save the Tank model to the player.
-    player.setModel(&tank);
-
-    // Create a vector of objects around the Player and store all the surrounding objects with the ground at the top.
-    std::vector<Model> environment;
-    environment.push_back(ground);
-    //environment.push_back(stone);
-    //environment.push_back(ant);
-    environment.push_back(grass);
-    environment.push_back(mouse);
-    environment.push_back(flower);
-    //environment.push_back(tractor);
+	ModelManager::getInstance()->initialize();
+    SceneManager::getInstance()->initialize();
+    //std::vector<Model*> environment = ModelManager::getInstance()->getRandomModels();
 
     // Creating the shader for the objects
     Shader litShader = Shader("Shaders/sample.vert", "Shaders/sample.frag");
@@ -185,11 +145,11 @@ int main()
     // Direction Light: From the Moon 
     DirectionLight moonlight = DirectionLight(lightModel.getPosition(), glm::vec3(0.f), lightModel.getColor(), 1.0f);
     // Spot Light: Position is at front of tank (Class name is point light but it was extended to Spot Light as a bonus)
-    PointLight headlights = PointLight(glm::vec3(tank.getPosition().x, tank.getPosition().y + 50.f, tank.getPosition().z - 57.f), glm::vec3(1.f), 200.f);
+    PointLight headlights = PointLight(glm::vec3(0), glm::vec3(1.f), 200.f);
 
     // Cameras
-    PerspectiveCamera camera = PerspectiveCamera(60.f, height, width, 0.1f, 300.f,
-                                                                        glm::vec3(0.f, 10.f, -10.f), 
+    PerspectiveCamera camera = PerspectiveCamera(60.f, height, width, 0.1f, 1000.f,
+                                                                        glm::vec3(0.f, 100.f, -10.f), 
                                                                         glm::vec3(0.f, 1.f, 0.f), 
                                                                         glm::vec3(0.f, 0.f, -5.f));
     // Set the initial camera to the third person perspective camera
@@ -255,7 +215,7 @@ int main()
         yaw = glm::radians((xpos / (width / 2)) * -90);
         pitch = glm::radians((ypos / (height / 2)) * -90);
         // Calculate the rotation of the camera based on the mouse position.
-        camera.calcMouseRotate(pitch, yaw, tank.getPosition());
+        camera.calcMouseRotate(pitch, yaw);
 
         // Set the color of the lights to white since its not in night vision mode.
         headlights.setColor(glm::vec3(1, 1, 1));
@@ -277,7 +237,10 @@ int main()
         if (player.isTurningLeft()) { 
 			camera.moveLeft();
         }
+		SceneManager::getInstance()->processInput();
 
+        ModelManager::getInstance()->update(1);
+        SceneManager::getInstance()->update(1);
     	// ---------------------- RENDERING OBJECTS ------------------------- //
         // First draw the skybox
         skybox.draw(mainCamera->getViewMatrix(), mainCamera->getProjMatrix(), player.isUsingBinoculars());
@@ -285,20 +248,12 @@ int main()
         // Reset the shader program for the objects.
         glUseProgram(*litShader.getShaderProgram());
 
-        // Moon / Directional Light Source - Uncomment this to see where the light source is.
-        //lightModel.draw(litShader.getShaderProgram(), false);
-
         // Applying the lighting to the shader program for the objects.
         moonlight.applyUniqueValuesToShader(litShader.getShaderProgram());
         headlights.applyUniqueValuesToShader(litShader.getShaderProgram());
 
-        // Draw Main Object
-        tank.draw(litShader.getShaderProgram(), true);
-
         // Draw the environment
-        for(Model model : environment) {
-            model.draw(litShader.getShaderProgram(), true);
-        }
+		ModelManager::getInstance()->draw(litShader.getShaderProgram(), true);
 
         for (auto& client : clients) 
         {

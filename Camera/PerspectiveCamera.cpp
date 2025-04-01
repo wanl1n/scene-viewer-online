@@ -24,7 +24,7 @@ PerspectiveCamera::PerspectiveCamera(float FOV, float window_height, float windo
 	);
 }
 
-void PerspectiveCamera::calcMouseRotate(float pitch, float yaw, glm::vec3 tankPos) {
+void PerspectiveCamera::calcMouseRotate(float pitch, float yaw) {
 
 	// Limiting the degree in case of flipping.
 	if (yaw > 89.9f) yaw = 89.9f;

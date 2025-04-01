@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "../Model/Model.hpp"
-#include "../Threading/IExecutionEvent.h"
+#include "../Thread/IExecutionEvent.h"
 
 using namespace models;
 
