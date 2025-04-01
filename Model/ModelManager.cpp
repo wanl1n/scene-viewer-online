@@ -68,16 +68,21 @@ void ModelManager::initialize()
 	this->addObject(flower);
 	this->addObject(flower);
 	this->addObject(flower);
-	this->addObject(flower);
-	this->addObject(flower);
-	this->addObject(flower);
-	this->addObject(flower);
-	this->addObject(flower);
-	this->addObject(flower);
-	this->addObject(flower);
-	this->addObject(flower);
-	this->addObject(flower);
-	this->addObject(flower);
+	this->addObject(mouse);
+	this->addObject(mouse);
+	this->addObject(mouse);
+	this->addObject(mouse);
+	this->addObject(mouse);
+	this->addObject(grass);
+	this->addObject(grass);
+	this->addObject(grass);
+	this->addObject(grass);
+	this->addObject(grass);
+	this->addObject(moon);
+	this->addObject(moon);
+	this->addObject(moon);
+	this->addObject(moon);
+	this->addObject(moon);
 
 	std::cout << "Model Manager Initialized: "<<this->modelList.size()<<" models loaded." << std::endl;
 }

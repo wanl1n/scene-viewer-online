@@ -39,9 +39,12 @@ void SceneManager::addScene(Scene* scene)
 
 void SceneManager::loadScene(int sceneID)
 {
-	this->currentScene->unloadScene();
-	this->currentScene = this->scenes[sceneID];
-	this->currentScene->loadScene();
+	if (this->currentScene != scenes[sceneID])
+	{
+		this->currentScene->unloadScene();
+		this->currentScene = this->scenes[sceneID];
+		this->currentScene->loadScene();
+	}
 }
 
 void SceneManager::processInput()

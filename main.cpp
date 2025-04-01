@@ -62,19 +62,19 @@ void Key_Callback(GLFWwindow* window, int key, int scancode, int action, int mod
     // Movement Controls
     if (key == GLFW_KEY_W && action == GLFW_PRESS) {
         // Depending on what view is being used, set true forward/up.
-        if (player.isDrivingTank()) player.setMovingForward(true);
+        player.setMovingForward(true);
     }
     if (key == GLFW_KEY_S && action == GLFW_PRESS) {
         // Depending on what view is being used, set true backward/down.
-        if (player.isDrivingTank()) player.setMovingBackward(true);
+        player.setMovingBackward(true);
     }
     if (key == GLFW_KEY_A && action == GLFW_PRESS) {
         // Depending on what view is being used, set true left.
-        if (player.isDrivingTank()) player.setTurningLeft(true);
+        player.setTurningLeft(true);
     }
     if (key == GLFW_KEY_D && action == GLFW_PRESS) {
         // Depending on what view is being used, set true right.
-        if (player.isDrivingTank()) player.setTurningRight(true);
+        player.setTurningRight(true);
     }
     if (key == GLFW_KEY_W && action == GLFW_RELEASE) {
         // Reset the flags.
@@ -91,6 +91,22 @@ void Key_Callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_D && action == GLFW_RELEASE) {
         // Reset the flags.
         player.setTurningRight(false);
+    }
+
+    if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
+		SceneManager::getInstance()->loadScene(0);
+    }
+    if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
+        SceneManager::getInstance()->loadScene(1);
+    }
+    if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
+        SceneManager::getInstance()->loadScene(2);
+    }
+    if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
+        SceneManager::getInstance()->loadScene(3);
+    }
+    if (key == GLFW_KEY_5 && action == GLFW_PRESS) {
+        SceneManager::getInstance()->loadScene(4);
     }
 }
 

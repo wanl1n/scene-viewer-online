@@ -15,7 +15,7 @@ class ModelManager
 {
 public:
 	static ModelManager* getInstance();
-	void initialize(); // TODO: load model pool.
+	void initialize(); 
 	void update(float deltaTime);
 	void draw(GLuint* shaderProgram, bool texExists);
 
