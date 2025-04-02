@@ -13,7 +13,7 @@ public:
 	void processInput();
 	void update(float deltaTime);
 
-	bool loadingProgress();
+	bool loadingProgress(int sceneID);
 
 private:
 	SceneManager();

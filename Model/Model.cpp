@@ -5,7 +5,7 @@ using namespace models;
 // Initialize all the attributes of model
 Model::Model(std::string strObjPath, const char* pathTex, const char* pathNorm, std::string name,
 	glm::vec3 pos, glm::vec3 scale, glm::vec3 rotate, glm::vec4 color)
-	: pos(pos), scale(scale), rotate(rotate), color(color)
+	: pos(pos), scale(scale), rotate(rotate), color(color), name(name)
 {
 	// Loading the .obj file.
 	this->loadModelData(strObjPath);

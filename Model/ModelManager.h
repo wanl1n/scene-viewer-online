@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include "Model.hpp"
+#include "../Thread/ThreadPool.h"
 
 using namespace models;
 typedef std::unordered_map<std::string, Model*> ModelTable;
@@ -40,4 +41,5 @@ private:
 	ModelTable modelMap;
 	List modelList;
 	int startingIndex = 0;
+	ThreadPool* threadPool;
 };

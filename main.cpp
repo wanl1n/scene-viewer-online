@@ -145,7 +145,6 @@ int main()
                             glm::vec4(238.f / 255.f, 228.f / 255.f, 170.f / 255.f, 1.f)); // color
 	ModelManager::getInstance()->initialize();
     SceneManager::getInstance()->initialize();
-    //std::vector<Model*> environment = ModelManager::getInstance()->getRandomModels();
 
     // Creating the shader for the objects
     Shader litShader = Shader("Shaders/sample.vert", "Shaders/sample.frag");
@@ -154,10 +153,7 @@ int main()
     Skybox skybox = Skybox();
 
     // Light Sources
-    // Direction Light: From the Moon 
     DirectionLight moonlight = DirectionLight(lightModel.getPosition(), glm::vec3(0.f), lightModel.getColor(), 1.0f);
-    // Spot Light: Position is at front of tank (Class name is point light but it was extended to Spot Light as a bonus)
-    PointLight headlights = PointLight(glm::vec3(0), glm::vec3(1.f), 200.f);
 
     // Cameras
     PerspectiveCamera camera = PerspectiveCamera(60.f, height, width, 0.1f, 1000.f,
@@ -189,8 +185,6 @@ int main()
 
     double xpos, ypos;
     glfwGetCursorPos(window, &xpos, &ypos);
-	prev_xpos = xpos;
-	prev_ypos = ypos;
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -232,13 +226,10 @@ int main()
         yaw += glm::radians(x_mod * sensitivity);
         pitch += glm::radians(y_mod * sensitivity);
 
-        /*yaw = glm::radians((xpos / (width / 2)) * -90);
-        pitch = glm::radians((ypos / (height / 2)) * -90);*/
         // Calculate the rotation of the camera based on the mouse position.
         camera.calcMouseRotate(pitch, -yaw);
 
         // Set the color of the lights to white since its not in night vision mode.
-        headlights.setColor(glm::vec3(1, 1, 1));
         moonlight.setColor(glm::vec3(1, 1, 1));
 
         // If Main Camera exists, update the projection and view matrix
@@ -257,6 +248,7 @@ int main()
         if (player.isTurningLeft()) { 
 			camera.moveLeft();
         }
+
 		SceneManager::getInstance()->processInput();
 
         ModelManager::getInstance()->update(1);
@@ -270,7 +262,6 @@ int main()
 
         // Applying the lighting to the shader program for the objects.
         moonlight.applyUniqueValuesToShader(litShader.getShaderProgram());
-        headlights.applyUniqueValuesToShader(litShader.getShaderProgram());
 
         // Draw the environment
 		ModelManager::getInstance()->draw(litShader.getShaderProgram(), true);
@@ -284,7 +275,6 @@ int main()
         }
 
         // Reset lighting to render lightModel unaffected by light
-        headlights.turnOff();
         moonlight.turnOff();
 
         for (auto& client : clients) 

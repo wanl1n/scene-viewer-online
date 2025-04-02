@@ -57,10 +57,11 @@ void SceneManager::update(float deltaTime)
 	this->currentScene->update(deltaTime);
 }
 
-bool SceneManager::loadingProgress()
+bool SceneManager::loadingProgress(int sceneID)
 {
 	//std::cout << "Scene Manager loading progress " << this->SceneMap[Scene::game]->loadingProgress() << std::endl;
-	return 0;
+	return this->scenes[sceneID]->loadingProgress();
+	//return 0;
 }
 
 SceneManager::SceneManager()

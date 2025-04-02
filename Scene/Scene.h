@@ -21,6 +21,7 @@ public:
 	void onFinishedExecution() override;
 
 	int getID() { return id; }
+	float loadingProgress() { return models.size() / 5; }
 	
 private:
 	int id = 0;

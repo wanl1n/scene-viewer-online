@@ -1,7 +1,9 @@
 #include "Client.h"
 #include <imgui.h>
+#include "../Imgui/ImGuiUtils.h"
 #include <grpcpp/create_channel.h>
 #include "../Model/Model.hpp"
+#include "../Scene/SceneManager.h"
 
 Client::Client(const int& sceneID)
 {
@@ -133,6 +135,7 @@ void Client::RenderUI()
     {
         ImGui::BulletText("%s", name.c_str());
     }
+    ImGuiUtils::LoadingBar("Loading Models.", SceneManager::getInstance()->loadingProgress(sceneID));
     ImGui::End();
 }
 
