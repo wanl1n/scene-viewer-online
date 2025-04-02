@@ -15,7 +15,9 @@ void Scene::initializeDisplay()
 {
 	while (models.size() < 5)
 	{
-		this->models = ModelManager::getInstance()->getRandomModels();
+		this->models = ModelManager::getInstance()->getRandomModels(id);
+
+		loading = this->models.size() / 5;
 	}
 	std::cout << "Scene " << this->id << " initialized with "<< models.size()<<" models." << std::endl;
 }
@@ -24,7 +26,8 @@ void Scene::update(float deltaTime)
 {
 	for (Model* model : models)
 	{
-		model->setActive(true);
+		if (model)
+			model->setActive(true);
 	}
 }
 
@@ -36,8 +39,8 @@ void Scene::loadScene()
 {
     for (Model* model : models)
     {
-        model->setActive(true);
-		std::cout << "Model " << model->getName() << " loaded." << std::endl;
+		if (model)
+			model->setActive(true);
     }
 }
 
@@ -45,7 +48,8 @@ void Scene::unloadScene()
 {
     for (Model* model : models)
     {
-        model->setActive(false);
+		if (model)
+			model->setActive(false);
     }
 }
 

@@ -1,8 +1,10 @@
 #include "SceneManager.h"
 
+#include <imgui.h>
 #include <iostream>
 
 #include "../Thread/SceneLoader.h"
+#include "../Imgui/ImGuiUtils.h"
 
 //a singleton class
 SceneManager* SceneManager::sharedInstance = nullptr;
@@ -23,7 +25,8 @@ void SceneManager::initialize()
 
 	for (int i = 0; i < 5; i++) {
 		Scene* scene = new Scene(i);
-		scene->initializeDisplay();
+		SceneLoader* loader = new SceneLoader(i, scene);
+		this->threadPool->scheduleTask(loader);
 		this->addScene(scene);
 	}
 	this->currentScene = scenes[0];
@@ -55,6 +58,14 @@ void SceneManager::processInput()
 void SceneManager::update(float deltaTime)
 {
 	this->currentScene->update(deltaTime);
+
+	ImGui::Begin("Scene Manager");
+	for (Scene* scene : scenes)
+	{
+		std::string label = "Loading Scene " + std::to_string(scene->getID());
+		ImGuiUtils::LoadingBar(label.c_str(), SceneManager::getInstance()->loadingProgress(scene->getID()));
+	}
+	ImGui::End();
 }
 
 bool SceneManager::loadingProgress(int sceneID)

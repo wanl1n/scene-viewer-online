@@ -128,17 +128,17 @@ Model* ModelManager::findObjectByName(std::string name)
 	}
 }
 
-List ModelManager::getRandomModels()
+List ModelManager::getRandomModels(int sceneID)
 {
 	List randomModels;
+	int startingIndex = 5 * (sceneID);
 	if (startingIndex + 5 > this->modelList.size()) 
-		return randomModels;
+		return std::vector<Model*>(this->modelList.size()%5, nullptr);
 	
 	for (int i = startingIndex; i < startingIndex+5; i++) {
 		randomModels.push_back(this->modelList[i]);
 	}
 
-	startingIndex += 5;
 	return randomModels;
 }
 

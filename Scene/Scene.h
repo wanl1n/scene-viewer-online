@@ -21,10 +21,10 @@ public:
 	void onFinishedExecution() override;
 
 	int getID() { return id; }
-	float loadingProgress() { return models.size() / 5; }
+	float loadingProgress() { return loading; }
 	
 private:
 	int id = 0;
 	std::vector<Model*> models;
-	bool load = true;
+	float loading = 0;
 };

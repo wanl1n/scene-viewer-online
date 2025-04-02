@@ -27,7 +27,7 @@ public:
 
 	// Getters
 	Model* findObjectByName(std::string name);
-	List getRandomModels();
+	List getRandomModels(int sceneID);
 	List getAllObjects();
 	int activeObjects();
 
@@ -40,6 +40,5 @@ private:
 	//ModelManager::getInstance()->addObject(fpsCounter);
 	ModelTable modelMap;
 	List modelList;
-	int startingIndex = 0;
 	ThreadPool* threadPool;
 };
