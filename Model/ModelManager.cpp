@@ -100,11 +100,11 @@ void ModelManager::initialize()
 	threadPool->scheduleTask(cabbage);
 
 	// 12
-	ObjectLoader* cart = new ObjectLoader("3D/Cart/cart.obj", "3D/Cart/textures/Cart_Basket_albedo.jpeg", "3D/Cart/textures/Cart_Basket_normal.jpeg", "Cart",
+	ObjectLoader* driedRose = new ObjectLoader("3D/Dried Rose/dried rose.obj", "3D/Dried Rose/textures/rosa02.jpeg", "3D/Dried Rose/textures/normals.jpeg", "Dried Rose",
 		glm::vec3(400.f, 0.f, 0.f),        //pos
 		glm::vec3(3.f),                     //scale
 		glm::vec3(0.f, 60.f, 0.f));  //rotate
-	threadPool->scheduleTask(cart);
+	threadPool->scheduleTask(driedRose);
 
 	// 13
 	ObjectLoader* cup = new ObjectLoader("3D/Cup/cup.obj", "3D/Cup/textures/cup_albedo.png", "3D/Cup/textures/cup_normal.png", "Cup",
@@ -128,11 +128,11 @@ void ModelManager::initialize()
 	threadPool->scheduleTask(fish);
 
 	// 16
-	ObjectLoader* flan = new ObjectLoader("3D/Flan/flan.obj", "3D/Flan/textures/Scaninverse.jpeg", "", "Flan",
+	ObjectLoader* bag = new ObjectLoader("3D/Bag/bag.obj", "3D/Bag/textures/bag.jpeg", "3D/Bag/textures/normal.jpeg", "Bag",
 		glm::vec3(400.f, 0.f, 0.f),        //pos
 		glm::vec3(3.f),                     //scale
 		glm::vec3(0.f, 60.f, 0.f));  //rotate
-	threadPool->scheduleTask(flan);
+	threadPool->scheduleTask(bag);
 
 	// 17
 	ObjectLoader* lychees = new ObjectLoader("3D/Lychees/lychee.obj", "3D/Lychees/textures/lychee.jpeg", "3D/Lychees/textures/normals.jpeg", "Lychees",
@@ -163,18 +163,18 @@ void ModelManager::initialize()
 	threadPool->scheduleTask(meat);
 
 	// 21
-	ObjectLoader* paperBag = new ObjectLoader("3D/Paper Bag/paper bag.obj", "3D/Paper Bag/textures/albedo.png", "3D/Paper Bag/textures/normal.png", "Paper Bag",
+	ObjectLoader* shoe = new ObjectLoader("3D/Shoe/shoe.obj", "3D/Shoe/textures/nb574.jpeg", "3D/Shoe/textures/normals.jpeg", "Shoe",
 		glm::vec3(400.f, 0.f, 0.f),        //pos
 		glm::vec3(3.f),                     //scale
 		glm::vec3(0.f, 60.f, 0.f));  //rotate
-	threadPool->scheduleTask(paperBag);
+	threadPool->scheduleTask(shoe);
 
 	// 22
-	ObjectLoader* sushi = new ObjectLoader("3D/Sushi/sushi.obj", "3D/Sushi/textures/color.png", "", "Sushi",
+	ObjectLoader* orchid = new ObjectLoader("3D/Orchid/orchid.obj", "3D/Orchid/textures/color.jpeg", "", "Orchid",
 		glm::vec3(400.f, 0.f, 0.f),        //pos
 		glm::vec3(3.f),                     //scale
 		glm::vec3(0.f, 60.f, 0.f));  //rotate
-	threadPool->scheduleTask(sushi);
+	threadPool->scheduleTask(orchid);
 
 	// 23
 	ObjectLoader* toaster = new ObjectLoader("3D/Toaster/toaster.obj", "3D/Toaster/textures/toster_Material_color.png", "", "Toaster",
@@ -184,11 +184,11 @@ void ModelManager::initialize()
 	threadPool->scheduleTask(toaster);
 
 	// 24
-	ObjectLoader* kinderWhite = new ObjectLoader("3D/Kinder White/kinder white.obj", "3D/Kinder White/textures/color.png", "", "Kinder White",
+	ObjectLoader* redRose = new ObjectLoader("3D/Red Rose/red rose.obj", "3D/Red Rose/textures/Red_rose.jpeg", "3D/Red Rose/textures/Red_rose_normal.jpg", "Red Rose",
 		glm::vec3(500.f, 0.f, 0.f),        //pos
 		glm::vec3(3.f),                     //scale
 		glm::vec3(0.f, 60.f, 0.f));  //rotate
-	threadPool->scheduleTask(kinderWhite);
+	threadPool->scheduleTask(redRose);
 
 	// 25
 	ObjectLoader* chili = new ObjectLoader("3D/Chili/chili.obj", "3D/Chili/textures/color.png", "3D/Chili/textures/normal.png", "Chili",

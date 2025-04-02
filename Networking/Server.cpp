@@ -58,11 +58,11 @@ grpc::Status Server::GetModel(grpc::ServerContext* context, const ModelRequest* 
 
     if (modelName == "S1M1")
     {
-        filePath = "./3D/Obstacles/Car/Tractor.obj";
+        filePath = "./3D/Car/Tractor.obj";
     }
     else if (modelName == "S2M1")
     {
-        filePath = "./3D/Obstacles/Ant/ant1.obj";
+        filePath = "./3D/Ant/ant1.obj";
     }
 
     std::ifstream file(filePath, std::ios::binary);
@@ -92,7 +92,7 @@ grpc::Status Server::GetTransformTex(grpc::ServerContext* context, const Transfo
     if (modelName == "S1M1")
     {
 
-        std::string texturePath = "./3D/Obstacles/Car/TractorTex.jpg";
+        std::string texturePath = "./3D/Car/TractorTex.jpg";
 
         int texWidth, texHeight;
         std::vector<uint8_t> textureData = readTextureFromFile(texturePath, texWidth, texHeight);
@@ -131,7 +131,7 @@ grpc::Status Server::GetTransformTex(grpc::ServerContext* context, const Transfo
     else if (modelName == "S2M1")
     {
 
-        std::string texturePath = "./3D/Obstacles/Ant/ant_(1).png";
+        std::string texturePath = "./3D/Ant/ant_(1).png";
 
         int texWidth, texHeight;
         std::vector<uint8_t> textureData = readTextureFromFile(texturePath, texWidth, texHeight);

@@ -31,6 +31,8 @@ ObjectLoader::~ObjectLoader()
 void ObjectLoader::onStartTask()
 {
 	IETThread::sleep(5000);
+	std::cout << "Model " << name << " loading." << std::endl;
+
 	Model* model = new Model(strObjPath, pathTex, pathNorm, name, pos, scale, rotate, color);
 	std::cout << "Model " << model->getName() << " loaded." << std::endl;
 	ModelManager::getInstance()->addObject(model);

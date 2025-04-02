@@ -13,7 +13,7 @@ Scene::~Scene()
 
 void Scene::initializeDisplay()
 {
-	while (models.size() < 5)
+	while (models.size() < 5 ||models[0] == nullptr)
 	{
 		this->models = ModelManager::getInstance()->getRandomModels(id);
 
@@ -24,9 +24,10 @@ void Scene::initializeDisplay()
 
 void Scene::update(float deltaTime)
 {
+	if (loading == 1.f)
 	for (Model* model : models)
 	{
-		if (model)
+		if (model != nullptr)
 			model->setActive(true);
 	}
 }
@@ -39,7 +40,7 @@ void Scene::loadScene()
 {
     for (Model* model : models)
     {
-		if (model)
+		if (model != nullptr)
 			model->setActive(true);
     }
 }
@@ -48,7 +49,7 @@ void Scene::unloadScene()
 {
     for (Model* model : models)
     {
-		if (model)
+		if (model != nullptr)
 			model->setActive(false);
     }
 }
