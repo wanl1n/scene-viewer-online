@@ -20,16 +20,15 @@ void ModelManager::initialize()
 	this->threadPool = new ThreadPool("Model Manager Thread Pool", 5);
 	this->threadPool->startScheduler();
 
-	/*std::vector<Model*> vec(25, nullptr);
-	this->modelList = vec;*/
-
 	// Loading the objects
+	// 1
 	ObjectLoader* tank = new ObjectLoader("3D/Tank/M1A1.obj", "3D/Tank/TankTex.png", "3D/Tank/TankNorm.png", "Tank",
 		glm::vec3(-300.f, 0.f, 0.f),           // pos
 		glm::vec3(0.25f),                   // scale
 		glm::vec3(0.f, 180.f, 0.f));          // rotate
 	threadPool->scheduleTask(tank);
 
+	// 2
 	ObjectLoader* moon = new ObjectLoader("3D/Moon.obj", "", "", "Moon",
 		glm::vec3(-200.f, 0, 0.f),	// pos
 		glm::vec3(10.f),				// scale
@@ -37,82 +36,166 @@ void ModelManager::initialize()
 		glm::vec4(238.f / 255.f, 228.f / 255.f, 170.f / 255.f, 1.f)); // color
 	threadPool->scheduleTask(moon);
 
+	// 3
 	ObjectLoader* banancat = new ObjectLoader("3D/Cat/banancat.obj", "3D/Cat/banancattex.png", "", "Banana Cat",
 		glm::vec3(0.f, 0, 0.f),		// pos
 		glm::vec3(0.5f),				// scale
 		glm::vec3(0.f));		// rotate
 	threadPool->scheduleTask(banancat);
 
+	// 4
 	ObjectLoader* ground = new ObjectLoader("3D/Ground/Ground.obj", "3D/Ground/AddWater_basecolor.png", "3D/Ground/AddWater_normal.png", "Ground",
 		glm::vec3(-100.f, 0.f, 0.f),     //pos
 		glm::vec3(100.f),                     //scale
 		glm::vec3(0.f, 0.f, 0.f));         //rotate
 	threadPool->scheduleTask(ground);
 
-	ObjectLoader* ant = new ObjectLoader("3D/Obstacles/Ant/ant1.obj", "3D/Obstacles/Ant/ant_(1).png", "", "Ant",
+	// 5
+	ObjectLoader* ant = new ObjectLoader("3D/Ant/ant1.obj", "3D/Ant/ant_(1).png", "", "Ant",
 		glm::vec3(-150.f, 0.f, -200.f),     //pos
 		glm::vec3(0.03f),                   //scale
 		glm::vec3(0.f, 60.f, 0.f));         //rotate
 	threadPool->scheduleTask(ant);
 
-	ObjectLoader* grass = new ObjectLoader("3D/Obstacles/Grass/Grass.obj", "3D/Obstacles/Grass/GrassTex.png", "", "Grass",
+	// 6
+	ObjectLoader* grass = new ObjectLoader("3D/Grass/Grass.obj", "3D/Grass/GrassTex.png", "", "Grass",
 		glm::vec3(0.f, 0.f, 0.f),      //pos
 		glm::vec3(0.2f),                    //scale
 		glm::vec3(0.f, 60.f, 0.f));         //rotate
 	threadPool->scheduleTask(grass);
 
-	ObjectLoader* mouse = new ObjectLoader("3D/Obstacles/Mouse/Mouse.obj", "3D/Obstacles/Mouse/MouseTex.png", "", "Mouse",
+	// 7
+	ObjectLoader* mouse = new ObjectLoader("3D/Mouse/Mouse.obj", "3D/Mouse/MouseTex.png", "", "Mouse",
 		glm::vec3(100.f, 0.f, 0.f),        //pos
 		glm::vec3(10000.f),                 //scale
 		glm::vec3(0.f, 60.f, 0.f));         //rotate
 	threadPool->scheduleTask(mouse);
 
-	ObjectLoader* flower = new ObjectLoader("3D/Obstacles/Flowers/Flower.obj", "3D/Obstacles/Flowers/FlowerTexA.png", "", "Flower",
+	// 8
+	ObjectLoader* flower = new ObjectLoader("3D/Flowers/Flower.obj", "3D/Flowers/FlowerTexA.png", "", "Flower",
 		glm::vec3(0.f, 0.f, 0.f),        //pos
 		glm::vec3(250.f),                   //scale
 		glm::vec3(0.f, 60.f, 0.f));         //rotate
 	threadPool->scheduleTask(flower);
 
-	ObjectLoader* tractor = new ObjectLoader("3D/Obstacles/Car/Tractor.obj", "3D/Obstacles/Car/TractorTex.jpg", "", "Tractor",
+	// 9
+	ObjectLoader* tractor = new ObjectLoader("3D/Car/Tractor.obj", "3D/Car/TractorTex.jpg", "", "Tractor",
 		glm::vec3(-100.f, 0.f, 0.f),        //pos
 		glm::vec3(3.f),                     //scale
 		glm::vec3(0.f, 60.f, 0.f));         //rotate
 	threadPool->scheduleTask(tractor);
 
-	// Scene 1
-	//this->addObject(tank);
-	//this->addObject(moon);
-	//this->addObject(ground);
-	//this->addObject(grass);
-	//this->addObject(mouse);
+	// 10
+	ObjectLoader* burntCroissant = new ObjectLoader("3D/Burnt Croissant/BurntCroissant.obj", "3D/Burnt Croissant/textures/BurntCroissant.jpeg", "", "Burnt Croissant",
+		glm::vec3(200.f, 0.f, 0.f),        //pos
+		glm::vec3(3.f),                     //scale
+		glm::vec3(0.f, 60.f, 0.f));  //rotate
+	threadPool->scheduleTask(burntCroissant);
 
-	//// Scene 2
-	//this->addObject(ant);
-	//this->addObject(tractor);
-	//this->addObject(flower);
-	//this->addObject(flower);
-	//this->addObject(flower);
+	// 11
+	ObjectLoader* cabbage = new ObjectLoader("3D/Cabbage/cabbage.obj", "3D/Cabbage/textures/cabbage_albedo.jpeg", "3D/Cabbage/textures/cabbage_normal.jpeg", "Cabbage",
+		glm::vec3(300.f, 0.f, 0.f),        //pos
+		glm::vec3(3.f),                     //scale
+		glm::vec3(0.f, 60.f, 0.f));  //rotate
+	threadPool->scheduleTask(cabbage);
 
-	//// Scene 3
-	//this->addObject(mouse);
-	//this->addObject(mouse);
-	//this->addObject(mouse);
-	//this->addObject(mouse);
-	//this->addObject(mouse);
+	// 12
+	ObjectLoader* cart = new ObjectLoader("3D/Cart/cart.obj", "3D/Cart/textures/Cart_Basket_albedo.jpeg", "3D/Cart/textures/Cart_Basket_normal.jpeg", "Cart",
+		glm::vec3(400.f, 0.f, 0.f),        //pos
+		glm::vec3(3.f),                     //scale
+		glm::vec3(0.f, 60.f, 0.f));  //rotate
+	threadPool->scheduleTask(cart);
 
-	//// Scene 4
-	//this->addObject(grass);
-	//this->addObject(grass);
-	//this->addObject(grass);
-	//this->addObject(grass);
-	//this->addObject(grass);
+	// 13
+	ObjectLoader* cup = new ObjectLoader("3D/Cup/cup.obj", "3D/Cup/textures/cup_albedo.png", "3D/Cup/textures/cup_normal.png", "Cup",
+		glm::vec3(400.f, 0.f, 0.f),        //pos
+		glm::vec3(3.f),                     //scale
+		glm::vec3(0.f, 60.f, 0.f));  //rotate
+	threadPool->scheduleTask(cup);
 
-	//// Scene 5
-	//this->addObject(ant);
-	//this->addObject(ant);
-	//this->addObject(ant);
-	//this->addObject(ant);
-	//this->addObject(ant);
+	// 14
+	ObjectLoader* cupcake = new ObjectLoader("3D/Cupcake/cupcake.obj", "3D/Cupcake/textures/model_edited_material_0.jpeg", "", "Cupcake",
+		glm::vec3(400.f, 0.f, 0.f),        //pos
+		glm::vec3(3.f),                     //scale
+		glm::vec3(0.f, 60.f, 0.f));  //rotate
+	threadPool->scheduleTask(cupcake);
+
+	// 15
+	ObjectLoader* fish = new ObjectLoader("3D/Fish/fish.obj", "3D/Fish/textures/Fish_Albedo.png", "3D/Fish/textures/Fish_Normalmap.png", "Fish",
+		glm::vec3(400.f, 0.f, 0.f),        //pos
+		glm::vec3(3.f),                     //scale
+		glm::vec3(0.f, 60.f, 0.f));  //rotate
+	threadPool->scheduleTask(fish);
+
+	// 16
+	ObjectLoader* flan = new ObjectLoader("3D/Flan/flan.obj", "3D/Flan/textures/Scaninverse.jpeg", "", "Flan",
+		glm::vec3(400.f, 0.f, 0.f),        //pos
+		glm::vec3(3.f),                     //scale
+		glm::vec3(0.f, 60.f, 0.f));  //rotate
+	threadPool->scheduleTask(flan);
+
+	// 17
+	ObjectLoader* lychees = new ObjectLoader("3D/Lychees/lychee.obj", "3D/Lychees/textures/lychee.jpeg", "3D/Lychees/textures/normals.jpeg", "Lychees",
+		glm::vec3(400.f, 0.f, 0.f),        //pos
+		glm::vec3(3.f),                     //scale
+		glm::vec3(0.f, 60.f, 0.f));  //rotate
+	threadPool->scheduleTask(lychees);
+
+	// 18
+	ObjectLoader* macaron = new ObjectLoader("3D/Macaron/macaron.obj", "3D/Macaron/textures/macaron_albedo.jpeg", "3D/Macaron/textures/macaron_normal.jpeg", "Macaron",
+		glm::vec3(400.f, 0.f, 0.f),        //pos
+		glm::vec3(3.f),                     //scale
+		glm::vec3(0.f, 60.f, 0.f));  //rotate
+	threadPool->scheduleTask(macaron);
+
+	// 19
+	ObjectLoader* marshmallows = new ObjectLoader("3D/Marshmallows/marshmallows.obj", "3D/Marshmallows/textures/MMW_CO.png", "", "Marshmallows",
+		glm::vec3(400.f, 0.f, 0.f),        //pos
+		glm::vec3(3.f),                     //scale
+		glm::vec3(0.f, 60.f, 0.f));  //rotate
+	threadPool->scheduleTask(marshmallows);
+
+	// 20
+	ObjectLoader* meat = new ObjectLoader("3D/Meat/meat.obj", "3D/Meat/textures/color.jpeg", "", "Meat",
+		glm::vec3(400.f, 0.f, 0.f),        //pos
+		glm::vec3(3.f),                     //scale
+		glm::vec3(0.f, 60.f, 0.f));  //rotate
+	threadPool->scheduleTask(meat);
+
+	// 21
+	ObjectLoader* paperBag = new ObjectLoader("3D/Paper Bag/paper bag.obj", "3D/Paper Bag/textures/albedo.png", "3D/Paper Bag/textures/normal.png", "Paper Bag",
+		glm::vec3(400.f, 0.f, 0.f),        //pos
+		glm::vec3(3.f),                     //scale
+		glm::vec3(0.f, 60.f, 0.f));  //rotate
+	threadPool->scheduleTask(paperBag);
+
+	// 22
+	ObjectLoader* sushi = new ObjectLoader("3D/Sushi/sushi.obj", "3D/Sushi/textures/color.png", "", "Sushi",
+		glm::vec3(400.f, 0.f, 0.f),        //pos
+		glm::vec3(3.f),                     //scale
+		glm::vec3(0.f, 60.f, 0.f));  //rotate
+	threadPool->scheduleTask(sushi);
+
+	// 23
+	ObjectLoader* toaster = new ObjectLoader("3D/Toaster/toaster.obj", "3D/Toaster/textures/toster_Material_color.png", "", "Toaster",
+		glm::vec3(500.f, 0.f, 0.f),        //pos
+		glm::vec3(3.f),                     //scale
+		glm::vec3(0.f, 60.f, 0.f));  //rotate
+	threadPool->scheduleTask(toaster);
+
+	// 24
+	ObjectLoader* kinderWhite = new ObjectLoader("3D/Kinder White/kinder white.obj", "3D/Kinder White/textures/color.png", "", "Kinder White",
+		glm::vec3(500.f, 0.f, 0.f),        //pos
+		glm::vec3(3.f),                     //scale
+		glm::vec3(0.f, 60.f, 0.f));  //rotate
+	threadPool->scheduleTask(kinderWhite);
+
+	// 25
+	ObjectLoader* chili = new ObjectLoader("3D/Chili/chili.obj", "3D/Chili/textures/color.png", "3D/Chili/textures/normal.png", "Chili",
+		glm::vec3(500.f, 0.f, 0.f),        //pos
+		glm::vec3(3.f),                     //scale
+		glm::vec3(0.f, 60.f, 0.f));  //rotate
+	threadPool->scheduleTask(chili);
 
 	std::cout << "Model Manager Initialized: "<<this->modelList.size()<<" models loaded." << std::endl;
 }
