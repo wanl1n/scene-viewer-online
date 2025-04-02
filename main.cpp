@@ -143,8 +143,6 @@ int main()
                             glm::vec3(10.f),                // scale
                             glm::vec3(0.f),                 // rotate
                             glm::vec4(238.f / 255.f, 228.f / 255.f, 170.f / 255.f, 1.f)); // color
-	ModelManager::getInstance()->initialize();
-    SceneManager::getInstance()->initialize();
 
     // Creating the shader for the objects
     Shader litShader = Shader("Shaders/sample.vert", "Shaders/sample.frag");
@@ -168,14 +166,21 @@ int main()
     //Choose a Blending Function
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    // Scene and model managers
+    ModelManager::getInstance()->initialize();
+    SceneManager::getInstance()->initialize();
+
     // Start Server
     Server server;
     server.start();
 
     // Start Client
     std::vector<Client> clients;
+    clients.emplace_back(0);
     clients.emplace_back(1);
     clients.emplace_back(2);
+    clients.emplace_back(3);
+    clients.emplace_back(4);
 
     // Run all Clients
     for (auto& client : clients)

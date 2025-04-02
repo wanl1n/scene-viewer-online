@@ -240,7 +240,10 @@ void ModelManager::update(float deltaTime)
 	//std::cout << "Delta time: " << deltaTime.asSeconds() << "\n";
 	for (int i = 0; i < this->modelList.size(); i++) {
 		if (this->modelList[i]->isActive())
+		{
 			this->modelList[i]->update(deltaTime);
+			std::cout << "Model " << modelList[i]->getName() << " updating." << std::endl;
+		}
 	}
 }
 

@@ -52,6 +52,7 @@ namespace models {
 			glm::vec3 getPosition();
 			glm::vec3 getColor();
 			glm::vec3 getRotation();
+			glm::vec3 getScale();
 
 			std::string getName() { return this->name; }
 
@@ -67,6 +68,15 @@ namespace models {
 
 			void update(float deltaTime);
 			void draw(GLuint* shaderProgram, bool texExists);
+
+			std::string getModelData();
+			std::vector<uint8_t> getTextureData();
+			glm::vec2 getTexSize();
+
+		private:
+			std::string modelData;
+			std::vector<uint8_t> textureData;
+			glm::vec2 texSize;
 
 	};
 }

@@ -15,6 +15,8 @@ public:
 
 	bool loadingProgress(int sceneID);
 
+	std::vector<Scene*> getScenes();
+
 private:
 	SceneManager();
 	SceneManager(SceneManager const&) {};             // copy constructor is private

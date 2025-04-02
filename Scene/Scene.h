@@ -20,11 +20,16 @@ public:
 	virtual void unloadScene();
 	void onFinishedExecution() override;
 
+	std::vector<Model*> getModels();
+	bool isInitialized();
+
 	int getID() { return id; }
 	float loadingProgress() { return loading; }
 	
 private:
 	int id = 0;
 	std::vector<Model*> models;
+	bool initialized = false;
 	float loading = 0;
+
 };
