@@ -144,6 +144,19 @@ void Model::loadModelDataFromString(const std::string& objData)
 // Loads the model data through the accepted path.
 void Model::loadModelData(std::string path) {
 
+	std::ifstream file(path, std::ios::binary);
+	if (file) 
+	{
+		std::ostringstream ss;
+		ss << file.rdbuf();
+		modelData = ss.str(); // Store the raw OBJ file data
+		file.close();
+	}
+	else 
+	{
+		std::cerr << "Failed to open OBJ file: " << path << std::endl;
+	}
+
 	// use tinyobj to load the file.
 	std::vector<tinyobj::shape_t> shape;
 	std::vector<tinyobj::material_t> material;
@@ -325,6 +338,11 @@ GLuint Model::loadTexture(const char* path, GLuint texture_ind) {
 		rgb = GL_RGBA;
 	}
 
+	size_t dataSize = img_width * img_height * color_channels;
+	this->textureData.assign(text_bytes, text_bytes + dataSize);
+
+	this->texSize = glm::vec2(img_width, img_height);
+
 	//Assign the loaded texture to the OpenGL reference.
 	glTexImage2D(
 		GL_TEXTURE_2D,
@@ -456,6 +474,11 @@ glm::vec3 Model::getRotation() {
 	return this->rotate;
 }
 
+glm::vec3 Model::getScale()
+{
+	return this->scale;
+}
+
 void Model::setPosition(glm::vec3 pos) {
 	this->pos = pos;
 }
@@ -545,6 +568,21 @@ void Model::draw(GLuint* shaderProgram, bool texExists) {
 
 	// Reset to default
 	glUniform1f(tex_existsAddress, true);
+}
+
+std::string Model::getModelData()
+{
+	return this->modelData;
+}
+
+std::vector<uint8_t> Model::getTextureData()
+{
+	return this->textureData;
+}
+
+glm::vec2 Model::getTexSize()
+{
+	return this->texSize;
 }
 
 // Move the model but make sure it doesn't go past the ground

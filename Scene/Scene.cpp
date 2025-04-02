@@ -19,15 +19,19 @@ void Scene::initializeDisplay()
 
 		loading = this->models.size() / 5;
 	}
+	this->initialized = true;
 	std::cout << "Scene " << this->id << " initialized with "<< models.size()<<" models." << std::endl;
 }
 
 void Scene::update(float deltaTime)
 {
-	for (Model* model : models)
+	if (this->initialized)
 	{
-		if (model)
-			model->setActive(true);
+		for (Model* model : models)
+		{
+			if (model)
+				model->setActive(true);
+		}
 	}
 }
 
@@ -55,4 +59,14 @@ void Scene::unloadScene()
 
 void Scene::onFinishedExecution()
 {
+}
+
+std::vector<Model*> Scene::getModels()
+{
+	return this->models;
+}
+
+bool Scene::isInitialized()
+{
+	return this->initialized;
 }

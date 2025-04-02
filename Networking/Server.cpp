@@ -11,40 +11,22 @@
 #include "../tiny_obj_loader.h"
 #include "../stb_image.h"
 
+#include "../Model/Model.hpp"
+#include "../Model/ModelManager.h"
+#include "../Scene/SceneManager.h"
+
 grpc::Status Server::GetScene(grpc::ServerContext* context, const SceneRequest* request, SceneResponse* response)
 {
 	int sceneID = request->sceneid();
 
-	switch (sceneID)
-	{
-		case 1:
-			response->add_modelnames("S1M1");
-			response->add_modelnames("S1M2");
-			break;
+	std::vector<Scene*> scenes = SceneManager::getInstance()->getScenes();
 
-		case 2:
-			response->add_modelnames("S2M1");
-			response->add_modelnames("S2M2");
-			break;
+    std::vector<Model*> models = scenes[sceneID]->getModels();
 
-		case 3:
-			response->add_modelnames("S3M1");
-			response->add_modelnames("S3M2");
-			break;
-
-		case 4:
-			response->add_modelnames("S4M1");
-			response->add_modelnames("S4M2");
-			break;
-
-		case 5:
-			response->add_modelnames("S5M1");
-			response->add_modelnames("S5M2");
-			break;
-
-		default:
-			return grpc::Status(grpc::StatusCode::NOT_FOUND, "Scene not found.");
-	}
+    for (auto model : models)
+    {
+        response->add_modelnames(model->getName());
+    }
 
 	return grpc::Status::OK;
 }
@@ -54,34 +36,31 @@ grpc::Status Server::GetModel(grpc::ServerContext* context, const ModelRequest* 
     grpc::ServerWriter<ModelResponse>* writer)
 {
     std::string modelName = request->modelname();
-    std::string filePath = "";
 
-    if (modelName == "S1M1")
-    {
-        filePath = "./3D/Obstacles/Car/Tractor.obj";
-    }
-    else if (modelName == "S2M1")
-    {
-        filePath = "./3D/Obstacles/Ant/ant1.obj";
-    }
-
-    std::ifstream file(filePath, std::ios::binary);
-    if (!file)
+    models::Model* model = ModelManager::getInstance()->findObjectByName(modelName);
+    if (!model)
     {
         return grpc::Status(grpc::StatusCode::NOT_FOUND, "Model not found.");
     }
 
-    const size_t chunkSize = 1024 * 1024;  
-    std::vector<char> buffer(chunkSize);
+    std::string modelData = model->getModelData();
 
-    while (file.read(buffer.data(), chunkSize) || file.gcount() > 0)
+
+    const size_t chunkSize = 1024 * 1024;  // 1MB chunks
+    size_t totalSize = modelData.size();
+    size_t offset = 0;
+
+    while (offset < totalSize)
     {
+        size_t currentChunkSize = std::min(chunkSize, totalSize - offset);
+
         ModelResponse response;
-        response.set_modeldata(buffer.data(), file.gcount());  
-        writer->Write(response); 
+        response.set_modeldata(modelData.data() + offset, currentChunkSize);
+        writer->Write(response);
+
+        offset += currentChunkSize;
     }
 
-    file.close();
     return grpc::Status::OK;
 }
 
@@ -89,91 +68,51 @@ grpc::Status Server::GetTransformTex(grpc::ServerContext* context, const Transfo
 {
     std::string modelName = request->modelname();
 
-    if (modelName == "S1M1")
-    {
-
-        std::string texturePath = "./3D/Obstacles/Car/TractorTex.jpg";
-
-        int texWidth, texHeight;
-        std::vector<uint8_t> textureData = readTextureFromFile(texturePath, texWidth, texHeight);
-
-        const size_t chunkSize = 1024 * 1024;  
-        size_t totalSize = textureData.size();
-
-        for (size_t offset = 0; offset < totalSize; offset += chunkSize)
-        {
-            size_t chunkEnd = std::min(offset + chunkSize, totalSize);
-            size_t chunkSizeActual = chunkEnd - offset;
-
-            TransformTexResponse response;
-
-            response.set_posx(-100.0f);
-            response.set_posy(0.0f);
-            response.set_posz(0.0f);
-
-            response.set_pitch(0.0f);
-            response.set_yaw(60.0f);
-            response.set_roll(0.0f);
-
-            response.set_scalex(3.0f);
-            response.set_scaley(3.0f);
-            response.set_scalez(3.0f);
-
-            response.set_texwidth(texWidth);
-            response.set_texheight(texHeight);
-
-            response.set_texture(reinterpret_cast<const char*>(&textureData[offset]), chunkSizeActual);
-
-            writer->Write(response);  
-        }
-    }
-
-    else if (modelName == "S2M1")
-    {
-
-        std::string texturePath = "./3D/Obstacles/Ant/ant_(1).png";
-
-        int texWidth, texHeight;
-        std::vector<uint8_t> textureData = readTextureFromFile(texturePath, texWidth, texHeight);
-
-        const size_t chunkSize = 1024 * 1024;
-        size_t totalSize = textureData.size();
-
-        for (size_t offset = 0; offset < totalSize; offset += chunkSize)
-        {
-            size_t chunkEnd = std::min(offset + chunkSize, totalSize);
-            size_t chunkSizeActual = chunkEnd - offset;
-
-            TransformTexResponse response;
-
-            response.set_posx(-200.0f);
-            response.set_posy(0.0f);
-            response.set_posz(0.0f);
-
-            response.set_pitch(0.0f);
-            response.set_yaw(60.0f);
-            response.set_roll(0.0f);
-
-            response.set_scalex(0.05f);
-            response.set_scaley(0.05f);
-            response.set_scalez(0.05f);
-
-            response.set_texwidth(texWidth);
-            response.set_texheight(texHeight);
-
-            response.set_texture(reinterpret_cast<const char*>(&textureData[offset]), chunkSizeActual);
-
-            writer->Write(response);
-        }
-    }
-
-    else
+    models::Model* model = ModelManager::getInstance()->findObjectByName(modelName);
+    if (!model)
     {
         return grpc::Status(grpc::StatusCode::NOT_FOUND, "Model not found.");
     }
 
+    std::vector<uint8_t> textureData = model->getTextureData();
+
+    if (textureData.empty())
+    {
+        return grpc::Status(grpc::StatusCode::NOT_FOUND, "Texture data not found.");
+    }
+
+    const size_t chunkSize = 1024 * 1024;
+    size_t totalSize = textureData.size();
+
+    for (size_t offset = 0; offset < totalSize; offset += chunkSize)
+    {
+        size_t chunkEnd = std::min(offset + chunkSize, totalSize);
+        size_t chunkSizeActual = chunkEnd - offset;
+
+        TransformTexResponse response;
+        response.set_posx(model->getPosition().x);
+        response.set_posy(model->getPosition().y);
+        response.set_posz(model->getPosition().z);
+
+        response.set_pitch(model->getRotation().x);
+        response.set_yaw(model->getRotation().y);
+        response.set_roll(model->getRotation().z);
+
+        response.set_scalex(model->getScale().x);
+        response.set_scaley(model->getScale().y);
+        response.set_scalez(model->getScale().z);
+
+        response.set_texwidth(model->getTexSize().x);
+        response.set_texheight(model->getTexSize().y);
+
+        response.set_texture(reinterpret_cast<const char*>(&textureData[offset]), chunkSizeActual);
+
+        writer->Write(response);
+    }
+
     return grpc::Status::OK;
 }
+
 
 void Server::RunServer(uint16_t port)
 {

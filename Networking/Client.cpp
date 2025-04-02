@@ -101,6 +101,12 @@ std::unordered_map<std::string, ModelData> Client::getSceneModels()
 
 void Client::runClient()
 {
+    std::vector<Scene*> scenes = SceneManager::getInstance()->getScenes();
+    while (!scenes[sceneID]->isInitialized())
+    {
+        IETThread::sleep(100);
+    }
+
     this->modelDataMap_ = this->getSceneModels();
 }
 
@@ -128,7 +134,7 @@ void Client::createModels()
 
 void Client::RenderUI()
 {
-    ImGui::Begin(("Client " + std::to_string(sceneID)).c_str());
+    ImGui::Begin(("Client " + std::to_string(sceneID + 1)).c_str());
     ImGui::Text("Scene ID: %d", sceneID);
     ImGui::Text("Model Names:");
     for (const auto& [name, modelData] : this->modelDataMap_)
