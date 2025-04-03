@@ -270,12 +270,15 @@ int main()
         // Draw the environment
 		//ModelManager::getInstance()->draw(litShader.getShaderProgram(), true);
 
+        int index = 0;
         for (auto& client : clients) 
         {
             for (Model model : client.getModels()) 
             {
+                std::cout << index << " active: "<< model.isActive() << std::endl;
                 if (model.isActive())
 					model.draw(litShader.getShaderProgram(), true);
+                    index++;
             }
         }
 

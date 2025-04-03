@@ -121,11 +121,12 @@ void Client::createModels()
             model.setPosition(data.position);
             model.setRotation(data.rotation);
             model.setScale(data.scale);
+            model.setActive(true);
 
             ModelManager::getInstance()->addObject(&model);
             this->models_.push_back(model);
 
-            std::cout << "Created " << name << std::endl;
+            //std::cout << "Created " << name << std::endl;
         }
     }
 
@@ -159,7 +160,7 @@ void Client::RenderUI()
     ImGuiUtils::LoadingBar("", (float)this->models_.size()/5);
     if (ImGui::Button("View", ImVec2(45, 20)))
     {
-        for (Model model : this->models_)
+        for (Model& model : this->models_)
         {
             model.setActive(true);
         }
@@ -167,7 +168,7 @@ void Client::RenderUI()
     ImGui::SameLine();
     if (ImGui::Button("Hide", ImVec2(45, 20)))
     {
-        for (Model model : this->models_)
+        for (Model& model : this->models_)
         {
             model.setActive(false);
         }

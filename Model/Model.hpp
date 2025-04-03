@@ -63,7 +63,7 @@ namespace models {
 			void setRotation(glm::vec3 rotate);
 			void rotateBy(glm::vec3 offset);
 
-			bool isActive() { return this->active; }
+			bool isActive() const { return this->active; }
 			void setActive(bool active) { this->active = active; }
 
 			void update(float deltaTime);

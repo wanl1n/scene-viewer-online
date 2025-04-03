@@ -357,7 +357,7 @@ void ModelManager::loadScene4Models()
 
 void ModelManager::addObject(Model* model)
 {
-	model->setActive(false);
+	//model->setActive(false);
 	//also initialize the oject
 	this->modelMap[model->getName()] = model;
 	this->modelList.push_back(model);
