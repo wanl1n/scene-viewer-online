@@ -166,9 +166,9 @@ int main()
     //Choose a Blending Function
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // Scene and model managers
-    ModelManager::getInstance()->initialize();
-    SceneManager::getInstance()->initialize();
+    //// Scene and model managers
+    //ModelManager::getInstance()->initialize();
+    //SceneManager::getInstance()->initialize();
 
     // Start Server
     Server server;
@@ -185,7 +185,7 @@ int main()
     // Run all Clients
     for (auto& client : clients)
     {
-        client.runClient();
+        client.start();
     }
 
     double xpos, ypos;
@@ -202,13 +202,13 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the depth buffer as well
 
         // Check if clients have loaded their scenes
-        /*for (auto& client : clients)
+        for (auto& client : clients)
         {
 	        if (client.isSceneLoaded())
 	        {
                 client.createModels();
 	        }
-        }*/
+        }
 
         // ----------------------- UPDATING VALUES -------------------------- //        
         // First get the mouse position
@@ -253,10 +253,10 @@ int main()
 			camera.moveLeft();
         }
 
-		SceneManager::getInstance()->processInput();
+		//SceneManager::getInstance()->processInput();
 
-        ModelManager::getInstance()->update(1);
-        SceneManager::getInstance()->update(1);
+  //      ModelManager::getInstance()->update(1);
+  //      SceneManager::getInstance()->update(1);
     	// ---------------------- RENDERING OBJECTS ------------------------- //
         // First draw the skybox
         skybox.draw(mainCamera->getViewMatrix(), mainCamera->getProjMatrix(), player.isUsingBinoculars());
@@ -268,15 +268,15 @@ int main()
         moonlight.applyUniqueValuesToShader(litShader.getShaderProgram());
 
         // Draw the environment
-		ModelManager::getInstance()->draw(litShader.getShaderProgram(), true);
+		//ModelManager::getInstance()->draw(litShader.getShaderProgram(), true);
 
-        /*for (auto& client : clients) 
+        for (auto& client : clients) 
         {
             for (Model model : client.getModels()) 
             {
                 model.draw(litShader.getShaderProgram(), true);
             }
-        }*/
+        }
 
         // Reset lighting to render lightModel unaffected by light
         moonlight.turnOff();

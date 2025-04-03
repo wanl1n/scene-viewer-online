@@ -19,13 +19,14 @@ grpc::Status Server::GetScene(grpc::ServerContext* context, const SceneRequest* 
 {
 	int sceneID = request->sceneid();
 
-	std::vector<Scene*> scenes = SceneManager::getInstance()->getScenes();
+    std::unordered_map<int, std::vector<ModelData>> sceneModelsData = ModelManager::getInstance()->getSceneModelsData();
 
-    std::vector<Model*> models = scenes[sceneID]->getModels();
-
-    for (auto model : models)
+    if (sceneModelsData.find(sceneID) != sceneModelsData.end())
     {
-        response->add_modelnames(model->getName());
+        for (auto model : sceneModelsData[sceneID])  
+        {
+            response->add_modelnames(model.name);
+        }
     }
 
 	return grpc::Status::OK;
@@ -37,14 +38,27 @@ grpc::Status Server::GetModel(grpc::ServerContext* context, const ModelRequest* 
 {
     std::string modelName = request->modelname();
 
-    models::Model* model = ModelManager::getInstance()->findObjectByName(modelName);
-    if (!model)
+    std::string modelPath = "";
+    for (const auto& entry : ModelManager::getInstance()->getSceneModelsData()) 
     {
-        return grpc::Status(grpc::StatusCode::NOT_FOUND, "Model not found.");
+        for (const auto& model : entry.second) {
+            if (model.name == modelName) {
+                modelPath = model.modelPath;  
+                break;
+            }
+        }
+        if (!modelPath.empty()) {
+            break;
+        }
     }
 
-    std::string modelData = model->getModelData();
+    if (modelPath.empty()) 
+    {
+        std::cerr << "Model not found: " << modelName << std::endl;
+        return grpc::Status(grpc::StatusCode::NOT_FOUND, "Model not found");
+    }
 
+    std::string modelData = ModelManager::getModelBuffer(modelPath);
 
     const size_t chunkSize = 1024 * 1024;  // 1MB chunks
     size_t totalSize = modelData.size();
@@ -68,13 +82,30 @@ grpc::Status Server::GetTransformTex(grpc::ServerContext* context, const Transfo
 {
     std::string modelName = request->modelname();
 
-    models::Model* model = ModelManager::getInstance()->findObjectByName(modelName);
-    if (!model)
+    ModelData modelData;
+
+    std::string texPath = "";  
+    for (const auto& entry : ModelManager::getInstance()->getSceneModelsData()) 
     {
-        return grpc::Status(grpc::StatusCode::NOT_FOUND, "Model not found.");
+        for (const auto& model : entry.second) 
+        {
+            if (model.name == modelName) 
+            {
+                modelData = model;
+                texPath = model.texturePath;
+                break;
+            }
+        }
+        if (!texPath.empty()) {
+            break;
+        }
     }
 
-    std::vector<uint8_t> textureData = model->getTextureData();
+    if (texPath.empty()) {
+        return grpc::Status(grpc::StatusCode::NOT_FOUND, "Texture path not found");
+    }
+
+    auto [textureData, texWidth, texHeight] = ModelManager::getInstance()->getTextureDataAndSize(texPath);
 
     if (textureData.empty())
     {
@@ -90,20 +121,20 @@ grpc::Status Server::GetTransformTex(grpc::ServerContext* context, const Transfo
         size_t chunkSizeActual = chunkEnd - offset;
 
         TransformTexResponse response;
-        response.set_posx(model->getPosition().x);
-        response.set_posy(model->getPosition().y);
-        response.set_posz(model->getPosition().z);
+        response.set_posx(modelData.position.x);
+        response.set_posy(modelData.position.y);
+        response.set_posz(modelData.position.z);
 
-        response.set_pitch(model->getRotation().x);
-        response.set_yaw(model->getRotation().y);
-        response.set_roll(model->getRotation().z);
+        response.set_pitch(modelData.rotation.x);
+        response.set_yaw(modelData.rotation.y);
+        response.set_roll(modelData.rotation.z);
 
-        response.set_scalex(model->getScale().x);
-        response.set_scaley(model->getScale().y);
-        response.set_scalez(model->getScale().z);
+        response.set_scalex(modelData.scale.x);
+        response.set_scaley(modelData.scale.y);
+        response.set_scalez(modelData.scale.z);
 
-        response.set_texwidth(model->getTexSize().x);
-        response.set_texheight(model->getTexSize().y);
+        response.set_texwidth(texWidth);
+        response.set_texheight(texHeight);
 
         response.set_texture(reinterpret_cast<const char*>(&textureData[offset]), chunkSizeActual);
 
@@ -131,6 +162,9 @@ void Server::RunServer(uint16_t port)
     builder.RegisterService(static_cast<SceneViewer::Service*>(&service));
     builder.RegisterService(static_cast<ModelLoader::Service*>(&service));
     builder.RegisterService(static_cast<TransformTexSync::Service*>(&service));
+
+    // Model Manager
+    ModelManager::getInstance()->initialize();
 
     // Finally assemble the server.
     std::unique_ptr<grpc::Server> server(builder.BuildAndStart());

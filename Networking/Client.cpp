@@ -32,7 +32,7 @@ std::unordered_map<std::string, ModelData> Client::getSceneModels()
 
     grpc::Status status = stub_->GetScene(&context, request, &reply);
 
-    // Scene proto returned ModelNames of the Scene
+	//Scene proto returned ModelNames of the Scene
     if (status.ok())
     {
         std::unordered_map<std::string, ModelData> modelDataMap;
@@ -57,7 +57,7 @@ std::unordered_map<std::string, ModelData> Client::getSceneModels()
             {
                 fullModelData += modelReply.modeldata();
             }
-            modelData.modelData = fullModelData;
+            modelData.modelBuffer = fullModelData;
 
             TransformTexRequest transformRequest;
             transformRequest.set_modelname(modelName);
@@ -97,17 +97,13 @@ std::unordered_map<std::string, ModelData> Client::getSceneModels()
         std::cout << status.error_code() << ": " << status.error_message() << std::endl;
         return {};
     }
+
 }
 
 void Client::runClient()
 {
-    std::vector<Scene*> scenes = SceneManager::getInstance()->getScenes();
-    while (!scenes[sceneID]->isInitialized())
-    {
-        IETThread::sleep(100);
-    }
-
     this->modelDataMap_ = this->getSceneModels();
+    //this->createModels();
 }
 
 void Client::createModels()
@@ -116,16 +112,20 @@ void Client::createModels()
     {
         for (const auto& [name, data] : this->modelDataMap_)
         {
-            if (data.modelData.empty() || data.textureData.empty())
+            if (data.modelBuffer.empty() || data.textureData.empty())
             {
                 continue;
             }
 
-            models::Model model(std::move(std::string(data.modelData)), data.textureData, data.texSize.x, data.texSize.y);
+            models::Model model(std::move(std::string(data.modelBuffer)), data.textureData, data.texSize.x, data.texSize.y);
             model.setPosition(data.position);
             model.setRotation(data.rotation);
             model.setScale(data.scale);
+
+            ModelManager::getInstance()->addObject(&model);
             this->models_.push_back(model);
+
+            std::cout << "Created " << name << std::endl;
         }
     }
 
@@ -135,26 +135,31 @@ void Client::createModels()
 void Client::RenderUI()
 {
     ImGui::Begin(("Client " + std::to_string(sceneID + 1)).c_str());
-    ImGui::Text("Scene ID: %d", sceneID);
-    /*ImGui::Text("Model Names:");
+
+    ImGui::Text("Scene ID: %d", sceneID + 1);
+
+    ImGui::Text("Model Names:");
     for (const auto& [name, modelData] : this->modelDataMap_)
     {
         ImGui::BulletText("%s", name.c_str());
-    }*/
-    ImGuiUtils::Image("Thumbnails/pink girl.png", 100, 100);
+    }
 
-    ImGuiUtils::LoadingBar("", SceneManager::getInstance()->loadingProgress(sceneID));
-    if (ImGui::Button("View", ImVec2(45, 20)))
-    {
-        SceneManager::getInstance()->loadScene(sceneID);
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Unload", ImVec2(45,20)))
-    {
-        SceneManager::getInstance()->reinitializeScene(sceneID);
-    }
+    //ImGuiUtils::Image("Thumbnails/pink girl.png", 100, 100);
+
+    //ImGuiUtils::LoadingBar("", SceneManager::getInstance()->loadingProgress(sceneID));
+    //if (ImGui::Button("View", ImVec2(45, 20)))
+    //{
+    //    SceneManager::getInstance()->loadScene(sceneID);
+    //}
     //ImGui::SameLine();
-    //if (ImGui::Button("Load", ImVec2(45,10))) {}
+    //if (ImGui::Button("Unload", ImVec2(45,20)))
+    //{
+    //    SceneManager::getInstance()->reinitializeScene(sceneID);
+    //}
+    //ImGui::SameLine();
+
+
+    if (ImGui::Button("Load", ImVec2(45,10))) {}
     ImGui::End();
 }
 
@@ -171,4 +176,10 @@ std::unordered_map<std::string, ModelData> Client::getModelDataMap()
 bool Client::isSceneLoaded()
 {
     return this->sceneLoaded_;
+}
+
+void Client::run()
+{
+    sleep(100);
+    this->runClient();
 }

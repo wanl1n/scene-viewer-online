@@ -6,23 +6,13 @@
 #include "../Proto/model.grpc.pb.h"
 #include "../Proto/transformtex.grpc.pb.h"
 
+#include "../Model/ModelManager.h"
+
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
 
-struct ModelData
-{
-	std::string modelData;
-
-	glm::vec3 position;
-	glm::vec3 rotation;
-	glm::vec3 scale;
-
-	glm::vec2 texSize;
-	std::vector<uint8_t> textureData;
-};
-
-class Client
+class Client : public IETThread
 {
 public:
 	Client(const int& sceneID);
@@ -36,6 +26,8 @@ public:
 	std::unordered_map<std::string, ModelData> getModelDataMap();
 
 	bool isSceneLoaded();
+
+	void run() override;
 
 private:
 	std::unordered_map<std::string, ModelData> getSceneModels();

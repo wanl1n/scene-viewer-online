@@ -17,13 +17,53 @@ ModelManager* ModelManager::getInstance() {
 
 void ModelManager::initialize()
 {
-	this->threadPool = new ThreadPool("Model Manager Thread Pool", 5);
-	this->threadPool->startScheduler();
+	//this->threadPool = new ThreadPool("Model Manager Thread Pool", 5);
+	//this->threadPool->startScheduler();
 
-	/*for (int i = 0; i < 5; i++)
-		this->loadSceneModels(i);*/
+	///*for (int i = 0; i < 5; i++)
+	//	this->loadSceneModels(i);*/
 
-	std::cout << "Model Manager Initialized: "<<this->modelList.size()<<" models loaded." << std::endl;
+	//std::cout << "Model Manager Initialized: "<<this->modelList.size()<<" models loaded." << std::endl;
+
+	sceneModelsData[0] = {
+		ModelData("Fish","3D/Fish/fish.obj", {400.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Fish/textures/Fish_Albedo.png"),
+		//ModelData("Cabbage","3D/Cabbage/cabbage.obj", {300.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Cabbage/textures/cabbage_albedo.jpeg"),
+		////ModelData("Cupcake","3D/Cupcake/cupcake.obj", {400.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Cupcake/textures/model_edited_material_0.jpeg"),
+		//ModelData("Toaster","3D/Toaster/toaster.obj", {500.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Toaster/textures/toster_Material_color.png"),
+		//ModelData("Red Rose", "3D/Red Rose/red rose.obj", {500.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Red Rose/textures/Red_rose.jpeg")
+	};
+
+	sceneModelsData[1] = {
+		ModelData("Shoe", "3D/Shoe/shoe.obj", {400.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Shoe/textures/nb574.jpeg"),
+		//ModelData("Cup", "3D/Cup/cup.obj", {400.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Cup/textures/cup_albedo.png"),
+		//ModelData("Burnt Croissant","3D/Burnt Croissant/BurntCroissant.obj", {200.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Burnt Croissant/textures/BurntCroissant.jpeg"),
+		//ModelData("Chili","3D/Chili/chili.obj", {500.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Chili/textures/color.png"),
+		//ModelData("Orchid","3D/Orchid/orchid.obj", {400.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Orchid/textures/color.jpeg")
+	};
+
+	sceneModelsData[2] = {
+		ModelData("Lychee","3D/Lychees/lychee.obj", {400.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Lychees/textures/lychee.jpeg"),
+		//ModelData("Bananacat","3D/Cat/banancat.obj", {0.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {0.5f, 0.5f, 0.5f}, "3D/Cat/banancattex.png"),
+		//ModelData("Tank","3D/Tank/M1A1.obj", {-300.f, 0.f, 0.f}, {0.f, 180.f, 0.f}, {0.25f, 0.25f, 0.25f}, "3D/Tank/TankTex.png"),
+		//ModelData("Grass","3D/Grass/Grass.obj", {0.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {0.2f, 0.2f, 0.2f}, "3D/Grass/GrassTex.png"),
+		//ModelData("Flowers","3D/Flowers/Flower.obj", {0.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {250.f, 250.f, 250.f}, "3D/Flowers/FlowerTexA.png")
+	};
+
+	sceneModelsData[3] = {
+		ModelData("Ant","3D/Ant/ant1.obj", {-150.f, 0.f, -200.f}, {0.f, 60.f, 0.f}, {0.03f, 0.03f, 0.03f}, "3D/Ant/ant_(1).png"),
+		//ModelData("Tractor","3D/Car/Tractor.obj", {-100.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Car/TractorTex.jpg"),
+		//ModelData("3D/Moon.obj", {-200.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {10.f, 10.f, 10.f}, "", {238.f / 255.f, 228.f / 255.f, 170.f / 255.f, 1.f}),
+		//ModelData("Mouse","3D/Mouse/Mouse.obj", {100.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {10000.f, 10000.f, 10000.f}, "3D/Mouse/MouseTex.png"),
+		//ModelData("Ground","3D/Ground/Ground.obj", {-100.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {100.f, 100.f, 100.f}, "3D/Ground/AddWater_basecolor.png")
+	};
+
+	sceneModelsData[4] = {
+		ModelData("Macaron","3D/Macaron/macaron.obj", {400.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Macaron/textures/macaron_albedo.jpeg"),
+		//ModelData("Bag","3D/Bag/bag.obj", {400.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Bag/textures/bag.jpeg"),
+		//ModelData("Marshmallow","3D/Marshmallows/marshmallows.obj", {400.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Marshmallows/textures/MMW_CO.png"),
+		//ModelData("Meat","3D/Meat/meat.obj", {400.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Meat/textures/color.jpeg"),
+		//ModelData("Dried Rose", "3D/Dried Rose/dried rose.obj", {400.f, 0.f, 0.f}, {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Dried Rose/textures/rosa02.jpeg")
+	};
 }
 
 Model* ModelManager::findObjectByName(std::string name)
@@ -72,6 +112,11 @@ List ModelManager::getAllObjects()
 int ModelManager::activeObjects()
 {
 	return this->modelList.size();
+}
+
+std::unordered_map<int, std::vector<ModelData>> ModelManager::getSceneModelsData()
+{
+	return this->sceneModelsData;
 }
 
 void ModelManager::update(float deltaTime)
@@ -345,4 +390,44 @@ void ModelManager::deleteObjectByName(std::string name)
 	if (object != NULL) {
 		this->deleteObject(object);
 	}
+}
+
+std::string ModelManager::getModelBuffer(std::string modelPath)
+{
+	std::string modelData = "";
+
+	std::ifstream file(modelPath, std::ios::binary);
+	if (file)
+	{
+		std::ostringstream ss;
+		ss << file.rdbuf();
+		modelData = ss.str(); 
+		file.close();
+	}
+	else
+	{
+		std::cerr << "Failed to open OBJ file: " << modelPath << std::endl;
+	}
+
+	return modelData;
+}
+
+std::tuple<std::vector<uint8_t>, int, int> ModelManager::getTextureDataAndSize(std::string texPath)
+{
+	int img_width, img_height, color_channels;
+
+	unsigned char* text_bytes = stbi_load(texPath.c_str(), &img_width, &img_height, &color_channels, 0);
+
+	if (text_bytes == nullptr) {
+		std::cerr << "Failed to load texture: " << texPath << std::endl;
+		return {};
+	}
+
+	size_t dataSize = img_width * img_height * color_channels;
+
+	std::vector<uint8_t> textureData(text_bytes, text_bytes + dataSize);
+
+	stbi_image_free(text_bytes);
+
+	return std::make_tuple(textureData, img_width, img_height);
 }
