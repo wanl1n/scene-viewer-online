@@ -30,7 +30,7 @@ ObjectLoader::~ObjectLoader()
 
 void ObjectLoader::onStartTask()
 {
-	IETThread::sleep(5000);
+	//IETThread::sleep(5000);
 	//std::cout << "Model " << name << " loading." << std::endl;
 
 	Model* model = new Model(strObjPath, pathTex, pathNorm, name, pos, scale, rotate, color);

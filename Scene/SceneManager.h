@@ -7,6 +7,7 @@ class SceneManager
 public:
 	static SceneManager* getInstance();
 	void initialize();
+	void initializeSceneModelsList();
 
 	void addScene(Scene* scene);
 	void loadScene(int sceneID);
@@ -16,6 +17,7 @@ public:
 	bool loadingProgress(int sceneID);
 
 	std::vector<Scene*> getScenes();
+	std::vector<std::string> getModelNames(int id);
 
 private:
 	SceneManager();
@@ -26,4 +28,6 @@ private:
 	Scene* currentScene;
 	std::vector<Scene*> scenes;
 	ThreadPool* threadPool;
+
+	std::unordered_map<int, std::vector<std::string>> sceneModelsList;
 };

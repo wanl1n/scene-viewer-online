@@ -207,7 +207,7 @@ Model* ModelManager::findObjectByName(std::string name)
 	}
 	else {
 		//std::cout << "Object " << name << " not found!";
-		return NULL;
+		return nullptr;
 	}
 }
 
@@ -223,6 +223,19 @@ List ModelManager::getRandomModels(int sceneID)
 	}
 
 	return randomModels;
+}
+
+List ModelManager::getModelsByName(std::vector<std::string> names)
+{
+	List models(5, nullptr);
+
+	for (int i = 0; i < 5; i++)
+	{
+		Model* model = findObjectByName(names[i]);
+		models[i] = model;
+	}
+
+	return models;
 }
 
 List ModelManager::getAllObjects()
@@ -242,7 +255,7 @@ void ModelManager::update(float deltaTime)
 		if (this->modelList[i]->isActive())
 		{
 			this->modelList[i]->update(deltaTime);
-			std::cout << "Model " << modelList[i]->getName() << " updating." << std::endl;
+			//std::cout << "Model " << modelList[i]->getName() << " updating." << std::endl;
 		}
 	}
 }

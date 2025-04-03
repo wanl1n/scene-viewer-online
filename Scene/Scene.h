@@ -9,7 +9,7 @@ using namespace models;
 class Scene : public IExecutionEvent
 {
 public:
-	Scene(int id);
+	Scene(int id, std::vector<std::string> names);
 	~Scene();
 
 	void initializeDisplay();
@@ -32,4 +32,5 @@ private:
 	bool initialized = false;
 	float loading = 0;
 
+	std::vector<std::string> modelNames;
 };

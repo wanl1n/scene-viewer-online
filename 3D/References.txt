@@ -1,6 +1,6 @@
 MODELS
-1. Cut Fish: https://sketchfab.com/3d-models/cut-fish-c9bcb782e5ef4d37bd8671f1f82a0fbc
-2. Sad Toaster: https://sketchfab.com/3d-models/sad-toaster-9b158486dfa1490eb9157966321283a0
+1. Fish: https://sketchfab.com/3d-models/cut-fish-c9bcb782e5ef4d37bd8671f1f82a0fbc
+2. Toaster: https://sketchfab.com/3d-models/sad-toaster-9b158486dfa1490eb9157966321283a0
 3. Red Rose: https://sketchfab.com/3d-models/red-rose-74520e87c3ed46898668c83356dd9cfa
 4. Cabbage: https://sketchfab.com/3d-models/cabbage-a2ce58a7c4a64a42bfb13af2350d18db
 5. Cupcake: https://sketchfab.com/3d-models/extra-chocolate-marshmallow-cupcake-43b8a378e7a74898855fe0075215aa48

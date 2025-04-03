@@ -142,6 +142,10 @@ void Client::RenderUI()
         ImGui::BulletText("%s", name.c_str());
     }
     ImGuiUtils::LoadingBar("Loading Models.", SceneManager::getInstance()->loadingProgress(sceneID));
+    if (ImGui::Button("View"))
+    {
+        SceneManager::getInstance()->loadScene(sceneID);
+    }
     ImGui::End();
 }
 

@@ -28,6 +28,7 @@ public:
 	// Getters
 	Model* findObjectByName(std::string name);
 	List getRandomModels(int sceneID);
+	List getModelsByName(std::vector<std::string> names);
 	List getAllObjects();
 	int activeObjects();
 
