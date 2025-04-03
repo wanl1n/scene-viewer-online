@@ -34,7 +34,7 @@ void ObjectLoader::onStartTask()
 	//std::cout << "Model " << name << " loading." << std::endl;
 
 	Model* model = new Model(strObjPath, pathTex, pathNorm, name, pos, scale, rotate, color);
-	//std::cout << "Model " << model->getName() << " loaded." << std::endl;
+	std::cout << "Model " << model->getName() << " loaded." << std::endl;
 	ModelManager::getInstance()->addObject(model);
 
 	//this->execEvent->onFinishedExecution();

@@ -201,15 +201,14 @@ int main()
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the depth buffer as well
 
-
         // Check if clients have loaded their scenes
-        for (auto& client : clients)
+        /*for (auto& client : clients)
         {
 	        if (client.isSceneLoaded())
 	        {
                 client.createModels();
 	        }
-        }
+        }*/
 
         // ----------------------- UPDATING VALUES -------------------------- //        
         // First get the mouse position
@@ -271,13 +270,13 @@ int main()
         // Draw the environment
 		ModelManager::getInstance()->draw(litShader.getShaderProgram(), true);
 
-        for (auto& client : clients) 
+        /*for (auto& client : clients) 
         {
             for (Model model : client.getModels()) 
             {
                 model.draw(litShader.getShaderProgram(), true);
             }
-        }
+        }*/
 
         // Reset lighting to render lightModel unaffected by light
         moonlight.turnOff();

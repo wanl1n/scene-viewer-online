@@ -16,8 +16,11 @@ public:
 
 	virtual void update(float deltaTime);
 	virtual void processInput();
+
 	virtual void loadScene();
 	virtual void unloadScene();
+	void deleteModels();
+
 	void onFinishedExecution() override;
 
 	std::vector<Model*> getModels();

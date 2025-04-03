@@ -8,6 +8,7 @@ public:
 	static SceneManager* getInstance();
 	void initialize();
 	void initializeSceneModelsList();
+	void reinitializeScene(int id);
 
 	void addScene(Scene* scene);
 	void loadScene(int sceneID);

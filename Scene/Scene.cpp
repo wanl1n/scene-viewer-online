@@ -14,6 +14,8 @@ Scene::~Scene()
 
 void Scene::initializeDisplay()
 {
+	ModelManager::getInstance()->loadSceneModels(id);
+
 	while (models.size() < 5 || models[0] == nullptr || models[1] == nullptr || models[2] == nullptr || models[3] == nullptr || models[4] == nullptr)
 	{
 		this->models = ModelManager::getInstance()->getModelsByName(modelNames);
@@ -62,6 +64,15 @@ void Scene::unloadScene()
 		if (model != nullptr)
 			model->setActive(false);
     }
+}
+
+void Scene::deleteModels()
+{
+	for (std::string name : modelNames)
+		ModelManager::getInstance()->deleteObjectByName(name);
+
+	this->models.clear();
+	this->loading = 0;
 }
 
 void Scene::onFinishedExecution()

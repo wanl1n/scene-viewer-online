@@ -20,8 +20,8 @@ void ModelManager::initialize()
 	this->threadPool = new ThreadPool("Model Manager Thread Pool", 5);
 	this->threadPool->startScheduler();
 
-	for (int i = 0; i < 5; i++)
-		this->loadSceneModels(i);
+	/*for (int i = 0; i < 5; i++)
+		this->loadSceneModels(i);*/
 
 	std::cout << "Model Manager Initialized: "<<this->modelList.size()<<" models loaded." << std::endl;
 }

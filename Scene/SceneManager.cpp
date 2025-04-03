@@ -82,6 +82,13 @@ void SceneManager::initializeSceneModelsList()
 	this->sceneModelsList[4] = scene4;
 }
 
+void SceneManager::reinitializeScene(int id)
+{
+	this->scenes[id]->deleteModels();
+	SceneLoader* loader = new SceneLoader(id, this->scenes[id]);
+	this->threadPool->scheduleTask(loader);
+}
+
 void SceneManager::addScene(Scene* scene)
 {
 	this->scenes.push_back(scene);

@@ -136,16 +136,25 @@ void Client::RenderUI()
 {
     ImGui::Begin(("Client " + std::to_string(sceneID + 1)).c_str());
     ImGui::Text("Scene ID: %d", sceneID);
-    ImGui::Text("Model Names:");
+    /*ImGui::Text("Model Names:");
     for (const auto& [name, modelData] : this->modelDataMap_)
     {
         ImGui::BulletText("%s", name.c_str());
-    }
-    ImGuiUtils::LoadingBar("Loading Models.", SceneManager::getInstance()->loadingProgress(sceneID));
-    if (ImGui::Button("View"))
+    }*/
+    ImGuiUtils::Image("Thumbnails/pink girl.png", 100, 100);
+
+    ImGuiUtils::LoadingBar("", SceneManager::getInstance()->loadingProgress(sceneID));
+    if (ImGui::Button("View", ImVec2(45, 20)))
     {
         SceneManager::getInstance()->loadScene(sceneID);
     }
+    ImGui::SameLine();
+    if (ImGui::Button("Unload", ImVec2(45,20)))
+    {
+        SceneManager::getInstance()->reinitializeScene(sceneID);
+    }
+    //ImGui::SameLine();
+    //if (ImGui::Button("Load", ImVec2(45,10))) {}
     ImGui::End();
 }
 
