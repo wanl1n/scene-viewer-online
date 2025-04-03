@@ -19,6 +19,12 @@ public:
 	void initialize(); 
 	void update(float deltaTime);
 	void draw(GLuint* shaderProgram, bool texExists);
+	void loadSceneModels(int id);
+	void loadScene0Models();
+	void loadScene1Models();
+	void loadScene2Models();
+	void loadScene3Models();
+	void loadScene4Models();
 
 	// Setters
 	void addObject(Model* model);

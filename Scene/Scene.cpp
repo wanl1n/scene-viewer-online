@@ -18,7 +18,7 @@ void Scene::initializeDisplay()
 	{
 		this->models = ModelManager::getInstance()->getModelsByName(modelNames);
 
-		int loadedModels = 0;
+		float loadedModels = 0;
 		if (models[0]) loadedModels++;
 		if (models[1]) loadedModels++;
 		if (models[2]) loadedModels++;
