@@ -130,11 +130,21 @@ void Client::createModels()
     }
 
     this->sceneLoaded_ = false;
+    this->modelsLoaded_ = true;
+}
+
+void Client::deleteModels()
+{
+    this->models_.clear();
+    this->modelsLoaded_ = false;
 }
 
 void Client::RenderUI()
 {
-    ImGui::Begin(("Client " + std::to_string(sceneID + 1)).c_str());
+    ImGui::SetNextWindowPos(ImVec2(110 * sceneID, 10));  // Position (X=100, Y=100)
+    ImGui::SetNextWindowSize(ImVec2(110, 250)); // Size (Width=400, Height=300)
+
+    ImGui::Begin(("Client " + std::to_string(sceneID + 1)).c_str(), NULL, ImGuiWindowFlags_NoScrollbar);
 
     ImGui::Text("Scene ID: %d", sceneID + 1);
 
@@ -144,22 +154,35 @@ void Client::RenderUI()
         ImGui::BulletText("%s", name.c_str());
     }
 
-    //ImGuiUtils::Image("Thumbnails/pink girl.png", 100, 100);
+    ImGuiUtils::Image("Thumbnails/pink girl.png", 100, 100);
 
-    //ImGuiUtils::LoadingBar("", SceneManager::getInstance()->loadingProgress(sceneID));
-    //if (ImGui::Button("View", ImVec2(45, 20)))
-    //{
-    //    SceneManager::getInstance()->loadScene(sceneID);
-    //}
-    //ImGui::SameLine();
-    //if (ImGui::Button("Unload", ImVec2(45,20)))
-    //{
-    //    SceneManager::getInstance()->reinitializeScene(sceneID);
-    //}
-    //ImGui::SameLine();
+    ImGuiUtils::LoadingBar("", (float)this->models_.size()/5);
+    if (ImGui::Button("View", ImVec2(45, 20)))
+    {
+        for (Model model : this->models_)
+        {
+            model.setActive(true);
+        }
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Hide", ImVec2(45, 20)))
+    {
+        for (Model model : this->models_)
+        {
+            model.setActive(false);
+        }
+    }
 
-
-    if (ImGui::Button("Load", ImVec2(45,10))) {}
+    if (ImGui::Button("Unload", ImVec2(45,20)))
+    {
+        this->deleteModels();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Load", ImVec2(45,20)))
+    {
+        if (!modelsLoaded_)
+			this->createModels();
+    }
     ImGui::End();
 }
 

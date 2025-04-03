@@ -274,7 +274,8 @@ int main()
         {
             for (Model model : client.getModels()) 
             {
-                model.draw(litShader.getShaderProgram(), true);
+                if (model.isActive())
+					model.draw(litShader.getShaderProgram(), true);
             }
         }
 

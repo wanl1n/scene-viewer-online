@@ -18,6 +18,7 @@ public:
 	Client(const int& sceneID);
 
 	void createModels();
+	void deleteModels();
 
 	void runClient();
 	void RenderUI();
@@ -45,5 +46,6 @@ private:
 	std::unordered_map<std::string, ModelData> modelDataMap_;
 
 	bool sceneLoaded_ = false;
+	bool modelsLoaded_ = false;
 };
 
