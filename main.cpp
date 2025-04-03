@@ -12,9 +12,7 @@
 #include "Camera/PerspectiveCamera.hpp"
 
 // Lights
-#include "Light/Light.hpp"
 #include "Light/DirectionLight.hpp"
-#include "Light/PointLight.hpp"
 
 // Shaders
 #include "Shaders/Shader.hpp"
@@ -26,10 +24,8 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-#include "Model/ModelManager.h"
 #include "Networking/Client.h"
 #include "Networking/Server.h"
-#include "Scene/SceneManager.h"
 
 // Namespaces of the other classes
 using namespace models;
@@ -88,22 +84,6 @@ void Key_Callback(GLFWwindow* window, int key, int scancode, int action, int mod
         // Reset the flags.
         player.setTurningRight(false);
     }
-
-    if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
-		SceneManager::getInstance()->loadScene(0);
-    }
-    if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
-        SceneManager::getInstance()->loadScene(1);
-    }
-    if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
-        SceneManager::getInstance()->loadScene(2);
-    }
-    if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
-        SceneManager::getInstance()->loadScene(3);
-    }
-    if (key == GLFW_KEY_5 && action == GLFW_PRESS) {
-        SceneManager::getInstance()->loadScene(4);
-    }
 }
 
 int main()
@@ -125,24 +105,21 @@ int main()
     glfwMakeContextCurrent(window);
     gladLoadGL();
 
+    // Get the initial framebuffer size (this is the actual size of the window in pixels)
+    int width_, height_;
+    glfwGetFramebufferSize(window, &width_, &height_);
+
     // Getting User Key Input
     glfwSetKeyCallback(window, Key_Callback);
 
     // Create Viewport
-    glViewport(0, 0, (int)width, (int)height);
+    glViewport(0, 0, (int)width_, (int)height_);
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330"); 
-
-    // Moon / Direction Light model
-    Model lightModel = Model("3D/Moon.obj", "", "", "Moon",
-                            glm::vec3(-100.f, 1000.f, -30.f), // pos
-                            glm::vec3(10.f),                // scale
-                            glm::vec3(0.f),                 // rotate
-                            glm::vec4(238.f / 255.f, 228.f / 255.f, 170.f / 255.f, 1.f)); // color
 
     // Creating the shader for the objects
     Shader litShader = Shader("Shaders/sample.vert", "Shaders/sample.frag");
@@ -151,10 +128,10 @@ int main()
     Skybox skybox = Skybox();
 
     // Light Sources
-    DirectionLight moonlight = DirectionLight(lightModel.getPosition(), glm::vec3(0.f), lightModel.getColor(), 1.0f);
+    DirectionLight moonlight = DirectionLight(glm::vec3(0, 1000, 0), glm::vec3(0.f), glm::vec3(1.0f), 1.0f);
 
     // Cameras
-    PerspectiveCamera camera = PerspectiveCamera(60.f, height, width, 0.1f, 1000.f,
+    PerspectiveCamera camera = PerspectiveCamera(60.f, height, width, 0.1f, 500.f,
                                                 glm::vec3(0.f, 100.f, -10.f), 
                                                 glm::vec3(0.f, 1.f, 0.f), 
                                                 glm::vec3(0.f, 0.f, -5.f));
@@ -198,6 +175,9 @@ int main()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        // Change background color (Deep Purple)
+        glClearColor(0.2f, 0.0f, 0.5f, 1.0f);
+
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the depth buffer as well
 
@@ -214,9 +194,8 @@ int main()
         // First get the mouse position
         glfwGetCursorPos(window, &xpos, &ypos);
 
-        // Calculate how much the mouse moved in x direction
+        // Calculate how much the mouse moved in x and y direction
         double x_mod = xpos - prev_xpos;
-        // Calculate how much the mouse moved in y direction
         double y_mod = prev_ypos - ypos; 
 
         // Save the current mouse position as the previous for the next frame.
@@ -232,12 +211,7 @@ int main()
 
         // Calculate the rotation of the camera based on the mouse position.
         camera.calcMouseRotate(pitch, -yaw);
-
-        // Set the color of the lights to white since its not in night vision mode.
-        moonlight.setColor(glm::vec3(1, 1, 1));
-
-        // If Main Camera exists, update the projection and view matrix
-        if (mainCamera != NULL) mainCamera->updateShaderViewProj(litShader.getShaderProgram());
+        camera.updateShaderViewProj(litShader.getShaderProgram());
 
         // Update the Tank Movements
         if (player.isMovingForward()) { 
@@ -253,10 +227,6 @@ int main()
 			camera.moveLeft();
         }
 
-		//SceneManager::getInstance()->processInput();
-
-  //      ModelManager::getInstance()->update(1);
-  //      SceneManager::getInstance()->update(1);
     	// ---------------------- RENDERING OBJECTS ------------------------- //
         // First draw the skybox
         skybox.draw(mainCamera->getViewMatrix(), mainCamera->getProjMatrix(), player.isUsingBinoculars());
@@ -268,17 +238,12 @@ int main()
         moonlight.applyUniqueValuesToShader(litShader.getShaderProgram());
 
         // Draw the environment
-		//ModelManager::getInstance()->draw(litShader.getShaderProgram(), true);
-
-        int index = 0;
         for (auto& client : clients) 
         {
             for (Model model : client.getModels()) 
             {
-                std::cout << index << " active: "<< model.isActive() << std::endl;
                 if (model.isActive())
 					model.draw(litShader.getShaderProgram(), true);
-                    index++;
             }
         }
 

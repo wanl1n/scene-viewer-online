@@ -18,7 +18,7 @@ namespace cameras {
 			glm::vec3 panRotate;
 			glm::vec3 panCenter;
 
-			float speed = 1.f;
+			float speed = 5.f;
 
 		// Constructors
 		public:

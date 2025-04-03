@@ -3,7 +3,7 @@
 #include "../Imgui/ImGuiUtils.h"
 #include <grpcpp/create_channel.h>
 #include "../Model/Model.hpp"
-#include "../Scene/SceneManager.h"
+#include "../Thread/IETThread.h"
 
 Client::Client(const int& sceneID)
 {
@@ -103,7 +103,9 @@ std::unordered_map<std::string, ModelData> Client::getSceneModels()
 void Client::runClient()
 {
     this->modelDataMap_ = this->getSceneModels();
-    //this->createModels();
+    /*while (!sceneLoaded_) { IETThread::sleep(10); }
+
+    this->createModels();*/
 }
 
 void Client::createModels()
@@ -137,6 +139,7 @@ void Client::createModels()
 void Client::deleteModels()
 {
     this->models_.clear();
+    this->sceneLoaded_ = true;
     this->modelsLoaded_ = false;
 }
 
@@ -155,7 +158,7 @@ void Client::RenderUI()
         ImGui::BulletText("%s", name.c_str());
     }
 
-    ImGuiUtils::Image("Thumbnails/pink girl.png", 100, 100);
+    //ImGuiUtils::Image("Thumbnails/pink girl.png", 100, 100);
 
     ImGuiUtils::LoadingBar("", (float)this->models_.size()/5);
     if (ImGui::Button("View", ImVec2(45, 20)))
@@ -204,6 +207,6 @@ bool Client::isSceneLoaded()
 
 void Client::run()
 {
-    sleep(100);
+    IETThread::sleep(100);
     this->runClient();
 }

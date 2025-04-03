@@ -13,7 +13,6 @@
 
 #include "../Model/Model.hpp"
 #include "../Model/ModelManager.h"
-#include "../Scene/SceneManager.h"
 
 grpc::Status Server::GetScene(grpc::ServerContext* context, const SceneRequest* request, SceneResponse* response)
 {

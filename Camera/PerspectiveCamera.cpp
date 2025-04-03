@@ -18,7 +18,7 @@ PerspectiveCamera::PerspectiveCamera(float FOV, float window_height, float windo
 	// Create the ProjMatrix
 	this->projMatrix = glm::perspective(
 		glm::radians(this->FOV),
-		this->height / this->width,
+		width / height,
 		near,
 		far
 	);

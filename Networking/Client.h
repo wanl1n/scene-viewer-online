@@ -7,6 +7,7 @@
 #include "../Proto/transformtex.grpc.pb.h"
 
 #include "../Model/ModelManager.h"
+#include "../Thread/IETThread.h"
 
 using grpc::Channel;
 using grpc::ClientContext;
