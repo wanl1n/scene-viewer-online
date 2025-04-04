@@ -119,14 +119,17 @@ void Client::createModels()
                 continue;
             }
 
-            //if (!initialized)
 				IETThread::sleep(6000);
 
             models::Model* model = new Model(std::move(std::string(data.modelBuffer)), data.textureData, data.texSize.x, data.texSize.y);
             model->setPosition(data.position);
             model->setRotation(data.rotation);
             model->setScale(data.scale);
-            model->setActive(true);
+
+        	//if (!initialized)
+				model->setActive(false);
+            /*else
+				model->setActive(true);*/
 
             ModelManager::getInstance()->addObject(model);
             this->models_.push_back(model);

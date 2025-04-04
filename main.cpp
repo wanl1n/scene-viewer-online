@@ -50,6 +50,17 @@ float yaw = 270.f; // initial yaw is 270 degrees (-90 degrees of positive x axis
 double prev_xpos = width / 2;
 double prev_ypos = height / 2;
 
+const double TARGET_FPS = 60.0f;
+const double FRAME_TIME = 1.0 / TARGET_FPS; // Time per frame in seconds
+void limitFramerate(double deltaTime) {
+    double frameEnd = glfwGetTime();
+    double frameDuration = frameEnd - deltaTime;
+
+    if (frameDuration < FRAME_TIME) {
+        std::this_thread::sleep_for(std::chrono::duration<double>(FRAME_TIME - frameDuration));
+    }
+}
+
 // Keyboard Input Function -- Updates the Player object states.
 void Key_Callback(GLFWwindow* window, int key, int scancode, int action, int mod) {
     // Movement Controls
@@ -139,9 +150,9 @@ int main()
 
     // Cameras
     PerspectiveCamera camera = PerspectiveCamera(60.f, height, width, 0.1f, 1000.f,
-                                                glm::vec3(0.f, 100.f, -100.f), 
+                                                glm::vec3(0.f, 300.f, -300.f), 
                                                 glm::vec3(0.f, 1.f, 0.f), 
-                                                glm::vec3(0.f, 0.f, -5.f));
+                                                glm::vec3(0.f, 0.f, 0.f));
 	// Set the initial camera to the third person perspective camera
     MyCamera* mainCamera = &camera;
 
@@ -309,6 +320,7 @@ int main()
 
         /* Poll for and process events */
         glfwPollEvents();
+        limitFramerate(deltaTime);
     }
 
     glfwTerminate();
