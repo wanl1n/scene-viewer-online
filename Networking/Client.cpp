@@ -119,6 +119,7 @@ void Client::createModels()
                 continue;
             }
 
+			IETThread::sleep(1000);
             models::Model* model = new Model(std::move(std::string(data.modelBuffer)), data.textureData, data.texSize.x, data.texSize.y);
             model->setPosition(data.position);
             model->setRotation(data.rotation);
@@ -161,7 +162,7 @@ void Client::RenderUI()
 
     //ImGuiUtils::Image("Thumbnails/pink girl.png", 100, 100);
 
-    ImGuiUtils::LoadingBar("", (float)this->models_.size()/5);
+    ImGuiUtils::LoadingBar("", (float)this->models_.size()/4);
     if (ImGui::Button("View", ImVec2(45, 20)))
     {
         for (Model* model : this->models_)

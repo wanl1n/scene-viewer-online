@@ -39,9 +39,6 @@ Player::Player(Model* tank) {
     lowIntensity = 100.f;
     medIntensity = 500.f;
     highIntensity = 1000.f;
-
-    // Event flag for jumping.
-    this->jumping = false;
 }
 
 // Very straightforward getters and setters for all the event flags in the Player object.
@@ -124,6 +121,11 @@ bool Player::isAdjustingHeadlights() {
 bool Player::isIdle()
 {
 	return !movingForward && !movingBackward && !turningLeft && !turningRight;
+}
+
+bool Player::isPanning()
+{
+    return panning;
 }
 
 int Player::getHeadlightsIntensity() {
@@ -232,10 +234,7 @@ void Player::setModel(Model* tank) {
     this->tank = tank;
 }
 
-bool Player::isJumping() {
-    return this->jumping;
-}
-
-void Player::setJumping(bool x) {
-    this->jumping = x;
+void Player::setPanning(bool x)
+{
+    this->panning = x;
 }

@@ -62,12 +62,12 @@ void PerspectiveCamera::zoom(float delta) {
 
 void PerspectiveCamera::moveLeft()
 {
-	pos -= speed * glm::normalize(glm::cross(this->center, worldUp)) * 0.5f;
+	pos -= glm::normalize(glm::cross(this->center, worldUp)) * speed;
 }
 
 void PerspectiveCamera::moveRight()
 {
-	pos += speed * glm::normalize(glm::cross(this->center, worldUp)) * 0.5f;
+	pos += glm::normalize(glm::cross(this->center, worldUp)) * speed;
 }
 
 void PerspectiveCamera::moveForward()

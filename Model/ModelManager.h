@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <vector>
 #include <string>
+#include <mutex>
 #include "Model.hpp"
 
 struct ModelData
@@ -68,6 +69,8 @@ private:
 
 	ModelTable modelMap;
 	List modelList;
+
+	std::mutex* mutex;
 
 	static glm::vec3 randomPos();
 	static float randomFloat(float min, float max);

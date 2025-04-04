@@ -88,18 +88,11 @@ void Key_Callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 void MouseButton_Callback(GLFWwindow* window, int button, int action, int mods) {
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-        player.setTurningLeft(true);
-    }
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
-        player.setTurningLeft(false);
-    }
-
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
-        player.setTurningRight(true);
+        player.setPanning(true);
     }
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) {
-        player.setTurningRight(false);
+        player.setPanning(false);
     }
 }
 
@@ -149,8 +142,8 @@ int main()
     DirectionLight moonlight = DirectionLight(glm::vec3(0, 1000, 0), glm::vec3(0.f), glm::vec3(1.0f), 1.0f);
 
     // Cameras
-    PerspectiveCamera camera = PerspectiveCamera(60.f, height, width, 0.1f, 500.f,
-                                                glm::vec3(0.f, 100.f, -10.f), 
+    PerspectiveCamera camera = PerspectiveCamera(60.f, height, width, 0.1f, 1000.f,
+                                                glm::vec3(0.f, 100.f, -100.f), 
                                                 glm::vec3(0.f, 1.f, 0.f), 
                                                 glm::vec3(0.f, 0.f, -5.f));
 	// Set the initial camera to the third person perspective camera
@@ -218,15 +211,6 @@ int main()
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the depth buffer as well
 
-        // Check if clients have loaded their scenes
-        /*for (auto& client : clients)
-        {
-	        if (client.isSceneLoaded())
-	        {
-                client.createModels();
-	        }
-        }*/
-
         // ----------------------- UPDATING VALUES -------------------------- //        
         // First get the mouse position
         glfwGetCursorPos(window, &xpos, &ypos);
@@ -247,7 +231,9 @@ int main()
         pitch += glm::radians(y_mod * sensitivity);
 
         // Calculate the rotation of the camera based on the mouse position.
-        camera.calcMouseRotate(pitch, -yaw);
+		if (player.isPanning()) {
+            camera.calcMouseRotate(pitch, -yaw);
+        }
         camera.updateShaderViewProj(litShader.getShaderProgram());
 
         // Update the Tank Movements

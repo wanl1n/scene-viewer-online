@@ -16,19 +16,20 @@ ModelManager* ModelManager::getInstance() {
 
 void ModelManager::initialize()
 {
+	this->mutex = new std::mutex();
 	sceneModelsData[0] = {
-		ModelData("Fish","3D/Fish/fish.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Fish/textures/Fish_Albedo.png"),
+		ModelData("Fish","3D/Fish/fish.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {10.f, 10.f, 10.f}, "3D/Fish/textures/Fish_Albedo.png"),
 		ModelData("Cabbage","3D/Cabbage/cabbage.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Cabbage/textures/cabbage_albedo.jpeg"),
 		//ModelData("Cupcake","3D/Cupcake/cupcake.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Cupcake/textures/model_edited_material_0.jpeg"),
 		ModelData("Toaster","3D/Toaster/toaster.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Toaster/textures/toster_Material_color.png"),
-		ModelData("Red Rose", "3D/Red Rose/red rose.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Red Rose/textures/Red_rose.jpeg")
+		ModelData("Red Rose", "3D/Red Rose/red rose.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {10.f, 10.f, 10.f}, "3D/Red Rose/textures/Red_rose.jpeg")
 	};
 
 	sceneModelsData[1] = {
 		ModelData("Shoe", "3D/Shoe/shoe.obj", ModelManager::randomPos(), {0.f, 0.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Shoe/textures/nb574.jpeg"),
-		ModelData("Cup", "3D/Cup/cup.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {30.f, 30.f, 30.f}, "3D/Cup/textures/cup_albedo.png"),
+		//ModelData("Cup", "3D/Cup/cup.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {30.f, 30.f, 30.f}, "3D/Cup/textures/cup_albedo.png"),
 		ModelData("Burnt Croissant","3D/Burnt Croissant/BurntCroissant.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {30.f, 30.f, 30.f}, "3D/Burnt Croissant/textures/BurntCroissant.jpeg"),
-		ModelData("Chili","3D/Chili/chili.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Chili/textures/color.png"),
+		ModelData("Chili","3D/Chili/chili.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {1.f, 1.f, 1.f}, "3D/Chili/textures/color.png"),
 		ModelData("Orchid","3D/Orchid/orchid.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Orchid/textures/color.jpeg")
 	};
 
@@ -36,8 +37,8 @@ void ModelManager::initialize()
 		ModelData("Lychee","3D/Lychees/lychee.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {30.f, 30.f, 30.f}, "3D/Lychees/textures/lychee.jpeg"),
 		ModelData("Bananacat","3D/Banana Cat/banancat.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {0.5f, 0.5f, 0.5f}, "3D/Banana Cat/banancattex.png"),
 		ModelData("Tank","3D/Tank/M1A1.obj", ModelManager::randomPos(), {0.f, 180.f, 0.f}, {0.25f, 0.25f, 0.25f}, "3D/Tank/TankTex.png"),
-		ModelData("Grass","3D/Grass/Grass.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {0.2f, 0.2f, 0.2f}, "3D/Grass/GrassTex.png"),
-		ModelData("Flowers","3D/Flowers/Flower.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {250.f, 250.f, 250.f}, "3D/Flowers/FlowerTexA.png")
+		ModelData("Grass","3D/Grass/Grass.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {0.1f, 0.1f, 0.1f}, "3D/Grass/GrassTex.png"),
+		//ModelData("Ground","3D/Ground/Ground.obj", ModelManager::randomPos(), {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, "3D/Ground/AddWater_basecolor.png")
 	};
 
 	sceneModelsData[3] = {
@@ -45,14 +46,14 @@ void ModelManager::initialize()
 		ModelData("Tractor","3D/Car/Tractor.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Car/TractorTex.jpg"),
 		ModelData("Cat", "3D/Cat/cat.obj", ModelManager::randomPos(), {0.f, 0.f, 0.f}, {10.f, 10.f, 10.f}, "3D/Cat/textures/color.png"),
 		//ModelData("Mouse","3D/Mouse/Mouse.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {1000.f, 1000.f, 1000.f}, "3D/Mouse/MouseTex.png"),
-		ModelData("Ground","3D/Ground/Ground.obj", ModelManager::randomPos(), {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, "3D/Ground/AddWater_basecolor.png")
+		ModelData("Flowers","3D/Flowers/Flower.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {250.f, 250.f, 250.f}, "3D/Flowers/FlowerTexA.png")
 	};
 
 	sceneModelsData[4] = {
-		ModelData("Macaron","3D/Macaron/macaron.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Macaron/textures/macaron_albedo.jpeg"),
-		ModelData("Bag","3D/Bag/bag.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Bag/textures/bag.jpeg"),
-		ModelData("Marshmallow","3D/Marshmallows/marshmallows.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {100.f, 100.f, 100.f}, "3D/Marshmallows/textures/MMW_CO.png"),
-		ModelData("Meat","3D/Meat/meat.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Meat/textures/color.jpeg"),
+		ModelData("Macaron","3D/Macaron/macaron.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {1.f, 1.f, 1.f}, "3D/Macaron/textures/macaron_albedo.jpeg"),
+		ModelData("Bag","3D/Bag/bag.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {10.f, 10.f, 10.f}, "3D/Bag/textures/bag.jpeg"),
+		//ModelData("Marshmallow","3D/Marshmallows/marshmallows.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {100.f, 100.f, 100.f}, "3D/Marshmallows/textures/MMW_CO.png"),
+		ModelData("Meat","3D/Meat/meat.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {10.f, 10.f, 10.f}, "3D/Meat/textures/color.jpeg"),
 		ModelData("Dried Rose", "3D/Dried Rose/dried rose.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Dried Rose/textures/rosa02.jpeg")
 	};
 }
@@ -114,12 +115,15 @@ void ModelManager::update(float deltaTime)
 {
 	//std::cout << "Delta time: " << deltaTime.asSeconds() << "\n";
 	for (int i = 0; i < this->modelList.size(); i++) {
-		if (modelList[i]->dataLoaded && !modelList[i]->bufferGenerated)
+		if (modelList[i]->dataLoaded && modelList[i]->bufferGenerated)
+		{
+			if (!modelList[i]->textureLoaded)
+				this->modelList[i]->loadTextureFromData();
+		}
+		if (modelList[i]->dataLoaded)
 		{
 			if (!modelList[i]->bufferGenerated)
 				this->modelList[i]->generateBuffers();
-			if (!modelList[i]->textureLoaded)
-				this->modelList[i]->loadTextureFromData();
 			glEnable(GL_DEPTH_TEST);
 			//std::cout << "Model " << modelList[i]->getName() << " buffers generated." << std::endl;
 		}
@@ -145,11 +149,12 @@ void ModelManager::draw(GLuint* shaderProgram, bool texExists)
 
 void ModelManager::addObject(Model* model)
 {
-	//model->setActive(false);
-	//also initialize the oject
+	this->mutex->lock();
+
 	this->modelMap[model->getName()] = model;
 	this->modelList.push_back(model);
-	//this->modelMap[model->getName()]->initialize();
+
+	this->mutex->unlock();
 }
 
 void ModelManager::deleteObject(Model* model)

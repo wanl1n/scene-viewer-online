@@ -48,7 +48,7 @@ namespace players {
 			float highIntensity;
 
 			// BONUS
-			bool jumping;
+			bool panning;
 
 		public:	
 			Player(Model* tank);
@@ -75,6 +75,7 @@ namespace players {
 			bool isDroningLeft();
 			bool isAdjustingHeadlights();
 			bool isIdle();
+			bool isPanning();
 
 			int getHeadlightsIntensity();
 			float getLowIntensity();
@@ -102,7 +103,7 @@ namespace players {
 			void setDroningRight(bool x);
 			void setDroningLeft(bool x);
 			void setAdjustingHeadlights(bool x);
-
+			void setPanning(bool x);
 			void setModel(Model* tank);
 
 		// BONUS: Tank Jump
