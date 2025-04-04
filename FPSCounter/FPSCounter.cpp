@@ -11,7 +11,13 @@ FPSCounter::~FPSCounter()
 
 void FPSCounter::update(double deltaTime)
 {
-    this->updateFPS(deltaTime);
+    timer += deltaTime;
+
+    if (timer > 0.5f)
+    {
+        this->updateFPS(deltaTime);
+		timer = 0.f;
+    }
 }
 
 void FPSCounter::draw()
@@ -29,14 +35,16 @@ void FPSCounter::draw()
 
 void FPSCounter::updateFPS(double deltaTime)
 {
-    this->updateTime += deltaTime;  
+    this->fps = 1 / deltaTime;
 
-    if (this->updateTime >= 1.0) 
-    {
-        this->fps = frameCount / this->updateTime; 
-        this->updateTime = 0.0; 
-        this->frameCount = 0;   
-    }
+    //this->updateTime += deltaTime;  
 
-    this->frameCount++; 
+    //if (this->updateTime >= 1.0) 
+    //{
+    //    //this->fps = frameCount / this->updateTime; 
+    //    this->updateTime = 0.0; 
+    //    this->frameCount = 0;   
+    //}
+
+    //this->frameCount++; 
 }

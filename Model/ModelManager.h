@@ -34,6 +34,7 @@ struct ModelData
 using namespace models;
 typedef std::unordered_map<std::string, Model*> ModelTable;
 typedef std::vector<Model*> List;
+class Client;
 
 class ModelManager
 {
@@ -47,6 +48,8 @@ public:
 	void addObject(Model* model);
 	void deleteObject(Model* model);
 	void deleteObjectByName(std::string name);
+
+	void reloadScene(Client* client);
 
 	// Getters
 	Model* findObjectByName(std::string name);

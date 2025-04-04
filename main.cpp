@@ -177,8 +177,8 @@ int main()
 
     FPSCounter fpsCounter;
 
-    double prevTime = 0.0f;
-    double currentTime = 0.0f;
+    double prevTime = glfwGetTime();
+    double currentTime = glfwGetTime();
     double deltaTime;
 
     /* Loop until the user closes the window */
@@ -283,6 +283,7 @@ int main()
             for (auto& client : clients)
             {
                 client.hideModels();
+                client.setViewing(false);
             }
         }
         if (ImGui::Button("Show All", ImVec2(90, 20)))
@@ -290,6 +291,7 @@ int main()
             for (auto& client : clients)
             {
                 client.showModels();
+                client.setViewing(true);
             }
         }
         ImGui::End();

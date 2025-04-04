@@ -27,12 +27,16 @@ public:
 	void showModels();
 	void hideModels();
 
+	void reloadModels();
+
 	std::vector<models::Model*> getModels();
 	std::unordered_map<std::string, ModelData> getModelDataMap();
 
 	bool isSceneLoaded();
 
 	void run() override;
+
+	void setViewing(bool view) { this->viewing = view; }
 
 private:
 	std::unordered_map<std::string, ModelData> getSceneModels();
@@ -52,5 +56,6 @@ private:
 
 	bool sceneLoaded_ = false;
 	bool modelsLoaded_ = false;
+	bool initialized = false;
 };
 

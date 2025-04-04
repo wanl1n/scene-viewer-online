@@ -153,6 +153,7 @@
     <ClCompile Include="Model\Skybox.cpp" />
     <ClCompile Include="Networking\Client.cpp" />
     <ClCompile Include="Networking\Server.cpp" />
+    <ClCompile Include="Thread\ObjectLoader.cpp" />
     <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="Proto\model.grpc.pb.cc" />
     <ClCompile Include="Proto\model.pb.cc" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Model\Skybox.hpp" />
     <ClInclude Include="Networking\Client.h" />
     <ClInclude Include="Networking\Server.h" />
+    <ClInclude Include="Thread\ObjectLoader.h" />
     <ClInclude Include="Player\Player.hpp" />
     <ClInclude Include="Proto\model.grpc.pb.h" />
     <ClInclude Include="Proto\model.pb.h" />

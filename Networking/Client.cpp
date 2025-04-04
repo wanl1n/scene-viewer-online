@@ -119,7 +119,9 @@ void Client::createModels()
                 continue;
             }
 
-			IETThread::sleep(6000);
+            //if (!initialized)
+				IETThread::sleep(6000);
+
             models::Model* model = new Model(std::move(std::string(data.modelBuffer)), data.textureData, data.texSize.x, data.texSize.y);
             model->setPosition(data.position);
             model->setRotation(data.rotation);
@@ -135,10 +137,15 @@ void Client::createModels()
 
     this->sceneLoaded_ = false;
     this->modelsLoaded_ = true;
+    this->initialized = true;
 }
 
 void Client::deleteModels()
 {
+	for (Model* model : this->models_)
+	{
+		ModelManager::getInstance()->deleteObject(model);
+	}
     this->models_.clear();
     this->sceneLoaded_ = true;
     this->modelsLoaded_ = false;
@@ -184,9 +191,17 @@ void Client::RenderUI()
     if (ImGui::Button("Load", ImVec2(45,20)))
     {
         if (!modelsLoaded_)
-			this->createModels();
+			this->reloadModels();
     }
     ImGui::End();
+
+    if (viewing && this->models_.size() < 4)
+    {
+        ImGui::SetNextWindowPos(ImVec2((1280/2)-250, 200 + 50 * sceneID));  // Position (X=100, Y=100)
+        ImGui::Begin(("Client " + std::to_string(sceneID + 1) + "Loading Bar").c_str(), NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_AlwaysAutoResize);
+        ImGuiUtils::LoadingBar("", (float)this->models_.size() / 4, ImVec2(500, 30));
+        ImGui::End();
+    }
 }
 
 void Client::showModels()
@@ -205,6 +220,11 @@ void Client::hideModels()
     {
         model->setActive(false);
     }
+}
+
+void Client::reloadModels()
+{
+	ModelManager::getInstance()->reloadScene(this);
 }
 
 std::vector<models::Model*> Client::getModels()

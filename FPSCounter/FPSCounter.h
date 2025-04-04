@@ -16,4 +16,6 @@ private:
     float fps;
     double updateTime;
     int frameCount = 0;
+
+    float timer = 0;
 };

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <random>
 
+#include "../Thread/ObjectLoader.h"
+
 ModelManager* ModelManager::sharedInstance = NULL;
 
 ModelManager* ModelManager::getInstance() {
@@ -21,7 +23,7 @@ void ModelManager::initialize()
 		ModelData("Fish","3D/Fish/fish.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {10.f, 10.f, 10.f}, "3D/Fish/textures/Fish_Albedo.png"),
 		ModelData("Cabbage","3D/Cabbage/cabbage.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Cabbage/textures/cabbage_albedo.jpeg"),
 		//ModelData("Cupcake","3D/Cupcake/cupcake.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Cupcake/textures/model_edited_material_0.jpeg"),
-		ModelData("Toaster","3D/Toaster/toaster.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Toaster/textures/toster_Material_color.png"),
+		ModelData("Toaster","3D/Toaster/toaster.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {10.f, 10.f, 10.f}, "3D/Toaster/textures/toster_Material_color.png"),
 		ModelData("Red Rose", "3D/Red Rose/red rose.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {10.f, 10.f, 10.f}, "3D/Red Rose/textures/Red_rose.jpeg")
 	};
 
@@ -183,6 +185,12 @@ void ModelManager::deleteObjectByName(std::string name)
 	if (object != NULL) {
 		this->deleteObject(object);
 	}
+}
+
+void ModelManager::reloadScene(Client* client)
+{
+	ObjectLoader* objectLoader = new ObjectLoader(client);
+	objectLoader->start();
 }
 
 std::string ModelManager::getModelBuffer(std::string modelPath)
