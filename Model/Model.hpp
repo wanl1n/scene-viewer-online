@@ -29,6 +29,10 @@ namespace models {
 			bool active = false;
 			std::string name;
 
+			std::string objDataStr;
+			std::vector<uint8_t> texData;
+			int texWidth; int texHeight;
+
 		// Constructors
 		public:
 			Model(std::string strObjPath, const char* pathTex, const char* pathNorm, std::string name,
@@ -39,16 +43,20 @@ namespace models {
 			Model(std::string&& objData, const std::vector<uint8_t>& texData, int texWidth, int texHeight);
 
 			void loadModelData(std::string path);
-			void loadModelDataFromString(const std::string& objData);
+			void loadModelDataFromString();
 
 			GLuint loadTexture(const char* path, GLuint texture_ind);
-			GLuint loadTextureFromData(const std::vector<uint8_t>& data, int width, int height, GLenum textureUnit);
+			void loadTextureFromData();
 
 			void loadSticker();
 			void generateBuffers();
 
 		// Behavior
 		public:
+			bool dataLoaded = false;
+			bool bufferGenerated = false;
+			bool textureLoaded = false;
+
 			glm::vec3 getPosition();
 			glm::vec3 getColor();
 			glm::vec3 getRotation();

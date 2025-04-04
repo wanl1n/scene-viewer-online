@@ -24,7 +24,7 @@ public:
 	void runClient();
 	void RenderUI();
 
-	std::vector<models::Model> getModels();
+	std::vector<models::Model*> getModels();
 	std::unordered_map<std::string, ModelData> getModelDataMap();
 
 	bool isSceneLoaded();
@@ -43,7 +43,7 @@ private:
 	std::unique_ptr<ModelLoader::Stub> modelStub_;
 	std::unique_ptr<TransformTexSync::Stub> transformStub_;
 
-	std::vector<models::Model> models_;
+	std::vector<models::Model*> models_;
 	std::unordered_map<std::string, ModelData> modelDataMap_;
 
 	bool sceneLoaded_ = false;

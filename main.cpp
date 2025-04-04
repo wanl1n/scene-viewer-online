@@ -182,13 +182,13 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the depth buffer as well
 
         // Check if clients have loaded their scenes
-        for (auto& client : clients)
+        /*for (auto& client : clients)
         {
 	        if (client.isSceneLoaded())
 	        {
                 client.createModels();
 	        }
-        }
+        }*/
 
         // ----------------------- UPDATING VALUES -------------------------- //        
         // First get the mouse position
@@ -226,7 +226,7 @@ int main()
         if (player.isTurningLeft()) { 
 			camera.moveLeft();
         }
-
+        ModelManager::getInstance()->update(1);
     	// ---------------------- RENDERING OBJECTS ------------------------- //
         // First draw the skybox
         skybox.draw(mainCamera->getViewMatrix(), mainCamera->getProjMatrix(), player.isUsingBinoculars());
@@ -240,10 +240,10 @@ int main()
         // Draw the environment
         for (auto& client : clients) 
         {
-            for (Model model : client.getModels()) 
+            for (Model* model : client.getModels()) 
             {
-                if (model.isActive())
-					model.draw(litShader.getShaderProgram(), true);
+                if (model->isActive())
+					model->draw(litShader.getShaderProgram(), true);
             }
         }
 

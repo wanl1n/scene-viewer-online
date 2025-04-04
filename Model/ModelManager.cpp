@@ -114,6 +114,16 @@ void ModelManager::update(float deltaTime)
 {
 	//std::cout << "Delta time: " << deltaTime.asSeconds() << "\n";
 	for (int i = 0; i < this->modelList.size(); i++) {
+		if (modelList[i]->dataLoaded && !modelList[i]->bufferGenerated)
+		{
+			if (!modelList[i]->bufferGenerated)
+				this->modelList[i]->generateBuffers();
+			if (!modelList[i]->textureLoaded)
+				this->modelList[i]->loadTextureFromData();
+			glEnable(GL_DEPTH_TEST);
+			//std::cout << "Model " << modelList[i]->getName() << " buffers generated." << std::endl;
+		}
+
 		if (this->modelList[i]->isActive())
 		{
 			this->modelList[i]->update(deltaTime);

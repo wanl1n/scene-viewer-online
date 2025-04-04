@@ -22,26 +22,23 @@ Model::Model(std::string strObjPath, const char* pathTex, const char* pathNorm, 
 }
 
 Model::Model(std::string&& objData, const std::vector<uint8_t>& texData, int texWidth, int texHeight)
+	: objDataStr(std::string(objData)), texData(texData), texWidth(texWidth), texHeight(texHeight)
 {
-	std::string objDataStr = std::string(objData);
-	this->loadModelDataFromString(objDataStr);
-
-	if (!texData.empty())
-		this->texture = loadTextureFromData(texData, texWidth, texHeight, GL_TEXTURE0);
+	this->loadModelDataFromString();
 
 	this->sticker_tex = 0;
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
 }
 
 
-void Model::loadModelDataFromString(const std::string& objData)
+void Model::loadModelDataFromString()
 {
 	std::vector<tinyobj::shape_t> shape;
 	std::vector<tinyobj::material_t> material;
 	std::string warning, error;
 	tinyobj::attrib_t attributes;
 
-	std::istringstream objStream(objData);  
+	std::istringstream objStream(objDataStr);  
 	bool success = tinyobj::LoadObj(
 		&attributes,
 		&shape,
@@ -137,7 +134,8 @@ void Model::loadModelDataFromString(const std::string& objData)
 		attribSize += 3;
 	}
 
-	generateBuffers();
+	//generateBuffers();
+	dataLoaded = true; // Set the data loaded to true.
 }
 
 
@@ -262,7 +260,8 @@ void Model::loadModelData(std::string path) {
 	if (!attributes.normals.empty()) { attribSize += 3; }
 
 	// Generate the buffers.
-	generateBuffers();
+	//generateBuffers();
+	this->dataLoaded = true; // Set the data loaded to true.
 }
 
 // Generate the buffers for the vertices and rendering.
@@ -297,6 +296,8 @@ void Model::generateBuffers() {
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0); // Wala nang ginagalaw sa VBO.
 	glBindVertexArray(0); // Wala ka nang ginagalaw na VAO.
+
+	this->bufferGenerated = true; // Set the buffer generated to true.
 }
 
 // Loads the texture of the model given in the path.
@@ -365,41 +366,51 @@ GLuint Model::loadTexture(const char* path, GLuint texture_ind) {
 	return texture;
 }
 
-GLuint Model::loadTextureFromData(const std::vector<uint8_t>& data, int width, int height, GLenum textureUnit)
+void Model::loadTextureFromData()
 {
-	GLuint texture;
-	glGenTextures(1, &texture);
-	glActiveTexture(textureUnit);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	if (!texData.empty())
+	{
+		GLuint texture;
+		glGenTextures(1, &texture);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture);
 
-	glTexParameteri(GL_TEXTURE_2D,
-		GL_TEXTURE_WRAP_S, 
-		GL_CLAMP_TO_EDGE 
-	);
-	glTexParameteri(GL_TEXTURE_2D,
-		GL_TEXTURE_WRAP_T, 
-		GL_REPEAT 
-	);
+		glTexParameteri(GL_TEXTURE_2D,
+			GL_TEXTURE_WRAP_S,
+			GL_CLAMP_TO_EDGE
+		);
+		glTexParameteri(GL_TEXTURE_2D,
+			GL_TEXTURE_WRAP_T,
+			GL_REPEAT
+		);
 
-	GLenum format = (data.size() == width * height * 4) ? GL_RGBA : GL_RGB;
+		GLenum format = (texData.size() == texWidth * texHeight * 4) ? GL_RGBA : GL_RGB;
 
-	//Assign the loaded texture to the OpenGL reference.
-	glTexImage2D(
-		GL_TEXTURE_2D,
-		0, 
-		format, 
-		width, 
-		height, 
-		0,
-		format,
-		GL_UNSIGNED_BYTE,
-		data.data() 
-	);
+		//Assign the loaded texture to the OpenGL reference.
+		glTexImage2D(
+			GL_TEXTURE_2D,
+			0,
+			format,
+			texWidth,
+			texHeight,
+			0,
+			format,
+			GL_UNSIGNED_BYTE,
+			texData.data()
+		);
 
-	// Generate the mipmaps to the current texture
-	glGenerateMipmap(GL_TEXTURE_2D);
+		// Generate the mipmaps to the current texture
+		glGenerateMipmap(GL_TEXTURE_2D);
 
-	return texture;
+		this->texture = texture;
+	}
+	else
+	{
+		this->texture = 0;
+		std::cerr << "Texture data is empty." << std::endl;
+	}
+
+	this->textureLoaded = true; // Set the texture loaded to true.
 }
 
 // Loads the sticker texture (the file is constant for single use but this can be easily 
