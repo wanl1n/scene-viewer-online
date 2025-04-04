@@ -87,6 +87,22 @@ void Key_Callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
 }
 
+void MouseButton_Callback(GLFWwindow* window, int button, int action, int mods) {
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        player.setTurningLeft(true);
+    }
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
+        player.setTurningLeft(false);
+    }
+
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
+        player.setTurningRight(true);
+    }
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) {
+        player.setTurningRight(false);
+    }
+}
+
 int main()
 {
     GLFWwindow* window;
@@ -112,6 +128,7 @@ int main()
 
     // Getting User Key Input
     glfwSetKeyCallback(window, Key_Callback);
+    glfwSetMouseButtonCallback(window, MouseButton_Callback);
 
     // Create Viewport
     glViewport(0, 0, (int)width_, (int)height_);
