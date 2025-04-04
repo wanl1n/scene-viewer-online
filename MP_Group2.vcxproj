@@ -139,6 +139,7 @@
     <ClCompile Include="Camera\MyCamera.cpp" />
     <ClCompile Include="Camera\OrthoCamera.cpp" />
     <ClCompile Include="Camera\PerspectiveCamera.cpp" />
+    <ClCompile Include="FPSCounter\FPSCounter.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Imgui\ImGuiUtils.cpp" />
     <ClCompile Include="Imgui\imgui_impl_glfw.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="Camera\MyCamera.hpp" />
     <ClInclude Include="Camera\OrthoCamera.hpp" />
     <ClInclude Include="Camera\PerspectiveCamera.hpp" />
+    <ClInclude Include="FPSCounter\FPSCounter.h" />
     <ClInclude Include="Imgui\ImGuiUtils.h" />
     <ClInclude Include="Imgui\imgui_impl_glfw.h" />
     <ClInclude Include="Imgui\imgui_impl_opengl3.h" />

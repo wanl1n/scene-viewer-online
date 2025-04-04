@@ -28,6 +28,9 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{e807653a-75e3-4db8-9c0f-0253f4a8ef9c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FPSCounter">
+      <UniqueIdentifier>{257e350d-f2b2-4b20-9668-8b002a1c62a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -75,16 +78,7 @@
     <ClCompile Include="Networking\Server.cpp">
       <Filter>Networking</Filter>
     </ClCompile>
-    <ClCompile Include="Thread\IETSemaphore.cpp">
-      <Filter>Thread</Filter>
-    </ClCompile>
     <ClCompile Include="Thread\IETThread.cpp">
-      <Filter>Thread</Filter>
-    </ClCompile>
-    <ClCompile Include="Thread\PoolWorkerThread.cpp">
-      <Filter>Thread</Filter>
-    </ClCompile>
-    <ClCompile Include="Thread\ThreadPool.cpp">
       <Filter>Thread</Filter>
     </ClCompile>
     <ClCompile Include="Networking\Client.cpp">
@@ -107,6 +101,15 @@
     </ClCompile>
     <ClCompile Include="Proto\transformtex.pb.cc">
       <Filter>Proto</Filter>
+    </ClCompile>
+    <ClCompile Include="Imgui\ImGuiUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\ModelManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FPSCounter\FPSCounter.cpp">
+      <Filter>FPSCounter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -155,25 +158,7 @@
     <ClInclude Include="Imgui\imgui_impl_opengl3.h">
       <Filter>Resource Files\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Thread\IETSemaphore.h">
-      <Filter>Thread</Filter>
-    </ClInclude>
     <ClInclude Include="Thread\IETThread.h">
-      <Filter>Thread</Filter>
-    </ClInclude>
-    <ClInclude Include="Thread\IExecutionEvent.h">
-      <Filter>Thread</Filter>
-    </ClInclude>
-    <ClInclude Include="Thread\IFinishedTask.h">
-      <Filter>Thread</Filter>
-    </ClInclude>
-    <ClInclude Include="Thread\IWorkerAction.h">
-      <Filter>Thread</Filter>
-    </ClInclude>
-    <ClInclude Include="Thread\PoolWorkerThread.h">
-      <Filter>Thread</Filter>
-    </ClInclude>
-    <ClInclude Include="Thread\ThreadPool.h">
       <Filter>Thread</Filter>
     </ClInclude>
     <ClInclude Include="Networking\Server.h">
@@ -199,6 +184,15 @@
     </ClInclude>
     <ClInclude Include="Proto\transformtex.pb.h">
       <Filter>Proto</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\ImGuiUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\ModelManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSCounter\FPSCounter.h">
+      <Filter>FPSCounter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

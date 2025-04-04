@@ -24,6 +24,7 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "FPSCounter/FPSCounter.h"
 #include "Networking/Client.h"
 #include "Networking/Server.h"
 
@@ -168,12 +169,31 @@ int main()
     double xpos, ypos;
     glfwGetCursorPos(window, &xpos, &ypos);
 
+    FPSCounter fpsCounter;
+
+    double prevTime = 0.0f;
+    double currentTime = 0.0f;
+    double deltaTime;
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
+        glfwSwapInterval(1);
+
+        currentTime = glfwGetTime();
+    	deltaTime = currentTime - prevTime;
+        prevTime = currentTime;
+
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+
+        //double targetFrameTime = 1.0 / 60.0;
+
+        //if (deltaTime < targetFrameTime)
+        //{
+        //    glfwWaitEventsTimeout(targetFrameTime - deltaTime);
+        //}
 
         // Change background color (Deep Purple)
         glClearColor(0.2f, 0.0f, 0.5f, 1.0f);
@@ -254,6 +274,11 @@ int main()
         {
             client.RenderUI();
         }
+
+        fpsCounter.update(deltaTime);
+
+        // Render FPS counter
+    	fpsCounter.draw();
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

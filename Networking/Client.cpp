@@ -145,6 +145,7 @@ void Client::deleteModels()
 
 void Client::RenderUI()
 {
+
     ImGui::SetNextWindowPos(ImVec2(110 * sceneID, 10));  // Position (X=100, Y=100)
     ImGui::SetNextWindowSize(ImVec2(110, 250)); // Size (Width=400, Height=300)
 
