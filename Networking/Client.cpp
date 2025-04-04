@@ -119,7 +119,7 @@ void Client::createModels()
                 continue;
             }
 
-			IETThread::sleep(1000);
+			IETThread::sleep(6000);
             models::Model* model = new Model(std::move(std::string(data.modelBuffer)), data.textureData, data.texSize.x, data.texSize.y);
             model->setPosition(data.position);
             model->setRotation(data.rotation);
@@ -148,27 +148,24 @@ void Client::RenderUI()
 {
 
     ImGui::SetNextWindowPos(ImVec2(110 * sceneID, 10));  // Position (X=100, Y=100)
-    ImGui::SetNextWindowSize(ImVec2(110, 250)); // Size (Width=400, Height=300)
+    ImGui::SetNextWindowSize(ImVec2(110, 110)); // Size (Width=400, Height=300)
 
     ImGui::Begin(("Client " + std::to_string(sceneID + 1)).c_str(), NULL, ImGuiWindowFlags_NoScrollbar);
 
     ImGui::Text("Scene ID: %d", sceneID + 1);
 
-    ImGui::Text("Model Names:");
+    /*ImGui::Text("Model Names:");
     for (const auto& [name, modelData] : this->modelDataMap_)
     {
         ImGui::BulletText("%s", name.c_str());
-    }
+    }*/
 
     //ImGuiUtils::Image("Thumbnails/pink girl.png", 100, 100);
 
     ImGuiUtils::LoadingBar("", (float)this->models_.size()/4);
     if (ImGui::Button("View", ImVec2(45, 20)))
     {
-        for (Model* model : this->models_)
-        {
-            model->setActive(true);
-        }
+        this->showModels();
     }
     ImGui::SameLine();
     if (ImGui::Button("Hide", ImVec2(45, 20)))
@@ -190,6 +187,24 @@ void Client::RenderUI()
 			this->createModels();
     }
     ImGui::End();
+}
+
+void Client::showModels()
+{
+    this->viewing = true;
+    for (Model* model : this->models_)
+    {
+        model->setActive(true);
+    }
+}
+
+void Client::hideModels()
+{
+    this->viewing = false;
+    for (Model* model : this->models_)
+    {
+        model->setActive(false);
+    }
 }
 
 std::vector<models::Model*> Client::getModels()

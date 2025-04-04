@@ -29,7 +29,7 @@ void ModelManager::initialize()
 		ModelData("Shoe", "3D/Shoe/shoe.obj", ModelManager::randomPos(), {0.f, 0.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Shoe/textures/nb574.jpeg"),
 		//ModelData("Cup", "3D/Cup/cup.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {30.f, 30.f, 30.f}, "3D/Cup/textures/cup_albedo.png"),
 		ModelData("Burnt Croissant","3D/Burnt Croissant/BurntCroissant.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {30.f, 30.f, 30.f}, "3D/Burnt Croissant/textures/BurntCroissant.jpeg"),
-		ModelData("Chili","3D/Chili/chili.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {1.f, 1.f, 1.f}, "3D/Chili/textures/color.png"),
+		ModelData("Chili","3D/Chili/chili.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {.5f, .5f, 0.5f}, "3D/Chili/textures/color.png"),
 		ModelData("Orchid","3D/Orchid/orchid.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Orchid/textures/color.jpeg")
 	};
 
@@ -37,7 +37,7 @@ void ModelManager::initialize()
 		ModelData("Lychee","3D/Lychees/lychee.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {30.f, 30.f, 30.f}, "3D/Lychees/textures/lychee.jpeg"),
 		ModelData("Bananacat","3D/Banana Cat/banancat.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {0.5f, 0.5f, 0.5f}, "3D/Banana Cat/banancattex.png"),
 		ModelData("Tank","3D/Tank/M1A1.obj", ModelManager::randomPos(), {0.f, 180.f, 0.f}, {0.25f, 0.25f, 0.25f}, "3D/Tank/TankTex.png"),
-		ModelData("Grass","3D/Grass/Grass.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {0.1f, 0.1f, 0.1f}, "3D/Grass/GrassTex.png"),
+		ModelData("Grass","3D/Grass/Grass.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {0.1f, 0.1f, 0.1f}, "3D/Grass/GrassTex.png")
 		//ModelData("Ground","3D/Ground/Ground.obj", ModelManager::randomPos(), {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, "3D/Ground/AddWater_basecolor.png")
 	};
 
@@ -46,7 +46,7 @@ void ModelManager::initialize()
 		ModelData("Tractor","3D/Car/Tractor.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {3.f, 3.f, 3.f}, "3D/Car/TractorTex.jpg"),
 		ModelData("Cat", "3D/Cat/cat.obj", ModelManager::randomPos(), {0.f, 0.f, 0.f}, {10.f, 10.f, 10.f}, "3D/Cat/textures/color.png"),
 		//ModelData("Mouse","3D/Mouse/Mouse.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {1000.f, 1000.f, 1000.f}, "3D/Mouse/MouseTex.png"),
-		ModelData("Flowers","3D/Flowers/Flower.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {250.f, 250.f, 250.f}, "3D/Flowers/FlowerTexA.png")
+		ModelData("Flowers","3D/Flowers/Flower.obj", ModelManager::randomPos(), {0.f, 60.f, 0.f}, {150.f, 150.f, 150.f}, "3D/Flowers/FlowerTexA.png")
 	};
 
 	sceneModelsData[4] = {

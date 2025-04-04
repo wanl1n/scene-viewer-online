@@ -115,16 +115,12 @@ int main()
     glfwMakeContextCurrent(window);
     gladLoadGL();
 
-    // Get the initial framebuffer size (this is the actual size of the window in pixels)
-    int width_, height_;
-    glfwGetFramebufferSize(window, &width_, &height_);
-
     // Getting User Key Input
     glfwSetKeyCallback(window, Key_Callback);
     glfwSetMouseButtonCallback(window, MouseButton_Callback);
 
     // Create Viewport
-    glViewport(0, 0, (int)width_, (int)height_);
+    glViewport(0, 0, (int)width, (int)height);
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -252,7 +248,7 @@ int main()
         ModelManager::getInstance()->update(1);
     	// ---------------------- RENDERING OBJECTS ------------------------- //
         // First draw the skybox
-        skybox.draw(mainCamera->getViewMatrix(), mainCamera->getProjMatrix(), player.isUsingBinoculars());
+        //skybox.draw(mainCamera->getViewMatrix(), mainCamera->getProjMatrix(), player.isUsingBinoculars());
 
         // Reset the shader program for the objects.
         glUseProgram(*litShader.getShaderProgram());
@@ -277,6 +273,26 @@ int main()
         {
             client.RenderUI();
         }
+
+        ImGui::SetNextWindowPos(ImVec2(width - 110, 10));
+        ImGui::SetNextWindowSize(ImVec2(110, 90));
+        ImGui::Begin("Settings", NULL, ImGuiWindowFlags_NoScrollbar);
+
+        if (ImGui::Button("Hide All", ImVec2(90, 20)))
+        {
+            for (auto& client : clients)
+            {
+                client.hideModels();
+            }
+        }
+        if (ImGui::Button("Show All", ImVec2(90, 20)))
+        {
+            for (auto& client : clients)
+            {
+                client.showModels();
+            }
+        }
+        ImGui::End();
 
         fpsCounter.update(deltaTime);
 

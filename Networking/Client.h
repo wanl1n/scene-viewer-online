@@ -24,6 +24,9 @@ public:
 	void runClient();
 	void RenderUI();
 
+	void showModels();
+	void hideModels();
+
 	std::vector<models::Model*> getModels();
 	std::unordered_map<std::string, ModelData> getModelDataMap();
 
@@ -37,6 +40,7 @@ private:
 
 private:
 	int sceneID;
+	bool viewing = false;
 
 	std::shared_ptr<grpc::Channel> channel_;
 	std::unique_ptr<SceneViewer::Stub> stub_;
